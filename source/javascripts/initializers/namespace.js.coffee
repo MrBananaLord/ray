@@ -1,0 +1,3 @@
+window.MyGame =
+  Models: {}
+  PhysX: {}
