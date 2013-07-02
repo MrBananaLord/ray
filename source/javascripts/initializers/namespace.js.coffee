@@ -1,3 +1,2 @@
-window.MyGame =
+window.RaY =
   Models: {}
-  PhysX: {}

@@ -1,6 +1,12 @@
-class MyGame.Models.Background extends MyGame.PhysX.Rectangle  
-  constructor: (@context) ->
+class RaY.Models.Background
+  constructor: (@context, @x = 0, @y = 0,  @width = 0, @height = 0, @color = "#d0e7f9") ->
     @width = @context.canvas.clientWidth
     @height = @context.canvas.clientHeight
-    super(@context, 0, 0, @width, @height, '#d0e7f9')
     @draw()
+        
+  draw: ->
+    @context.fillStyle = @color
+    @context.beginPath()
+    @context.rect(@x, @y, @width, @height)
+    @context.closePath()
+    @context.fill()

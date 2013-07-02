@@ -1,2 +1,2 @@
 $ ->
-  window.game = new MyGame.Models.Game($("canvas")[0])
+  window.game = new RaY.Models.Game($("canvas")[0])

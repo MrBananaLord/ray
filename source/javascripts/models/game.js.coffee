@@ -1,4 +1,4 @@
-class MyGame.Models.Game
+class RaY.Models.Game
   width = 640
   height = 480
   
@@ -6,4 +6,4 @@ class MyGame.Models.Game
     @canvas.width = width
     @canvas.height = height
     @context = @canvas.getContext("2d")
-    @background = new MyGame.Models.Background(@context)
+    @background = new RaY.Models.Background(@context)
