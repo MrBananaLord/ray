@@ -1,4 +1,6 @@
 class RaY.Models.Hero  
+  keysDown: {}
+
   constructor: (@context) ->
     @image = new Image()
     @image.src = "images/game/hero.png"
@@ -13,8 +15,17 @@ class RaY.Models.Hero
     @falling = false
     @jumpSpeed = 0
     @fallSpeed = 0
+    
+    @bindKeys()
+    
+  bindKeys: =>
+    $("body").keydown (e) => @keysDown[e.keyCode] = true
+    $("body").keyup (e)   => delete @keysDown[e.keyCode]
   
   update: =>
+    @moveLeft()  if 37 of @keysDown
+    @moveRight() if 39 of @keysDown
+    @jump() if 32 of @keysDown
     @checkJump() if @jumping
     @checkFall() if @falling
     @draw()
@@ -63,7 +74,12 @@ class RaY.Models.Hero
   fallStop: =>
     @falling = false
     @fallSpeed = 0
-    @jump()
+    
+  moveLeft: =>
+    @setPosition(@x - 5, @y) if @x > 0
+  
+  moveRight: =>
+    @setPosition(@x + 5, @y) if @x + @width < @context.canvas.width
 
 
 
