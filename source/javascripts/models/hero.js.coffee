@@ -17,7 +17,8 @@ class RaY.Models.Hero
     @fallSpeed = 0
     
     @bindKeys()
-    
+  
+  
   bindKeys: =>
     $("body").keydown (e) => @keysDown[e.keyCode] = true
     $("body").keyup (e)   => delete @keysDown[e.keyCode]
@@ -43,7 +44,7 @@ class RaY.Models.Hero
       @nextFrame()
       @interval = 0
     @interval += 1
-    
+  
   nextFrame: =>
     if @currentFrame == @frames
       @currentFrame = 0
@@ -71,6 +72,9 @@ class RaY.Models.Hero
     else
       @fallStop()
       
+  fall: =>
+    @falling = true
+      
   fallStop: =>
     @falling = false
     @fallSpeed = 0
@@ -81,5 +85,9 @@ class RaY.Models.Hero
   moveRight: =>
     @setPosition(@x + 5, @y) if @x + @width < @context.canvas.width
 
-
+  collides: (object) =>
+    @x < object.x + object.width &&
+    @x + @width > object.x && 
+    @y + @height > object.y && 
+    @y + @height < object.y + object.height
 

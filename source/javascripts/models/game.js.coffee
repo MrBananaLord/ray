@@ -13,9 +13,30 @@ class RaY.Models.Game
     @hero.setPosition(~~((@width - @hero.width)/2), ~~((@height - @hero.height)/2))
     @hero.jump()
     
+    @platforms = @generatePlatforms()
     @gameLoop()
   
    gameLoop: =>
     @background.update()
+    @platforms.forEach (platform) =>
+      platform.update()
+    
+    @checkCollisions()
+      
     @hero.update()
+    
     @loopTimeout = setTimeout(@gameLoop, 1000 / 50)
+      
+    
+   generatePlatforms: =>
+    _(10).times => new RaY.Models.Platform(@context)
+  
+  checkCollisions: =>
+    @platforms.forEach (platform) =>
+      @hero.fallStop() if @hero.falling && @hero.collides(platform)
+        
+          
+          
+        
+    
+  
