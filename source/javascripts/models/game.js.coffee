@@ -34,9 +34,3 @@ class RaY.Models.Game
   checkCollisions: =>
     @platforms.forEach (platform) =>
       @hero.fallStop() if @hero.falling && @hero.collides(platform)
-        
-          
-          
-        
-    
-  

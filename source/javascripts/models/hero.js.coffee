@@ -60,6 +60,7 @@ class RaY.Models.Hero
   checkJump: =>
     @setPosition(@x, @y - @jumpSpeed)
     @jumpSpeed -= 1
+    
     if @jumpSpeed == 0
       @jumping = false
       @falling = true
