@@ -3,6 +3,9 @@ class RaY.Models.Background
     @width = @context.canvas.clientWidth
     @height = @context.canvas.clientHeight
         
+  update: =>
+    @draw()
+        
   draw: ->
     @context.fillStyle = @color
     @context.beginPath()

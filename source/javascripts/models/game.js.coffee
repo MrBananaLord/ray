@@ -16,8 +16,6 @@ class RaY.Models.Game
     @gameLoop()
   
    gameLoop: =>
-    @background.draw()
-    @hero.checkJump() if @hero.jumping
-    @hero.checkFall() if @hero.falling
-    @hero.draw()
+    @background.update()
+    @hero.update()
     @loopTimeout = setTimeout(@gameLoop, 1000 / 50)

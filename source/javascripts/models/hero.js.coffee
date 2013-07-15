@@ -14,6 +14,11 @@ class RaY.Models.Hero
     @jumpSpeed = 0
     @fallSpeed = 0
   
+  update: =>
+    @checkJump() if @jumping
+    @checkFall() if @falling
+    @draw()
+  
   setPosition: (x,y) =>
     @x = x
     @y = y
@@ -49,7 +54,6 @@ class RaY.Models.Hero
       @fallSpeed = 1
   
   checkFall: =>
-    console.debug @y, @context.canvas.height - @height
     if @y < @context.canvas.height - @height
       @setPosition(@x, @y + @fallSpeed)
       @fallSpeed += 1
