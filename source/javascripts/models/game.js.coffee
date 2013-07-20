@@ -6,6 +6,7 @@ class RaY.Models.Game
   
   setup: ->
     @world = new RaY.Models.World
+    @inputHandler = new RaY.Engine.InputHandler(@world)
   
   animate: =>
     requestAnimationFrame(@animate)
@@ -17,4 +18,9 @@ class RaY.Models.Game
     
   render: -> @world.render()
   
-  update: -> @world.update()
+  update: ->
+    now = Date.now()
+    @updateDelta = now - @lastUpdate
+    @lastUpdate = now
+    @inputHandler.update(@updateDelta / 1000)
+    @world.update(@updateDelta / 1000)

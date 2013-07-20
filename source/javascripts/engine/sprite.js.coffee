@@ -14,8 +14,6 @@ class RaY.Engine.Sprite
   constructor: (@world, imageUrl) ->
     @image = new RaY.Engine.SpriteImage(imageUrl)
 
-  render: (sourceX, sourceY, destinationX, destinationY) ->
+  drawImage: (sourceX, sourceY, destinationX, destinationY) ->
     if @image.ready
       @world.context.drawImage(@image.image, sourceX, sourceY, @sourceWidth, @sourceHeight, destinationX, destinationY, @destinationWidth, @destinationHeight)
-
-  update: ->

@@ -19,6 +19,13 @@ class RaY.Models.World
     $("body").append(canvas)
     canvas.getContext("2d")
     
-  update: -> element.update() for element in @elements
+  update: (updateDelta) ->
+    element.update() for element in @elements
     
-  render: -> element.render() for element in @elements
+  render: ->
+    element.render() for element in @elements
+    
+  handle_input: (action, name, modifier) ->
+    if action == "keydown"
+      @hero.moveLeft()    if name == "left"
+      @hero.moveRight()   if name == "right"

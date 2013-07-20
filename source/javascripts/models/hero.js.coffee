@@ -1,5 +1,4 @@
-class RaY.Models.Hero extends RaY.Engine.Sprite
-  keysDown: {}
+class RaY.Models.Hero extends RaY.Engine.Entity
   sourceWidth: 65
   sourceHeight: 95
   destinationWidth: 65
@@ -16,10 +15,13 @@ class RaY.Models.Hero extends RaY.Engine.Sprite
 #    @falling = false
 #    @jumpSpeed = 0
 #    @fallSpeed = 0
-
-  render: -> super(0,0,0,0)
+        
+  moveLeft: =>
+    @setPosition(@x - 5, @y)
+  
+  moveRight: =>
+    @setPosition(@x + 5, @y)
     
-#    @bindKeys()
 #  
 #  
 #  bindKeys: =>
@@ -34,9 +36,6 @@ class RaY.Models.Hero extends RaY.Engine.Sprite
 #    @checkFall() if @falling
 #    @draw()
 #  
-#  setPosition: (x,y) =>
-#    @x = x
-#    @y = y
 #    
 #  draw: =>
 #    try
@@ -83,11 +82,6 @@ class RaY.Models.Hero extends RaY.Engine.Sprite
 #    @falling = false
 #    @fallSpeed = 0
 #    
-#  moveLeft: =>
-#    @setPosition(@x - 5, @y) if @x > 0
-#  
-#  moveRight: =>
-#    @setPosition(@x + 5, @y) if @x + @width < @context.canvas.width
 
 #  collides: (object) =>
 #    @x < object.x + object.width &&
