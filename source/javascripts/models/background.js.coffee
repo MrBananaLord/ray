@@ -1,14 +1,7 @@
-class RaY.Models.Background
-  constructor: (@context, @x = 0, @y = 0,  @width = 0, @height = 0, @color = "#d0e7f9") ->
-    @width = @context.canvas.clientWidth
-    @height = @context.canvas.clientHeight
-        
-  update: =>
-    @draw()
-        
-  draw: ->
-    @context.fillStyle = @color
-    @context.beginPath()
-    @context.rect(@x, @y, @width, @height)
-    @context.closePath()
-    @context.fill()
+class RaY.Models.Background extends RaY.Engine.Rectangle
+  constructor: (world) ->
+    @width = world.viewWidth
+    @height = world.viewHeight
+    super(world)
+  
+  render: -> super(0, 0)
