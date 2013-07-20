@@ -12,7 +12,7 @@ class RaY.Engine.Sprite
   collidable: false
 
   constructor: (@world, imageUrl) ->
-    @image = new SpriteImage(imageUrl)
+    @image = new RaY.Engine.SpriteImage(imageUrl)
 
   render: (sourceX, sourceY, destinationX, destinationY) ->
     if @image.ready

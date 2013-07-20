@@ -7,14 +7,11 @@ class RaY.Models.World
   
   constructor: ->
     @context = @createCanvas()
-    @elements.push new RaY.Models.Background(this)
-    #    @hero = new RaY.Models.Hero(@context)
-    #    @hero.setPosition(~~((@width - @hero.width)/2), ~~((@height - @hero.height)/2))
-    #    @hero.jump()
-    
-    #@platforms = @generatePlatforms()
-    #@gameLoop()
-    
+    @background = new RaY.Models.Background(this)
+    @elements.push(@background)
+    @hero = new RaY.Models.Hero(this)
+    @elements.push(@hero)
+        
   createCanvas: ->
     canvas = document.createElement("canvas")
     canvas.width = @viewWidth
