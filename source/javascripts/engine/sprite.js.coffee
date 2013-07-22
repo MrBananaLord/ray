@@ -1,4 +1,4 @@
-class RaY.Engine.Sprite
+class RaY.Engine.Sprite extends RaY.Engine.Module
   sourceX: 0
   sourceY: 0
   sourceWidth: 0

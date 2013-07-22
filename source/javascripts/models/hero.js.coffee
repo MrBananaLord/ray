@@ -1,4 +1,6 @@
 class RaY.Models.Hero extends RaY.Engine.Entity
+  @include RaY.Engine.Modules.Callbacks
+  
   sourceWidth: 65
   sourceHeight: 95
   destinationWidth: 65
@@ -8,6 +10,8 @@ class RaY.Models.Hero extends RaY.Engine.Entity
   constructor: (@world) ->
     super(@world, "images/game/hero.png")
     @render(0,0,0,0)
+    @world.bind "hmm", ->
+      console.debug "JEEE"
 #    @frames = 1
 #    @interval = 4
 #    @currentFrame = 0
