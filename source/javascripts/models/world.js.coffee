@@ -1,4 +1,5 @@
-class RaY.Models.World
+class RaY.Models.World extends RaY.Engine.Module
+  @include RaY.Engine.Modules.Callbacks
   viewWidth: 640
   viewHeight: 480
   width: 1000
@@ -25,9 +26,11 @@ class RaY.Models.World
   render: ->
     element.render() for element in @elements
     
-  handle_input: (action, name, modifier) ->
-    if action == "keydown"
-      @hero.moveLeft()    if name == "left"
-      @hero.moveRight()   if name == "right"
-      @hero.moveUp()      if name == "up"
-      @hero.moveDown()    if name == "down"
+  keyDown: (action, name, modifier) ->
+    console.debug "kD"
+    #    if action == "keydown"
+    #      @hero.moveLeft()    if name == "left"
+    #      @hero.moveRight()   if name == "right"
+    #      @hero.moveUp()      if name == "up"
+    #      @hero.moveDown()    if name == "down"
+    

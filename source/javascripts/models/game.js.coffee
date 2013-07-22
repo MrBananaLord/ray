@@ -1,4 +1,4 @@
-class RaY.Models.Game  
+class RaY.Models.Game
     
   run: ->
     @setup()

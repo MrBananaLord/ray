@@ -1,3 +1,4 @@
 window.RaY =
   Models: {}
-  Engine: {}
+  Engine:
+    Modules: {}

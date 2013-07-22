@@ -5,6 +5,8 @@
 //= require ./initializers/animation
 //= require ./initializers/namespace
 
+//= require_tree ./engine/modules/
+//= require ./engine/module
 //= require ./engine/sprite_image
 //= require ./engine/sprite
 //= require ./engine/entity
