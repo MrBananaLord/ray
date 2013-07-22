@@ -9,9 +9,17 @@ class RaY.Models.Hero extends RaY.Engine.Entity
 
   constructor: (@world) ->
     super(@world, "images/game/hero.png")
+    @bindToEvents()
     @render(0,0,0,0)
-    @world.bind "hmm", ->
-      console.debug "JEEE"
+    
+  bindToEvents: =>
+    self = this
+    @world.bind "keyDown", (name, modifier) ->
+      switch name
+        when "left" then self.moveLeft()
+        when "right" then self.moveRight()
+        when "down" then self.moveDown()
+        when "up" then self.moveUp()
 #    @frames = 1
 #    @interval = 4
 #    @currentFrame = 0
@@ -32,11 +40,6 @@ class RaY.Models.Hero extends RaY.Engine.Entity
   moveDown: =>
     @setPosition(@x, @y + 5)
     
-#  
-#  
-#  bindKeys: =>
-#    $("body").keydown (e) => @keysDown[e.keyCode] = true
-#    $("body").keyup (e)   => delete @keysDown[e.keyCode]
 #  
 #  update: =>
 #    @moveLeft()  if 37 of @keysDown

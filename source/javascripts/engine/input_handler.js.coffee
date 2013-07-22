@@ -6,7 +6,7 @@ class RaY.Engine.InputHandler
     $("body").keyup (e)   => delete @keysDown[e.keyCode]
 
   update: (modifier) ->
-    @world.keyDown("keydown", "left", modifier)    if 37 of @keysDown
-    @world.keyDown("keydown", "right", modifier)   if 39 of @keysDown
-    @world.keyDown("keydown", "up", modifier)      if 38 of @keysDown
-    @world.keyDown("keydown", "down", modifier)    if 40 of @keysDown
+    @world.trigger("keyDown", "left", modifier)       if 37 of @keysDown
+    @world.trigger("keyDown", "up", modifier)         if 38 of @keysDown
+    @world.trigger("keyDown", "right", modifier)      if 39 of @keysDown
+    @world.trigger("keyDown", "down", modifier)       if 40 of @keysDown

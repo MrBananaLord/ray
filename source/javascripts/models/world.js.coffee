@@ -25,12 +25,3 @@ class RaY.Models.World extends RaY.Engine.Module
     
   render: ->
     element.render() for element in @elements
-    
-  keyDown: (action, name, modifier) ->
-    console.debug "kD"
-    #    if action == "keydown"
-    #      @hero.moveLeft()    if name == "left"
-    #      @hero.moveRight()   if name == "right"
-    #      @hero.moveUp()      if name == "up"
-    #      @hero.moveDown()    if name == "down"
-    
