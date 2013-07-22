@@ -22,6 +22,12 @@ class RaY.Models.Hero extends RaY.Engine.Entity
   moveRight: =>
     @setPosition(@x + 5, @y)
     
+  moveUp: =>
+    @setPosition(@x, @y - 5)
+  
+  moveDown: =>
+    @setPosition(@x, @y + 5)
+    
 #  
 #  
 #  bindKeys: =>

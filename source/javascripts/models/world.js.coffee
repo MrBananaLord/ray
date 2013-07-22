@@ -29,3 +29,5 @@ class RaY.Models.World
     if action == "keydown"
       @hero.moveLeft()    if name == "left"
       @hero.moveRight()   if name == "right"
+      @hero.moveUp()      if name == "up"
+      @hero.moveDown()    if name == "down"
