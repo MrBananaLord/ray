@@ -1,4 +1,6 @@
-class RaY.Engine.Rectangle
+class RaY.Engine.Rectangle extends RaY.Engine.Module
+  @include RaY.Engine.Modules.Callbacks
+  
   destinationX: 0
   destinationY: 0
   width: 0
@@ -9,10 +11,14 @@ class RaY.Engine.Rectangle
   
   constructor: (@world, @fillStyle = "#fff") ->
       
-  render: (destinationX, destinationY) ->
+  render: ->
     @world.context.fillStyle = @fillStyle
-    @world.context.fillRect(destinationX, destinationY, @width, @height)
+    @world.context.fillRect(@destinationX, @destinationY, @width, @height)
   
-  update: ->
+  update: (modifier) ->
+    @destinationX = @x
+    @destinationY = @y
+  
+  collidesWith: (element) => false
   
 

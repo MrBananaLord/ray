@@ -13,6 +13,14 @@ class RaY.Models.World extends RaY.Engine.Module
     @elements.push(@background)
     @hero = new RaY.Models.Hero(this)
     @elements.push(@hero)
+    
+    @rec = new RaY.Engine.Rectangle(this, "#000")
+    @rec.collidable = true
+    @rec.height = 100
+    @rec.width = 400
+    @rec.x = 10
+    @rec.y = 400
+    @elements.push(@rec)
         
   createCanvas: ->
     canvas = document.createElement("canvas")
@@ -26,3 +34,11 @@ class RaY.Models.World extends RaY.Engine.Module
     
   render: ->
     element.render() for element in @elements
+    
+  collidableElements: -> element for element in @elements when element.collidable
+    
+  checkCollisions: (object, modifier) =>
+    for element in @collidableElements()
+      if element.collidable && element != object && object.collidesWith(element)
+        this.trigger("collision", object, element, modifier)
+    

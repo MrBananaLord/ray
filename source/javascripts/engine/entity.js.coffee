@@ -1,4 +1,6 @@
 class RaY.Engine.Entity extends RaY.Engine.Sprite
+  @include RaY.Engine.Modules.Callbacks
+  
   collidable: false
   gravitable: false
   speed: 0
@@ -19,6 +21,10 @@ class RaY.Engine.Entity extends RaY.Engine.Sprite
   
   applyPhysics: (modifier) =>
     @applyGravity(modifier) if @gravitable
+    @world.checkCollisions(this, modifier) if @collidable
     
   applyGravity: (modifier) =>
     @setPosition(@x, @y + @world.gravity * modifier)
+  
+  collidesWith: (element) =>
+    this.y + this.height >= element.y
