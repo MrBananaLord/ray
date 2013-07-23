@@ -6,6 +6,7 @@ class RaY.Models.Hero extends RaY.Engine.Entity
   destinationWidth: 65
   destinationHeight: 95
   collidable: true
+  gravitable: true
 
   constructor: (@world) ->
     super(@world, "images/game/hero.png")
@@ -16,10 +17,10 @@ class RaY.Models.Hero extends RaY.Engine.Entity
     self = this
     @world.bind "keyDown", (name, modifier) ->
       switch name
-        when "left" then self.moveLeft()
-        when "right" then self.moveRight()
-        when "down" then self.moveDown()
-        when "up" then self.moveUp()
+        when "left" then self.moveLeft(modifier)
+        when "right" then self.moveRight(modifier)
+        when "down" then self.moveDown(modifier)
+        when "up" then self.moveUp(modifier)
 #    @frames = 1
 #    @interval = 4
 #    @currentFrame = 0
@@ -28,27 +29,18 @@ class RaY.Models.Hero extends RaY.Engine.Entity
 #    @jumpSpeed = 0
 #    @fallSpeed = 0
         
-  moveLeft: =>
+  moveLeft: (modifier) =>
     @setPosition(@x - 5, @y)
   
-  moveRight: =>
+  moveRight: (modifier) =>
     @setPosition(@x + 5, @y)
     
-  moveUp: =>
+  moveUp: (modifier) =>
     @setPosition(@x, @y - 5)
   
-  moveDown: =>
+  moveDown: (modifier) =>
     @setPosition(@x, @y + 5)
     
-#  
-#  update: =>
-#    @moveLeft()  if 37 of @keysDown
-#    @moveRight() if 39 of @keysDown
-#    @jump() if 32 of @keysDown
-#    @checkJump() if @jumping
-#    @checkFall() if @falling
-#    @draw()
-#  
 #    
 #  draw: =>
 #    try

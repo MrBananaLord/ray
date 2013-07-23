@@ -4,6 +4,7 @@ class RaY.Models.World extends RaY.Engine.Module
   viewHeight: 480
   width: 1000
   height: 1000
+  gravity: 10
   elements: []
   
   constructor: ->
@@ -20,8 +21,8 @@ class RaY.Models.World extends RaY.Engine.Module
     $("body").append(canvas)
     canvas.getContext("2d")
     
-  update: (updateDelta) ->
-    element.update() for element in @elements
+  update: (modifier) ->
+    element.update(modifier) for element in @elements
     
   render: ->
     element.render() for element in @elements

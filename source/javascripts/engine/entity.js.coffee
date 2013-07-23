@@ -1,5 +1,6 @@
 class RaY.Engine.Entity extends RaY.Engine.Sprite
-  update: ->
+  update: (modifier) ->
+    @applyPhysics(modifier)
     @destinationX = @x
     @destinationY = @y
   
@@ -9,3 +10,9 @@ class RaY.Engine.Entity extends RaY.Engine.Sprite
   setPosition: (x, y) =>
     @x = x
     @y = y
+  
+  applyPhysics: (modifier) =>
+    @applyGravity(modifier) if @gravitable
+    
+  applyGravity: (modifier) =>
+    @setPosition(@x, @y + 3)

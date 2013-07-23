@@ -10,6 +10,7 @@ class RaY.Engine.Sprite extends RaY.Engine.Module
   x: 0
   y: 0
   collidable: false
+  gravitable: false
 
   constructor: (@world, imageUrl) ->
     @image = new RaY.Engine.SpriteImage(imageUrl)
