@@ -20,7 +20,7 @@ class RaY.Models.Game
   
   update: ->
     now = Date.now()
-    @updateDelta = now - @lastUpdate
+    @updateDelta = (now - @lastUpdate) || 0
     @lastUpdate = now
-    @inputHandler.update(@updateDelta / 1000)
-    @world.update(@updateDelta / 1000)
+    @inputHandler.update(@updateDelta / 10)
+    @world.update(@updateDelta / 10)

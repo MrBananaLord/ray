@@ -4,7 +4,7 @@ class RaY.Models.World extends RaY.Engine.Module
   viewHeight: 480
   width: 1000
   height: 1000
-  gravity: 10
+  gravity: 5
   elements: []
   
   constructor: ->

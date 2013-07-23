@@ -1,12 +1,13 @@
 class RaY.Models.Hero extends RaY.Engine.Entity
   @include RaY.Engine.Modules.Callbacks
   
+  collidable: true
+  gravitable: true
   sourceWidth: 65
   sourceHeight: 95
   destinationWidth: 65
   destinationHeight: 95
-  collidable: true
-  gravitable: true
+  speed: 500
 
   constructor: (@world) ->
     super(@world, "images/game/hero.png")
@@ -14,32 +15,29 @@ class RaY.Models.Hero extends RaY.Engine.Entity
     @render(0,0,0,0)
     
   bindToEvents: =>
-    self = this
-    @world.bind "keyDown", (name, modifier) ->
+    hero = this
+    @world.bind "keyDown", (name, modifier, context = hero) ->
       switch name
-        when "left" then self.moveLeft(modifier)
-        when "right" then self.moveRight(modifier)
-        when "down" then self.moveDown(modifier)
-        when "up" then self.moveUp(modifier)
-#    @frames = 1
-#    @interval = 4
-#    @currentFrame = 0
-#    @jumping = false
-#    @falling = false
-#    @jumpSpeed = 0
-#    @fallSpeed = 0
+        when "left" then context.moveLeft(modifier)
+        when "right" then context.moveRight(modifier)
+        when "down" then context.moveDown(modifier)
+        when "up" then context.moveUp(modifier)
         
   moveLeft: (modifier) =>
-    @setPosition(@x - 5, @y)
+    @x -= @velocity(modifier)
+    @setPosition(@x, @y)
   
   moveRight: (modifier) =>
-    @setPosition(@x + 5, @y)
+    @x += @velocity(modifier)
+    @setPosition(@x, @y)
     
   moveUp: (modifier) =>
-    @setPosition(@x, @y - 5)
+    @y -= @velocity(modifier)
+    @setPosition(@x, @y)
   
   moveDown: (modifier) =>
-    @setPosition(@x, @y + 5)
+    @y += @velocity(modifier)
+    @setPosition(@x, @y)
     
 #    
 #  draw: =>
