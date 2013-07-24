@@ -22,5 +22,6 @@ class RaY.Models.Game
     now = Date.now()
     @updateDelta = (now - @lastUpdate) || 0
     @lastUpdate = now
-    @inputHandler.update(@updateDelta / 10)
-    @world.update(@updateDelta / 10)
+    @world.modifier = @updateDelta / 10
+    @inputHandler.update()
+    @world.update()

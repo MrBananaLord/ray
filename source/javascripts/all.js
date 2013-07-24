@@ -7,10 +7,10 @@
 
 //= require_tree ./engine/modules/
 //= require ./engine/module
+//= require ./engine/rectangle
 //= require ./engine/sprite_image
 //= require ./engine/sprite
 //= require ./engine/entity
-//= require ./engine/rectangle
 //= require ./engine/input_handler
 
 //= require_tree ./models/

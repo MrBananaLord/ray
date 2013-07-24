@@ -38,16 +38,16 @@ class RaY.Models.World extends RaY.Engine.Module
     $("body").append(canvas)
     canvas.getContext("2d")
     
-  update: (modifier) ->
-    element.update(modifier) for element in @elements
+  update: ->
+    element.update() for element in @elements
     
   render: ->
     element.render() for element in @elements
     
   collidableElements: -> element for element in @elements when element.collidable
     
-  checkCollisions: (object, modifier) =>
+  checkCollisions: (object) =>
     for element in @collidableElements()
       if element.collidable && element != object && object.collidesWith(element)
-        this.trigger("collision", object, element, modifier)
+        this.trigger("collision", object, element)
     

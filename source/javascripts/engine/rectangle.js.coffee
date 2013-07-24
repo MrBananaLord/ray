@@ -1,26 +1,56 @@
 class RaY.Engine.Rectangle extends RaY.Engine.Module
   @include RaY.Engine.Modules.Callbacks
   
-  destinationX: 0
-  destinationY: 0
   width: 0
   height: 0
   x: 0
   y: 0
   collidable: false
-  collisionForce: 10
+  gravitable: false
+  fillStyle: "#000"
+  speed: 0
   
-  constructor: (@world, @fillStyle = "#fff") ->
-      
+  constructor: (@world) ->
+    
   render: ->
     @world.context.fillStyle = @fillStyle
-    @world.context.fillRect(@destinationX, @destinationY, @width, @height)
+    @world.context.fillRect(@x, @y, @width, @height)
   
-  update: (modifier) ->
-    @destinationX = @x
-    @destinationY = @y
+  update: -> @applyPhysics()
+    
+  applyPhysics: =>
+    @applyGravity() if @gravitable
+    @world.checkCollisions(this) if @collidable
+    
+  applyGravity: ->
+    @setPosition(@x, @y + @world.gravity * @world.modifier)
   
-  collidesWith: (element) => false
+  velocity: -> @speed * @world.modifier
   
+  setPosition: (x, y) =>
+    @x = x
+    @y = y
+    
   centerX: -> @x + (@width / 2)
   centerY: -> @y + (@height / 2)
+  
+  collidesWith: (element) =>
+    w = 0.5 * (this.width + element.width)
+    h = 0.5 * (this.height + element.height)
+    dx = this.centerX() - element.centerX()
+    dy = this.centerY() - element.centerY()
+
+    if (Math.abs(dx) <= w && Math.abs(dy) <= h)
+      wy = w * dy
+      hx = h * dx
+
+      if (wy > hx)
+        if (wy > -hx)
+          "top"
+        else
+          "left"
+      else
+        if (wy > -hx)
+          "right"
+        else
+          "bottom"
