@@ -20,7 +20,16 @@ class RaY.Models.World extends RaY.Engine.Module
     @rec.width = 400
     @rec.x = 10
     @rec.y = 400
+    
+    @rec1 = new RaY.Engine.Rectangle(this, "#000")
+    @rec1.collidable = true
+    @rec1.height = 400
+    @rec1.width = 100
+    @rec1.x = 400
+    @rec1.y = 100
+    
     @elements.push(@rec)
+    @elements.push(@rec1)
         
   createCanvas: ->
     canvas = document.createElement("canvas")

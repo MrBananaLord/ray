@@ -19,7 +19,8 @@ class RaY.Models.Hero extends RaY.Engine.Entity
         when "down" then @moveDown(modifier)
         when "up" then @moveUp(modifier)
     @world.bind "collision", (object, element, modifier) =>
-      @stop(modifier) if object == this
+      if object == this
+        @stop(element, modifier)
         
   moveLeft: (modifier) =>
     @x -= @velocity(modifier)
@@ -37,6 +38,8 @@ class RaY.Models.Hero extends RaY.Engine.Entity
     @y += @velocity(modifier * 0)
     @setPosition(@x, @y)
     
-  stop: (modifier) =>
+  stop: (element, modifier) =>
     @y -= @world.gravity * modifier
     @setPosition(@x, @y)
+  
+  

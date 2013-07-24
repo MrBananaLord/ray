@@ -8,6 +8,7 @@ class RaY.Engine.Rectangle extends RaY.Engine.Module
   x: 0
   y: 0
   collidable: false
+  collisionForce: 10
   
   constructor: (@world, @fillStyle = "#fff") ->
       
@@ -21,4 +22,5 @@ class RaY.Engine.Rectangle extends RaY.Engine.Module
   
   collidesWith: (element) => false
   
-
+  centerX: -> @x + (@width / 2)
+  centerY: -> @y + (@height / 2)

@@ -26,5 +26,31 @@ class RaY.Engine.Entity extends RaY.Engine.Sprite
   applyGravity: (modifier) =>
     @setPosition(@x, @y + @world.gravity * modifier)
   
+  centerX: -> @x + (@width / 2)
+  centerY: -> @y + (@height / 2)
+  
   collidesWith: (element) =>
-    this.y + this.height >= element.y
+    w = 0.5 * (this.width + element.width)
+    h = 0.5 * (this.height + element.height)
+    dx = this.centerX() - element.centerX()
+    dy = this.centerY() - element.centerY()
+
+    if (Math.abs(dx) <= w && Math.abs(dy) <= h)
+      wy = w * dy
+      hx = h * dx
+
+      if (wy > hx)
+        if (wy > -hx)
+          console.debug "top"
+        else
+          console.debug "left"
+      else
+        if (wy > -hx)
+          console.debug "right"
+        else
+          console.debug "bottom"
+      return true
+    false
+  
+  previousX: -> @destinationX
+  previousY: -> @destinationY
