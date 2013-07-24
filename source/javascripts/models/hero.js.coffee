@@ -12,15 +12,14 @@ class RaY.Models.Hero extends RaY.Engine.Entity
     @bindToEvents()
     
   bindToEvents: =>
-    self = this
-    @world.bind "keyDown", (name, modifier, context = self) ->
+    @world.bind "keyDown", (name, modifier) =>
       switch name
-        when "left" then context.moveLeft(modifier)
-        when "right" then context.moveRight(modifier)
-        when "down" then context.moveDown(modifier)
-        when "up" then context.moveUp(modifier)
-    @world.bind "collision", (object, element, modifier, context = self) ->
-      context.stop(modifier) if object == context
+        when "left" then @moveLeft(modifier)
+        when "right" then @moveRight(modifier)
+        when "down" then @moveDown(modifier)
+        when "up" then @moveUp(modifier)
+    @world.bind "collision", (object, element, modifier) =>
+      @stop(modifier) if object == this
         
   moveLeft: (modifier) =>
     @x -= @velocity(modifier)
