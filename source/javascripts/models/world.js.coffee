@@ -17,19 +17,19 @@ class RaY.Models.World extends RaY.Engine.Module
     @rec = new RaY.Engine.Rectangle(this, "#000")
     @rec.collidable = true
     @rec.height = 100
-    @rec.width = 400
-    @rec.x = 10
-    @rec.y = 400
+    @rec.width = 100
+    @rec.x = 200
+    @rec.y = 200
     
-    @rec1 = new RaY.Engine.Rectangle(this, "#000")
-    @rec1.collidable = true
-    @rec1.height = 400
-    @rec1.width = 100
-    @rec1.x = 400
-    @rec1.y = 100
+    #    @rec1 = new RaY.Engine.Rectangle(this, "#000")
+    #    @rec1.collidable = true
+    #    @rec1.height = 400
+    #    @rec1.width = 100
+    #    @rec1.x = 500
+    #    @rec1.y = 100
     
     @elements.push(@rec)
-    @elements.push(@rec1)
+    #    @elements.push(@rec1)
         
   createCanvas: ->
     canvas = document.createElement("canvas")
@@ -48,6 +48,6 @@ class RaY.Models.World extends RaY.Engine.Module
     
   checkCollisions: (object) =>
     for element in @collidableElements()
-      if element.collidable && element != object && object.collidesWith(element)
-        this.trigger("collision", object, element)
+      object.checkCollisionWith(element) if element.collidable && element != object
+        
     

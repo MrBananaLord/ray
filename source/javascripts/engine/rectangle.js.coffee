@@ -34,7 +34,7 @@ class RaY.Engine.Rectangle extends RaY.Engine.Module
   centerX: -> @x + (@width / 2)
   centerY: -> @y + (@height / 2)
   
-  collidesWith: (element) =>
+  checkCollisionWith: (element) =>
     w = 0.5 * (this.width + element.width)
     h = 0.5 * (this.height + element.height)
     dx = this.centerX() - element.centerX()
@@ -44,13 +44,14 @@ class RaY.Engine.Rectangle extends RaY.Engine.Module
       wy = w * dy
       hx = h * dx
 
-      if (wy > hx)
+      side = if (wy > hx)
         if (wy > -hx)
           "top"
         else
-          "left"
+          "right"
       else
         if (wy > -hx)
-          "right"
+          "left"
         else
           "bottom"
+      @world.trigger("collision", this, element, side)

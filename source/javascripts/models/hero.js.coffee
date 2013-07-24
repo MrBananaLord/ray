@@ -1,6 +1,6 @@
 class RaY.Models.Hero extends RaY.Engine.Entity
   collidable: true
-  gravitable: true
+  gravitable: false
   sourceWidth: 65
   sourceHeight: 95
   width: 65
@@ -18,9 +18,9 @@ class RaY.Models.Hero extends RaY.Engine.Entity
         when "right" then @moveRight()
         when "down" then @moveDown()
         when "up" then @moveUp()
-    @world.bind "collision", (object, element) =>
+    @world.bind "collision", (object, element, side) =>
       if object == this
-        @stop()
+        @stick(element, side)
         
   moveLeft: =>
     @x -= @velocity()
@@ -37,6 +37,13 @@ class RaY.Models.Hero extends RaY.Engine.Entity
   moveDown: =>
     @y += @velocity()
     @setPosition(@x, @y)
+    
+  stick: (element, side) =>
+    console.debug side
+    @setPosition(@x, element.y - @height - 1) if side == "bottom"
+    @setPosition(@x, element.y + element.height + 1) if side == "top"
+    @setPosition(element.x - @width - 1, @y) if side == "right"
+    @setPosition(element.x + element.width + 1, @y) if side == "left"
     
   stop: =>
     @y -= @world.gravity * @world.modifier
