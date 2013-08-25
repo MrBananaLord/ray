@@ -50,4 +50,4 @@ class RaY.Models.World extends RaY.Engine.Module
     for element in @collidableElements()
       object.checkCollisionWith(element) if element.collidable && element != object
         
-    
+  animationStep: -> Math.ceil(@modifier - 1)

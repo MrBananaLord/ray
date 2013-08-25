@@ -1,11 +1,13 @@
 class RaY.Models.Hero extends RaY.Engine.Entity
   collidable: true
   gravitable: false
-  sourceWidth: 65
-  sourceHeight: 95
-  width: 65
-  height: 95
+  sourceWidth: 200
+  sourceHeight: 188
+  width: 100
+  height: 99
   speed: 5
+  frames: 4
+  animationInterval: 4
 
   constructor: (@world) ->
     super(@world, "images/game/hero.png")
