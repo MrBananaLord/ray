@@ -1,16 +1,16 @@
 class RaY.Models.Hero extends RaY.Engine.Entity
   collidable: true
   gravitable: false
-  sourceWidth: 200
-  sourceHeight: 188
-  width: 100
-  height: 99
+  sourceWidth: 99
+  sourceHeight: 63
+  width: 33
+  height: 21
   speed: 5
-  frames: 4
-  animationInterval: 4
+  #frames: 4
+  #animationInterval: 4
 
   constructor: (@world) ->
-    super(@world, "images/game/hero.png")
+    super(@world, "images/game/hero_static.png")
     @bindToEvents()
     
   bindToEvents: =>
@@ -42,10 +42,10 @@ class RaY.Models.Hero extends RaY.Engine.Entity
     
   stick: (element, side) =>
     console.debug side
-    @setPosition(@x, element.y - @height - 1) if side == "bottom"
-    @setPosition(@x, element.y + element.height + 1) if side == "top"
-    @setPosition(element.x - @width - 1, @y) if side == "right"
-    @setPosition(element.x + element.width + 1, @y) if side == "left"
+    @setPosition(@x, element.y - @height) if side == "bottom"
+    @setPosition(@x, element.y + element.height) if side == "top"
+    @setPosition(element.x - @width, @y) if side == "right"
+    @setPosition(element.x + element.width, @y) if side == "left"
     
   stop: =>
     @y -= @world.gravity * @world.modifier
