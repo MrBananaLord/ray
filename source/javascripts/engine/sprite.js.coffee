@@ -10,6 +10,7 @@ class RaY.Engine.Sprite extends RaY.Engine.Rectangle
 
   constructor: (@world, imageUrl) ->
     @image = new RaY.Engine.SpriteImage(imageUrl)
+    super
 
   drawImage: (sourceX, sourceY, destinationX, destinationY) ->
     if @image.ready
