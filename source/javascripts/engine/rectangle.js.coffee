@@ -9,14 +9,23 @@ class RaY.Engine.Rectangle extends RaY.Engine.Module
   gravitable: false
   fillStyle: "#000"
   speed: 0
+  previousX: 0
+  previousY: 0
   
   constructor: (@world) ->
+    @bindToEvents()
+    
+  bindToEvents: =>
+    @world.bind "storePreviousData", () =>
+      @previousX = @x
+      @previousY = @y
     
   render: ->
     @world.context.fillStyle = @fillStyle
-    @world.context.fillRect(@x, @y, @width, @height)
+    @world.context.fillRect(@x, @y, @width, @height)    
   
-  update: -> @applyPhysics()
+  update: ->
+    @applyPhysics()
     
   applyPhysics: =>
     @applyGravity() if @gravitable
@@ -34,24 +43,20 @@ class RaY.Engine.Rectangle extends RaY.Engine.Module
   centerX: -> @x + (@width / 2)
   centerY: -> @y + (@height / 2)
   
-  checkCollisionWith: (element) =>
-    w = 0.5 * (this.width + element.width)
-    h = 0.5 * (this.height + element.height)
-    dx = this.centerX() - element.centerX()
-    dy = this.centerY() - element.centerY()
-
-    if (Math.abs(dx) <= w && Math.abs(dy) <= h)
-      wy = w * dy
-      hx = h * dx
-
-      side = if (wy > hx)
-        if (wy > -hx)
-          "top"
-        else
-          "right"
-      else
-        if (wy > -hx)
-          "left"
-        else
-          "bottom"
-      @world.trigger("collision", this, element, side)
+  bottom: -> @y + @height
+  top: -> @y
+  left: -> @x
+  right: -> @x + @width
+  
+  debug: -> console.debug @top(), @left(), @bottom(), @right()
+  
+  checkAndTriggerCollisionWith: (element) ->
+    if this.collidesWith(element)
+      @world.trigger("collision", this, element)
+  
+  collidesWith: (element) =>
+  	not
+      ((element.bottom() < this.top()) or
+		  (element.top() > this.bottom()) or
+		  (element.left() > this.right()) or
+		  (element.right() < this.left()))

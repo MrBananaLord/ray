@@ -5,7 +5,7 @@ class RaY.Models.Hero extends RaY.Engine.Entity
   sourceHeight: 63
   width: 33
   height: 21
-  speed: 5
+  speed: 3
   #frames: 4
   #animationInterval: 4
 
@@ -20,9 +20,10 @@ class RaY.Models.Hero extends RaY.Engine.Entity
         when "right" then @moveRight()
         when "down" then @moveDown()
         when "up" then @moveUp()
-    @world.bind "collision", (object, element, side) =>
+    @world.bind "collision", (object, element) =>
       if object == this
-        @stick(element, side)
+        @manageCollisionWith(element)
+    super
         
   moveLeft: =>
     @x -= @velocity()
@@ -33,19 +34,30 @@ class RaY.Models.Hero extends RaY.Engine.Entity
     @setPosition(@x, @y)
     
   moveUp: =>
-    @y -= @velocity() * 2
+    @y -= @velocity()
     @setPosition(@x, @y)
   
   moveDown: =>
     @y += @velocity()
     @setPosition(@x, @y)
     
-  stick: (element, side) =>
-    console.debug side
-    @setPosition(@x, element.y - @height) if side == "bottom"
-    @setPosition(@x, element.y + element.height) if side == "top"
-    @setPosition(element.x - @width, @y) if side == "right"
-    @setPosition(element.x + element.width, @y) if side == "left"
+  manageCollisionWith: (element) ->
+    if @left() <= element.right() and
+       @x < @previousX and
+       element.right() <= @previousX
+      @setPosition(element.right() + 1, @y)
+    if @right() >= element.left() and
+       @x > @previousX and
+       element.left() >= @previousX
+      @setPosition(element.left() - @width - 1, @y)
+    if @top() <= element.bottom() and
+       @y < @previousY and
+       element.bottom() <= @previousY
+      @setPosition(@x, element.bottom() + 1)
+    if @bottom() >= element.top() and
+       @y > @previousY and
+       element.top() >= @previousY
+      @setPosition(@x, element.top() - @height - 1)
     
   stop: =>
     @y -= @world.gravity * @world.modifier

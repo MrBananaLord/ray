@@ -4,7 +4,7 @@ class RaY.Models.World extends RaY.Engine.Module
   viewHeight: 480
   width: 640
   height: 480
-  gravity: 5
+  gravity: 3
   elements: []
   
   constructor: ->
@@ -22,6 +22,7 @@ class RaY.Models.World extends RaY.Engine.Module
     
   update: ->
     element.update() for element in @elements
+    this.trigger("storePreviousData")
     
   render: ->
     element.render() for element in @elements
@@ -30,7 +31,7 @@ class RaY.Models.World extends RaY.Engine.Module
     
   checkCollisions: (object) =>
     for element in @collidableElements()
-      object.checkCollisionWith(element) if element.collidable && element != object
+      object.checkAndTriggerCollisionWith(element) if element.collidable && element != object
         
   animationStep: -> Math.ceil(@modifier - 1)
   
@@ -44,14 +45,27 @@ class RaY.Models.World extends RaY.Engine.Module
     
   createHero: ->
     hero = new RaY.Models.Hero(this)
+    hero.x = 100
+    hero.y = 100
     @elements.push(hero)
     return hero
   
   setupLevel: ->
-    rec = new RaY.Engine.Rectangle(this, "#000")
-    rec.collidable = true
-    rec.height = 100
-    rec.width = 100
-    rec.x = 200
-    rec.y = 200
-    @elements.push(rec)
+    left = new RaY.Engine.Rectangle(this)
+    left.collidable = true
+    left.height = 200
+    left.width = 100
+    left.y = 105
+    left.x = 140
+    @left = left
+    @elements.push(left)
+    
+    bottom = new RaY.Engine.Rectangle(this)
+    bottom.collidable = true
+    bottom.fillStyle = "#f98"
+    bottom.height = 10
+    bottom.width = 620
+    bottom.y = 420
+    bottom.x = 10
+    @bottom = bottom
+    @elements.push(bottom)
