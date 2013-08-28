@@ -48,7 +48,7 @@ class RaY.Models.Hero extends RaY.Engine.Entity
       @setPosition(element.right() + 1, @y)
     if @right() >= element.left() and
        @x > @previousX and
-       element.left() >= @previousX
+       element.left() - @width >= @previousX
       @setPosition(element.left() - @width - 1, @y)
     if @top() <= element.bottom() and
        @y < @previousY and
@@ -56,7 +56,7 @@ class RaY.Models.Hero extends RaY.Engine.Entity
       @setPosition(@x, element.bottom() + 1)
     if @bottom() >= element.top() and
        @y > @previousY and
-       element.top() >= @previousY
+       element.top() - @height >= @previousY
       @setPosition(@x, element.top() - @height - 1)
     
   stop: =>
