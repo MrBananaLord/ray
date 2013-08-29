@@ -19,6 +19,9 @@ class RaY.Engine.Rectangle extends RaY.Engine.Module
     @world.bind "storePreviousData", () =>
       @previousX = @x
       @previousY = @y
+    @world.bind "collision", (object, element) =>
+      if object == this
+        @manageCollisionWith(element)
     
   render: ->
     @world.context.fillStyle = @fillStyle
@@ -32,7 +35,11 @@ class RaY.Engine.Rectangle extends RaY.Engine.Module
     @world.checkCollisions(this) if @collidable
     
   applyGravity: ->
-    @setPosition(@x, @y + @world.gravity * @world.modifier)
+    @setPosition(@x, @y + @world.gravity)
+    
+  applyForce: (x, y) ->
+    console.debug x, y if @gravitable
+    @setPosition(@x + x, @y + y) if @gravitable
   
   velocity: -> @speed * @world.modifier
   
@@ -60,3 +67,34 @@ class RaY.Engine.Rectangle extends RaY.Engine.Module
 		  (element.top() > this.bottom()) or
 		  (element.left() > this.right()) or
 		  (element.right() < this.left()))
+		  
+  manageCollisionWith: (element) ->
+    @manageSideCollision(element) if @gravitable
+      
+  manageSideCollision: (element) ->
+    if @left() <= element.right() and
+       @x < @previousX and
+       element.right() <= @previousX
+      @leftSideCollisionWith(element)
+    if @right() >= element.left() and
+       @x > @previousX and
+       element.left() - @width >= @previousX
+      @rightSideCollisionWith(element)
+    if @top() <= element.bottom() and
+       @y < @previousY and
+       element.bottom() <= @previousY
+      @topSideCollisionWith(element)
+    if @bottom() >= element.top() and
+       @y > @previousY and
+       element.top() - @height >= @previousY
+      @bottomSideCollisionWith(element)
+
+  leftSideCollisionWith: (element) ->      
+    @setPosition(element.right() + 1, @y)
+  rightSideCollisionWith: (element) ->
+    @setPosition(element.left() - @width - 1, @y)
+  topSideCollisionWith: (element) ->
+    @setPosition(@x, element.bottom() + 1)
+  bottomSideCollisionWith: (element) ->
+    @setPosition(@x, element.top() - @height - 1)
+

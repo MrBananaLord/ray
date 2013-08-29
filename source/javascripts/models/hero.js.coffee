@@ -1,6 +1,6 @@
 class RaY.Models.Hero extends RaY.Engine.Entity
   collidable: true
-  gravitable: false
+  gravitable: true
   sourceWidth: 99
   sourceHeight: 63
   width: 33
@@ -20,9 +20,6 @@ class RaY.Models.Hero extends RaY.Engine.Entity
         when "right" then @moveRight()
         when "down" then @moveDown()
         when "up" then @moveUp()
-    @world.bind "collision", (object, element) =>
-      if object == this
-        @manageCollisionWith(element)
     super
         
   moveLeft: =>
@@ -41,26 +38,15 @@ class RaY.Models.Hero extends RaY.Engine.Entity
     @y += @velocity()
     @setPosition(@x, @y)
     
-  manageCollisionWith: (element) ->
-    if @left() <= element.right() and
-       @x < @previousX and
-       element.right() <= @previousX
-      @setPosition(element.right() + 1, @y)
-    if @right() >= element.left() and
-       @x > @previousX and
-       element.left() - @width >= @previousX
-      @setPosition(element.left() - @width - 1, @y)
-    if @top() <= element.bottom() and
-       @y < @previousY and
-       element.bottom() <= @previousY
-      @setPosition(@x, element.bottom() + 1)
-    if @bottom() >= element.top() and
-       @y > @previousY and
-       element.top() - @height >= @previousY
-      @setPosition(@x, element.top() - @height - 1)
-    
   stop: =>
     @y -= @world.gravity * @world.modifier
     @setPosition(@x, @y)
+    
+  leftSideCollisionWith: (element) ->
+    super
+    element.applyForce(-@speed, 0)
+  rightSideCollisionWith: (element) ->
+    super
+    element.applyForce(@speed, 0)
   
   
