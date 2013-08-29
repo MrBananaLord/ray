@@ -38,7 +38,6 @@ class RaY.Engine.Rectangle extends RaY.Engine.Module
     @setPosition(@x, @y + @world.gravity)
     
   applyForce: (x, y) ->
-    console.debug x, y if @gravitable
     @setPosition(@x + x, @y + y) if @gravitable
   
   velocity: -> @speed * @world.modifier
@@ -90,11 +89,11 @@ class RaY.Engine.Rectangle extends RaY.Engine.Module
       @bottomSideCollisionWith(element)
 
   leftSideCollisionWith: (element) ->      
-    @setPosition(element.right() + 1, @y)
+    @setPosition(element.right(), @y)
   rightSideCollisionWith: (element) ->
-    @setPosition(element.left() - @width - 1, @y)
+    @setPosition(element.left() - @width, @y)
   topSideCollisionWith: (element) ->
-    @setPosition(@x, element.bottom() + 1)
+    @setPosition(@x, element.bottom())
   bottomSideCollisionWith: (element) ->
-    @setPosition(@x, element.top() - @height - 1)
+    @setPosition(@x, element.top() - @height)
 
