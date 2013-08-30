@@ -16,8 +16,8 @@ class RaY.Models.Game
     @update()
     @render()
     
-  render: -> @world.render()
+  render: -> @world.trigger("render")
   
   update: ->
     @inputHandler.update()
-    @world.update()
+    @world.trigger("update")

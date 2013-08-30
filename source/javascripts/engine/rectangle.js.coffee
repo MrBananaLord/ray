@@ -16,17 +16,21 @@ class RaY.Engine.Rectangle extends RaY.Engine.Module
     @bindToEvents()
     
   bindToEvents: =>
-    @world.bind "storePreviousData", () =>
-      @previousX = @x
-      @previousY = @y
-    @world.bind "update", () => @update()
+    @world.bind "update", () =>
+      @update()
+      @rememberPosition()
+    @world.bind "render", () => @render()
     @world.bind "collision", (object, element) =>
       if object == this
         @manageCollisionWith(element)
     
+  rememberPosition: () ->
+    @previousX = @x
+    @previousY = @y
+    
   render: ->
     @world.context.fillStyle = @fillStyle
-    @world.context.fillRect(@x, @y, @width, @height)    
+    @world.context.fillRect(@x, @y, @width, @height)
   
   update: ->
     @applyPhysics()

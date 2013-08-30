@@ -20,14 +20,6 @@ class RaY.Models.World extends RaY.Engine.Module
     $("body").append(canvas)
     canvas.getContext("2d")
     
-  update: ->
-    #element.update() for element in @elements
-    this.trigger("update")
-    this.trigger("storePreviousData")
-    
-  render: ->
-    element.render() for element in @elements
-    
   collidableElements: -> element for element in @elements when element.collidable
     
   checkCollisions: (object) =>

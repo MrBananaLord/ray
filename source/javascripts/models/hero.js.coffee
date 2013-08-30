@@ -5,7 +5,7 @@ class RaY.Models.Hero extends RaY.Engine.Entity
   sourceHeight: 63
   width: 33
   height: 21
-  speed: 3
+  speed: 2
   #frames: 4
   #frameDelay: 4
 
@@ -31,7 +31,7 @@ class RaY.Models.Hero extends RaY.Engine.Entity
     @setPosition(@x, @y)
     
   moveUp: =>
-    @y -= @speed + 1
+    @y -= @speed + @world.gravity
     @setPosition(@x, @y)
   
   moveDown: =>
