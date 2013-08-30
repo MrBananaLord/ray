@@ -8,6 +8,8 @@ class RaY.Models.Hero extends RaY.Engine.Entity
   speed: 2
   #frames: 4
   #frameDelay: 4
+  jumpingCounter: 0
+  jumping: false
 
   constructor: (@world) ->
     super(@world, "images/game/hero_static.png")
@@ -17,29 +19,29 @@ class RaY.Models.Hero extends RaY.Engine.Entity
       switch name
         when "left" then @moveLeft()
         when "right" then @moveRight()
-        when "down" then @moveDown()
-        when "up" then @moveUp()
+        when "up" then @startJumping()
     super
       
-  moveLeft: =>
+  update: ->
+    @jump() if @jumping
+    super
+  
+  moveLeft: ->
     @x -= @speed
     @setPosition(@x, @y)
   
-  moveRight: =>
+  moveRight: ->
     @x += @speed
     @setPosition(@x, @y)
     
-  moveUp: =>
-    @y -= @speed + @world.gravity
-    @setPosition(@x, @y)
-  
-  moveDown: =>
-    @y += @speed
-    @setPosition(@x, @y)
+  jump: ->
+    @y -= 10 - @jumpingCounter
+    @jumpingCounter += 1
     
-  stop: =>
-    @y -= @world.gravity
-    @setPosition(@x, @y)
+  startJumping: -> @jumping = true
+  endJumping: ->
+    @jumping = false
+    @jumpingCounter = 0
     
   leftSideCollisionWith: (element) ->
     super
@@ -47,5 +49,8 @@ class RaY.Models.Hero extends RaY.Engine.Entity
   rightSideCollisionWith: (element) ->
     super
     element.applyForce(@speed, 0)
+  manageCollisionWith: (element) ->
+    super
+    @endJumping()
   
   
