@@ -7,7 +7,7 @@ class RaY.Models.Hero extends RaY.Engine.Entity
   height: 21
   speed: 3
   #frames: 4
-  #animationInterval: 4
+  #frameDelay: 4
 
   constructor: (@world) ->
     super(@world, "images/game/hero_static.png")
@@ -23,23 +23,23 @@ class RaY.Models.Hero extends RaY.Engine.Entity
     super
         
   moveLeft: =>
-    @x -= @velocity()
+    @x -= @speed
     @setPosition(@x, @y)
   
   moveRight: =>
-    @x += @velocity()
+    @x += @speed
     @setPosition(@x, @y)
     
   moveUp: =>
-    @y -= @velocity()
+    @y -= @speed + 1
     @setPosition(@x, @y)
   
   moveDown: =>
-    @y += @velocity()
+    @y += @speed
     @setPosition(@x, @y)
     
   stop: =>
-    @y -= @world.gravity * @world.modifier
+    @y -= @world.gravity
     @setPosition(@x, @y)
     
   leftSideCollisionWith: (element) ->

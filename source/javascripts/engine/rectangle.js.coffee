@@ -19,6 +19,7 @@ class RaY.Engine.Rectangle extends RaY.Engine.Module
     @world.bind "storePreviousData", () =>
       @previousX = @x
       @previousY = @y
+    @world.bind "update", () => @update()
     @world.bind "collision", (object, element) =>
       if object == this
         @manageCollisionWith(element)
@@ -39,8 +40,6 @@ class RaY.Engine.Rectangle extends RaY.Engine.Module
     
   applyForce: (x, y) ->
     @setPosition(@x + x, @y + y) if @gravitable
-  
-  velocity: -> @speed * @world.modifier
   
   setPosition: (x, y) =>
     @x = x

@@ -5,8 +5,8 @@ class RaY.Engine.Sprite extends RaY.Engine.Rectangle
   sourceHeight: 0
   frame: 0
   frames: 1
-  animationInterval: 1
-  animationCounter: 0
+  frameDelay: 1
+  frameDelayCounter: 0
 
   constructor: (@world, imageUrl) ->
     @image = new RaY.Engine.SpriteImage(imageUrl)
@@ -26,16 +26,13 @@ class RaY.Engine.Sprite extends RaY.Engine.Rectangle
         @height)
   
   update: ->
-    @manageAnimation()
+    @animate()
     super
     
-  setFrame: ->
-    @frame = (@world.animationStep() + @frame) % @frames
-    
-  manageAnimation: ->
-    if @animationInterval <= @animationCounter
-      @setFrame()
-      @animationCounter = 0
+  animate: ->
+    if @frameDelay <= @frameDelayCounter
+      @frame = (@frame + 1) % @frames
+      @frameDelayCounter = 0
     else
-      @animationCounter += @world.animationStep()
+      @frameDelayCounter += 1
       

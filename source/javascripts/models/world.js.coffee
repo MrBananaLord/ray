@@ -21,7 +21,8 @@ class RaY.Models.World extends RaY.Engine.Module
     canvas.getContext("2d")
     
   update: ->
-    element.update() for element in @elements
+    #element.update() for element in @elements
+    this.trigger("update")
     this.trigger("storePreviousData")
     
   render: ->
@@ -32,8 +33,6 @@ class RaY.Models.World extends RaY.Engine.Module
   checkCollisions: (object) =>
     for element in @collidableElements()
       object.checkAndTriggerCollisionWith(element) if element.collidable && element != object
-        
-  animationStep: -> Math.ceil(@modifier - 1)
   
   createBackground: ->
     background = new RaY.Engine.Rectangle(this)
