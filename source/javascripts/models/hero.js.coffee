@@ -11,9 +11,8 @@ class RaY.Models.Hero extends RaY.Engine.Entity
 
   constructor: (@world) ->
     super(@world, "images/game/hero_static.png")
-    @bindToEvents()
     
-  bindToEvents: =>
+  bindToEvents: ->
     @world.bind "keyDown", (name) =>
       switch name
         when "left" then @moveLeft()
@@ -21,7 +20,7 @@ class RaY.Models.Hero extends RaY.Engine.Entity
         when "down" then @moveDown()
         when "up" then @moveUp()
     super
-        
+      
   moveLeft: =>
     @x -= @speed
     @setPosition(@x, @y)

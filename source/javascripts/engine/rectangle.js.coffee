@@ -15,7 +15,7 @@ class RaY.Engine.Rectangle extends RaY.Engine.Module
   constructor: (@world) ->
     @bindToEvents()
     
-  bindToEvents: =>
+  bindToEvents: ->
     @world.bind "update", () =>
       @update()
       @rememberPosition()
@@ -37,7 +37,7 @@ class RaY.Engine.Rectangle extends RaY.Engine.Module
     
   applyPhysics: =>
     @applyGravity() if @gravitable
-    @world.checkCollisions(this) if @collidable
+    @world.checkCollisionsFor(this) if @collidable
     
   applyGravity: ->
     @setPosition(@x, @y + @world.gravity)
@@ -49,9 +49,6 @@ class RaY.Engine.Rectangle extends RaY.Engine.Module
     @x = x
     @y = y
     
-  centerX: -> @x + (@width / 2)
-  centerY: -> @y + (@height / 2)
-  
   bottom: -> @y + @height
   top: -> @y
   left: -> @x

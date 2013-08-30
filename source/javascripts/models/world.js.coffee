@@ -4,7 +4,7 @@ class RaY.Models.World extends RaY.Engine.Module
   viewHeight: 480
   width: 640
   height: 480
-  gravity: 3
+  gravity: 1
   elements: []
   
   constructor: ->
@@ -20,11 +20,19 @@ class RaY.Models.World extends RaY.Engine.Module
     $("body").append(canvas)
     canvas.getContext("2d")
     
+  update: ->
+    #element.update() for element in @elements
+    @trigger("update")
+  render: ->
+    #element.render() for element in @elements
+    @trigger("render")
+    
   collidableElements: -> element for element in @elements when element.collidable
     
-  checkCollisions: (object) =>
+  checkCollisionsFor: (object) =>
     for element in @collidableElements()
-      object.checkAndTriggerCollisionWith(element) if element.collidable && element != object
+      if element.collidable && element != object
+        object.checkAndTriggerCollisionWith(element)
   
   createBackground: ->
     background = new RaY.Engine.Rectangle(this)
@@ -71,3 +79,4 @@ class RaY.Models.World extends RaY.Engine.Module
     bottom.x = 10
     @bottom = bottom
     @elements.push(bottom)
+    
