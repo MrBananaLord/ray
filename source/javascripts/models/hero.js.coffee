@@ -35,10 +35,6 @@ class RaY.Models.Hero extends RaY.Engine.Entity
     @x += @speed
     @setPosition(@x, @y)
   
-  #  fall: ->
-  #    console.debug "falling"
-  #    super
-    
   jump: ->
     unless @falling
       @y -= @jumpingForce - @jumpingCounter
@@ -56,14 +52,12 @@ class RaY.Models.Hero extends RaY.Engine.Entity
     @bottom() == element.top() or
     @bottom() - @world.gravity == element.top()
     
-  leftSideCollisionWith: (element) ->
-    unless @slidesOnTop(element)      
-      super
-      element.applyForce(-@speed, 0)
+  leftSideCollisionWith: (element) ->    
+    super
+    element.applyForce(-@speed, 0)
   rightSideCollisionWith: (element) ->
-    unless @slidesOnTop(element)
-      super
-      element.applyForce(@speed, 0)
+    super
+    element.applyForce(@speed, 0)
   bottomSideCollisionWith: (element) ->
     super
     @endJumping()
@@ -71,7 +65,5 @@ class RaY.Models.Hero extends RaY.Engine.Entity
     super
     @endJumping()
     @startFalling()
-  manageCollisionWith: (element) ->
-    super
   
   

@@ -52,30 +52,33 @@ class RaY.Models.World extends RaY.Engine.Module
   setupLevel: ->
     left = new RaY.Engine.Rectangle(this)
     left.collidable = true
-    left.height = 50
+    left.fillStyle = "yellow"
+    left.height = 10
     left.width = 30
     left.y = 1
-    left.x = 180
+    left.x = 211
     left.gravitable = true
     @left = left
     @elements.push(left)
     
     right = new RaY.Engine.Rectangle(this)
+    right.fillStyle = "red"
     right.collidable = true
     right.height = 10
     right.width = 30
     right.y = 105
-    right.x = 180
+    right.x = 100
     right.gravitable = true
     @right = right
     @elements.push(right)
     
     top = new RaY.Engine.Rectangle(this)
+    top.fillStyle = "blue"
     top.collidable = true
-    top.height = 100
+    top.height = 50
     top.width = 30
-    top.y = 50
-    top.x = 20
+    top.y = -100
+    top.x = 370
     top.gravitable = true
     @top = top
     @elements.push(top)
