@@ -4,7 +4,7 @@ class RaY.Models.World extends RaY.Engine.Module
   viewHeight: 480
   width: 640
   height: 480
-  gravity: 3
+  gravity: 1
   elements: []
   
   constructor: ->
@@ -52,31 +52,61 @@ class RaY.Models.World extends RaY.Engine.Module
   setupLevel: ->
     left = new RaY.Engine.Rectangle(this)
     left.collidable = true
-    left.height = 10
+    left.height = 50
     left.width = 30
-    left.y = 105
-    left.x = 220
+    left.y = 1
+    left.x = 180
     left.gravitable = true
     @left = left
     @elements.push(left)
     
-    rigth = new RaY.Engine.Rectangle(this)
-    rigth.collidable = true
-    rigth.height = 10
-    rigth.width = 30
-    rigth.y = 105
-    rigth.x = 140
-    rigth.gravitable = true
-    @rigth = rigth
-    @elements.push(rigth)
+    right = new RaY.Engine.Rectangle(this)
+    right.collidable = true
+    right.height = 10
+    right.width = 30
+    right.y = 105
+    right.x = 180
+    right.gravitable = true
+    @right = right
+    @elements.push(right)
+    
+    top = new RaY.Engine.Rectangle(this)
+    top.collidable = true
+    top.height = 100
+    top.width = 30
+    top.y = 50
+    top.x = 20
+    top.gravitable = true
+    @top = top
+    @elements.push(top)
     
     bottom = new RaY.Engine.Rectangle(this)
     bottom.collidable = true
     bottom.fillStyle = "#f98"
     bottom.height = 10
-    bottom.width = 620
+    bottom.width = 320
     bottom.y = 220
-    bottom.x = 10
+    bottom.x = 100
     @bottom = bottom
+    @elements.push(bottom)
+    
+    bottom = new RaY.Engine.Rectangle(this)
+    bottom.collidable = true
+    bottom.fillStyle = "#f98"
+    bottom.height = 10
+    bottom.width = 320
+    bottom.y = 320
+    bottom.x = 10
+    @bottom2 = bottom
+    @elements.push(bottom)
+    
+    bottom = new RaY.Engine.Rectangle(this)
+    bottom.collidable = true
+    bottom.fillStyle = "#f98"
+    bottom.height = 10
+    bottom.width = 320
+    bottom.y = 270
+    bottom.x = 60
+    @bottom3 = bottom
     @elements.push(bottom)
     

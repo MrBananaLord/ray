@@ -9,6 +9,7 @@ class RaY.Models.Hero extends RaY.Engine.Entity
   #frames: 4
   #frameDelay: 4
   jumpingCounter: 0
+  jumpingForce: 15
   jumping: false
 
   constructor: (@world) ->
@@ -33,24 +34,44 @@ class RaY.Models.Hero extends RaY.Engine.Entity
   moveRight: ->
     @x += @speed
     @setPosition(@x, @y)
+  
+  #  fall: ->
+  #    console.debug "falling"
+  #    super
     
   jump: ->
-    @y -= 10 - @jumpingCounter
-    @jumpingCounter += 1
+    unless @falling
+      @y -= @jumpingForce - @jumpingCounter
+      @jumpingCounter += 1
+      if @jumpingCounter >= @maximumSpeed
+        @endJumping()
+        @startFalling()
     
   startJumping: -> @jumping = true
   endJumping: ->
     @jumping = false
     @jumpingCounter = 0
     
+  slidesOnTop: (element) ->
+    @bottom() == element.top() or
+    @bottom() - @world.gravity == element.top()
+    
   leftSideCollisionWith: (element) ->
-    super
-    element.applyForce(-@speed, 0)
+    unless @slidesOnTop(element)      
+      super
+      element.applyForce(-@speed, 0)
   rightSideCollisionWith: (element) ->
-    super
-    element.applyForce(@speed, 0)
-  manageCollisionWith: (element) ->
+    unless @slidesOnTop(element)
+      super
+      element.applyForce(@speed, 0)
+  bottomSideCollisionWith: (element) ->
     super
     @endJumping()
+  topSideCollisionWith: (element) ->
+    super
+    @endJumping()
+    @startFalling()
+  manageCollisionWith: (element) ->
+    super
   
   

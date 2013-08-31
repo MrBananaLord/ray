@@ -11,6 +11,9 @@ class RaY.Engine.Rectangle extends RaY.Engine.Module
   speed: 0
   previousX: 0
   previousY: 0
+  maximumSpeed: 8
+  fallingCounter: 0
+  falling: true
   
   constructor: (@world) ->
     @bindToEvents()
@@ -40,7 +43,7 @@ class RaY.Engine.Rectangle extends RaY.Engine.Module
     @world.checkCollisionsFor(this) if @collidable
     
   applyGravity: ->
-    @setPosition(@x, @y + @world.gravity)
+    @fall()
     
   applyForce: (x, y) ->
     @setPosition(@x + x, @y + y) if @gravitable
@@ -53,6 +56,7 @@ class RaY.Engine.Rectangle extends RaY.Engine.Module
   top: -> @y
   left: -> @x
   right: -> @x + @width
+  movementVector: -> [@x - @previousX, @y - @previousY]
   
   debug: -> console.debug @top(), @left(), @bottom(), @right()
   
@@ -96,4 +100,16 @@ class RaY.Engine.Rectangle extends RaY.Engine.Module
     @setPosition(@x, element.bottom())
   bottomSideCollisionWith: (element) ->
     @setPosition(@x, element.top() - @height)
+    @endFalling()
+    
+  fall: ->
+    @y += @fallingCounter * @world.gravity
+    unless @fallingCounter >= @maximumSpeed
+      @fallingCounter += 1  
+  startFalling: ->
+    @falling = true
+    @fallingCounter = 0
+  endFalling: ->
+    @falling = false
+    @fallingCounter = 0
 
