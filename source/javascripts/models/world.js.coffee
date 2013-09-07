@@ -20,20 +20,9 @@ class RaY.Models.World extends RaY.Engine.Module
     $("body").append(canvas)
     canvas.getContext("2d")
     
-  update: ->
-    #element.update() for element in @elements
-    @trigger("update")
-  render: ->
-    #element.render() for element in @elements
-    @trigger("render")
-    
-  collidableElements: -> element for element in @elements when element.collidable
-    
-  checkCollisionsFor: (object) =>
-    for element in @collidableElements()
-      if element.collidable && element != object
-        object.checkAndTriggerCollisionWith(element)
-  
+  update: -> @trigger("update")
+  render: -> @trigger("render")
+
   createBackground: ->
     background = new RaY.Engine.Rectangle(this)
     background.fillStyle = "#234"

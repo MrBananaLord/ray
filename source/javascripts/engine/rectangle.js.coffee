@@ -24,8 +24,10 @@ class RaY.Engine.Rectangle extends RaY.Engine.Module
       @rememberPosition()
     @world.bind "render", () => @render()
     @world.bind "collision", (object, element) =>
-      if object == this
-        @manageCollisionWith(element)
+      @manageCollisionWith(element) if object == this
+    @world.bind "checkCollisionsWith", (element) =>
+      if this != element and @collidable
+        element.checkAndTriggerCollisionsWith(this)
     
   rememberPosition: () ->
     @previousX = @x
@@ -40,7 +42,7 @@ class RaY.Engine.Rectangle extends RaY.Engine.Module
     
   applyPhysics: =>
     @applyGravity() if @gravitable
-    @world.checkCollisionsFor(this) if @collidable
+    @world.trigger("checkCollisionsWith", this)
     
   applyGravity: ->
     @fall()
@@ -60,7 +62,7 @@ class RaY.Engine.Rectangle extends RaY.Engine.Module
   
   debug: -> console.debug @top(), @left(), @bottom(), @right()
   
-  checkAndTriggerCollisionWith: (element) ->
+  checkAndTriggerCollisionsWith: (element) ->
     if this.collidesWith(element)
       @world.trigger("collision", this, element)
   
