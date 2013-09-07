@@ -8,7 +8,8 @@ class RaY.Models.Level extends RaY.Engine.Module
   
   constructor: (@world) ->
     @background = @createBackground()
-    @hero = @createHero()
+    @yellowHero = @createYellowHero()
+    @redHero = @createRedHero()
     @buildScene()
     
   createBackground: ->
@@ -19,10 +20,17 @@ class RaY.Models.Level extends RaY.Engine.Module
     @elements.push(background)
     return background
   
-  createHero: ->
-    hero = new RaY.Models.Hero(@world)
+  createYellowHero: ->
+    hero = new RaY.Models.YellowHero(@world)
     hero.x = 100
     hero.y = 100
+    @elements.push(hero)
+    return hero
+  
+  createRedHero: ->
+    hero = new RaY.Models.RedHero(@world)
+    hero.x = 10
+    hero.y = 10
     @elements.push(hero)
     return hero
     

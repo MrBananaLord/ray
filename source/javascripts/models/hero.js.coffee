@@ -12,17 +12,9 @@ class RaY.Models.Hero extends RaY.Engine.Entity
   jumpingForce: 15
   jumping: false
 
-  constructor: (@world) ->
-    super(@world, "images/game/hero_static.png")
-    
-  bindToEvents: ->
-    @world.bind "keyDown", (name) =>
-      switch name
-        when "left" then @moveLeft()
-        when "right" then @moveRight()
-        when "up" then @startJumping()
-    super
-      
+  constructor: (@world, imagePath) ->
+    super(@world, imagePath)
+        
   update: ->
     @jump() if @jumping
     super
@@ -51,6 +43,9 @@ class RaY.Models.Hero extends RaY.Engine.Entity
   slidesOnTop: (element) ->
     @bottom() == element.top() or
     @bottom() - @world.gravity == element.top()
+    
+  manageCollisionWith: (element) ->
+    super unless element instanceof RaY.Models.Hero
     
   leftSideCollisionWith: (element) ->    
     super
