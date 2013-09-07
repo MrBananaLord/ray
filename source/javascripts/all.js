@@ -1,4 +1,3 @@
-
 //= require ./underscore.min.js
 //= require ./jquery.min.js
 
