@@ -12,3 +12,4 @@ class RaY.Engine.InputHandler
     @world.trigger("keyDown", "w")          if 87 of @keysDown
     @world.trigger("keyDown", "d")          if 68 of @keysDown
     @world.trigger("keyDown", "a")          if 65 of @keysDown
+    @world.trigger("keyDown", "r")          if 82 of @keysDown

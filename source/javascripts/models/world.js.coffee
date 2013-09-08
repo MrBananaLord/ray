@@ -9,7 +9,7 @@ class RaY.Models.World extends RaY.Engine.Module
   constructor: ->
     @context = @createCanvasAndGetContext()
     @currentLevel = new RaY.Models.Level(this)
-        
+    
   createCanvasAndGetContext: ->
     canvas = document.createElement("canvas")
     canvas.width = @viewWidth
@@ -19,3 +19,6 @@ class RaY.Models.World extends RaY.Engine.Module
     
   update: -> @trigger("update")
   render: -> @trigger("render")
+  
+  currentLevelComplited: ->
+    @currentLevel and @currentLevel.complited == true
