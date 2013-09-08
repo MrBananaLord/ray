@@ -44,20 +44,22 @@ class RaY.Models.Hero extends RaY.Engine.Entity
   manageCollisionWith: (element) ->
     super unless element instanceof RaY.Models.Hero
     
-  leftSideCollisionWith: (element) ->    
+  leftSideCollisionWith: (element) ->
     super
     element.applyForce(-@speed, 0)
   rightSideCollisionWith: (element) ->
     super
     element.applyForce(@speed, 0)
   bottomSideCollisionWith: (element) ->
-    super
-    if this == @world.currentLevel.yellowHero
-      console.debug "bot", @right(), @right() - @speed, element.left()
-    @endJumping()
+    if @left() + @speed == element.right() or @left() - @speed == element.right()
+      @setPosition(element.right(), @y)
+    else if @right() + @speed == element.left() or @right() - @speed == element.left()
+      @setPosition(element.left(), @y)
+    else
+      super
+      @endJumping()
   topSideCollisionWith: (element) ->
     super
-    console.debug "top"
     @endJumping()
     @startFalling()
   
