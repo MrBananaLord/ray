@@ -7,9 +7,6 @@ class RaY.Models.Level extends RaY.Engine.Module
   elements: []
   
   constructor: (@world) ->
-    @background = @createBackground()
-    @yellowHero = @createYellowHero()
-    @redHero = @createRedHero()
     @buildScene()
     
   createBackground: ->
@@ -22,80 +19,39 @@ class RaY.Models.Level extends RaY.Engine.Module
   
   createYellowHero: ->
     hero = new RaY.Models.YellowHero(@world)
-    hero.x = 100
-    hero.y = 100
+    hero.x = 5
+    hero.y = 280
     @elements.push(hero)
     return hero
   
   createRedHero: ->
     hero = new RaY.Models.RedHero(@world)
-    hero.x = 10
-    hero.y = 10
+    hero.x = 5
+    hero.y = 455
     @elements.push(hero)
     return hero
     
   buildScene: ->
-    left = new RaY.Engine.Rectangle(@world)
-    left.collidable = true
-    left.fillStyle = "yellow"
-    left.height = 10
-    left.width = 30
-    left.y = 1
-    left.x = 211
-    left.gravitable = true
-    @left = left
-    @elements.push(left)
+    @background = @createBackground()
+    @yellowHero = @createYellowHero()
+    @redHero = @createRedHero()
     
-    right = new RaY.Engine.Rectangle(@world)
-    right.fillStyle = "red"
-    right.collidable = true
-    right.height = 10
-    right.width = 30
-    right.y = 105
-    right.x = 100
-    right.gravitable = true
-    @right = right
-    @elements.push(right)
+    # sides
+    @elements.push new RaY.Models.Platform(@world, 0, 0, 5, 480, "#fff")
+    @elements.push new RaY.Models.Platform(@world, 0, 0, 640, 5, "#fff")
+    @elements.push new RaY.Models.Platform(@world, 635, 0, 5, 480, "#fff")
+    @elements.push new RaY.Models.Platform(@world, 0, 475, 640, 5, "#fff")
     
-    top = new RaY.Engine.Rectangle(@world)
-    top.fillStyle = "blue"
-    top.collidable = true
-    top.height = 50
-    top.width = 30
-    top.y = -100
-    top.x = 370
-    top.gravitable = true
-    @top = top
-    @elements.push(top)
+    # platforms
+    @elements.push new RaY.Models.Platform(@world, 50, 435, 75, 5, "#fff")
+    @elements.push new RaY.Models.Platform(@world, 125, 375, 125, 5, "#fff")
+    @elements.push new RaY.Models.Platform(@world, 5, 300, 95, 5, "#fff")
+    @elements.push new RaY.Models.Platform(@world, 190, 380, 5, 95, "#fff")
+    @elements.push new RaY.Models.Platform(@world, 100, 260, 75, 5, "#fff")
+    @elements.push new RaY.Models.Platform(@world, 100, 265, 5, 15, "#fff")
+    @elements.push new RaY.Models.Platform(@world, 170, 140, 5, 120, "#111")
     
-    bottom = new RaY.Engine.Rectangle(@world)
-    bottom.collidable = true
-    bottom.fillStyle = "#f98"
-    bottom.height = 10
-    bottom.width = 320
-    bottom.y = 220
-    bottom.x = 100
-    @bottom = bottom
-    @elements.push(bottom)
-    
-    bottom = new RaY.Engine.Rectangle(@world)
-    bottom.collidable = true
-    bottom.fillStyle = "#f98"
-    bottom.height = 10
-    bottom.width = 320
-    bottom.y = 320
-    bottom.x = 10
-    @bottom2 = bottom
-    @elements.push(bottom)
-    
-    bottom = new RaY.Engine.Rectangle(@world)
-    bottom.collidable = true
-    bottom.fillStyle = "#f98"
-    bottom.height = 10
-    bottom.width = 320
-    bottom.y = 270
-    bottom.x = 60
-    @bottom3 = bottom
-    @elements.push(bottom)
-    
-    
+    # boxes
+    @elements.push new RaY.Models.Box(@world, 125, 220, "#e92")
+    @elements.push new RaY.Models.Box(@world, 125, 220, "#e92")
+    @elements.push new RaY.Models.Box(@world, 125, 220, "#e92")

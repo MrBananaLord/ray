@@ -5,12 +5,13 @@ class RaY.Models.Hero extends RaY.Engine.Entity
   sourceHeight: 63
   width: 33
   height: 21
-  speed: 2
+  speed: 3
   #frames: 4
   #frameDelay: 4
   jumpingCounter: 0
-  jumpingForce: 15
+  jumpingForce: 12
   jumping: false
+  falling: true
 
   constructor: (@world, imagePath) ->
     super(@world, imagePath)

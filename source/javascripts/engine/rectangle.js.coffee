@@ -13,7 +13,7 @@ class RaY.Engine.Rectangle extends RaY.Engine.Module
   previousY: 0
   maximumSpeed: 8
   fallingCounter: 0
-  falling: true
+  falling: false
   
   constructor: (@world) ->
     @bindToEvents()
