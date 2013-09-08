@@ -54,7 +54,7 @@ class RaY.Models.Hero extends RaY.Engine.Entity
     if @left() + @speed == element.right() or @left() - @speed == element.right()
       @setPosition(element.right(), @y)
     else if @right() + @speed == element.left() or @right() - @speed == element.left()
-      @setPosition(element.left(), @y)
+      @setPosition(element.left() - @width, @y)
     else
       super
       @endJumping()

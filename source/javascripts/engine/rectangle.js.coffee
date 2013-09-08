@@ -60,7 +60,7 @@ class RaY.Engine.Rectangle extends RaY.Engine.Module
   right: -> @x + @width
   movementVector: -> [@x - @previousX, @y - @previousY]
   
-  debug: -> console.debug @top(), @left(), @bottom(), @right()
+  debug: -> console.debug @left(), @top()
   
   checkAndTriggerCollisionsWith: (element) ->
     if this.collidesWith(element)
@@ -104,13 +104,9 @@ class RaY.Engine.Rectangle extends RaY.Engine.Module
   topAdjacentWith: (element) ->
     @top() == element.bottom()
   leftAdjacentWith: (element) ->
-    @left() == element.right() or
-    @left() + @speed == element.right() or
-    @left() - @speed == element.right()
+    @left() == element.right()
   rightAdjacentWith: (element) ->
-    @right() == element.left() or
-    @right() - @speed == element.left() or
-    @right() + @speed == element.left()
+    @right() == element.left()
   xAxisAdjacentWith: (element) ->
     @bottomAdjacentWith(element) or @topAdjacentWith(element)
   yAxisAdjacentWith: (element) ->
