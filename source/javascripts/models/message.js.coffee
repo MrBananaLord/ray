@@ -2,10 +2,10 @@ class RaY.Models.Message extends RaY.Engine.Rectangle
   collidable: false
   gravitable: false
   fillStyle: "#111"
-  width: 440
-  height: 280
-  x: 100
-  y: 100
+  width: 640
+  height: 480
+  x: 0
+  y: 0
   
   constructor: (@world) ->
     super(@world)

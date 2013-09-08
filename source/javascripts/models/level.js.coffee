@@ -18,7 +18,6 @@ class RaY.Models.Level extends RaY.Engine.Module
     unless @complited
       @complited = true
       @elements = []
-      @background = @createBackground()
       @message = new RaY.Models.Message(@world)
       
   createBackground: ->
@@ -26,21 +25,21 @@ class RaY.Models.Level extends RaY.Engine.Module
     background.fillStyle = "#234"
     background.width = 640
     background.height = 480
-    @elements.push(background)
+    @background = background
     return background
   
   createYellowHero: ->
     hero = new RaY.Models.YellowHero(@world)
-    hero.x = 570
-    hero.y = 340
-    @elements.push(hero)
+    hero.x = 5
+    hero.y = 470
+    @yellowHero = hero
     return hero
   
   createRedHero: ->
     hero = new RaY.Models.RedHero(@world)
-    hero.x = 570
-    hero.y = 340
-    @elements.push(hero)
+    hero.x = 5
+    hero.y = 280
+    @redHero = hero
     return hero
   
   createGoal: ->
