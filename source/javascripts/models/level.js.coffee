@@ -4,10 +4,17 @@ class RaY.Models.Level extends RaY.Engine.Module
   offsetY: 0
   height: 480
   width: 640
+  complited: false
   elements: []
   
   constructor: (@world) ->
     @buildScene()
+    @bindToEvents()
+  
+  bindToEvents: ->
+    @world.bind "levelComplited", () =>
+      complited = true
+      console.debug "sdsd"
     
   createBackground: ->
     background = new RaY.Engine.Rectangle(@world)
@@ -19,17 +26,24 @@ class RaY.Models.Level extends RaY.Engine.Module
   
   createYellowHero: ->
     hero = new RaY.Models.YellowHero(@world)
-    hero.x = 100
-    hero.y = 20
+    hero.x = 570
+    hero.y = 340
     @elements.push(hero)
     return hero
   
   createRedHero: ->
     hero = new RaY.Models.RedHero(@world)
-    hero.x = 290
-    hero.y = 105
+    hero.x = 570
+    hero.y = 340
     @elements.push(hero)
     return hero
+  
+  createGoal: ->
+    goal = new RaY.Models.Goal(@world)
+    goal.x = 610
+    goal.y = 350
+    @elements.push(goal)
+    return goal
     
   buildScene: ->
     @background = @createBackground()
