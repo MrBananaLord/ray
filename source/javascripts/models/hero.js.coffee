@@ -41,10 +41,6 @@ class RaY.Models.Hero extends RaY.Engine.Entity
     @jumping = false
     @jumpingCounter = 0
     
-  slidesOnTop: (element) ->
-    @bottom() == element.top() or
-    @bottom() - @world.gravity == element.top()
-    
   manageCollisionWith: (element) ->
     super unless element instanceof RaY.Models.Hero
     
@@ -56,9 +52,12 @@ class RaY.Models.Hero extends RaY.Engine.Entity
     element.applyForce(@speed, 0)
   bottomSideCollisionWith: (element) ->
     super
+    if this == @world.currentLevel.yellowHero
+      console.debug "bot", @right(), @right() - @speed, element.left()
     @endJumping()
   topSideCollisionWith: (element) ->
     super
+    console.debug "top"
     @endJumping()
     @startFalling()
   

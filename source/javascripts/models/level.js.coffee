@@ -19,8 +19,8 @@ class RaY.Models.Level extends RaY.Engine.Module
   
   createYellowHero: ->
     hero = new RaY.Models.YellowHero(@world)
-    hero.x = 5
-    hero.y = 280
+    hero.x = 75
+    hero.y = 100
     @elements.push(hero)
     return hero
   
@@ -52,6 +52,7 @@ class RaY.Models.Level extends RaY.Engine.Module
     @elements.push new RaY.Models.Platform(@world, 170, 140, 5, 120, "#111")
     
     # boxes
-    @elements.push new RaY.Models.Box(@world, 125, 220, "#e92")
-    @elements.push new RaY.Models.Box(@world, 125, 220, "#e92")
-    @elements.push new RaY.Models.Box(@world, 125, 220, "#e92")
+    @elements.push new RaY.Models.Box(@world, 5, 180, "#e92")
+    @elements.push new RaY.Models.Box(@world, 5, 220, "#e92")
+    @elements.push new RaY.Models.Box(@world, 5, 100, "#e92")
+    @elements.push new RaY.Models.Box(@world, 5, 80, "#e92")

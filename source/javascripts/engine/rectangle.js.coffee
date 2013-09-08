@@ -89,11 +89,13 @@ class RaY.Engine.Rectangle extends RaY.Engine.Module
       @rightSideCollisionWith(element)
     if @top() <= element.bottom() and
        @y < @previousY and
-       element.bottom() <= @previousY
+       element.bottom() <= @previousY and
+       not @yAxisAdjacentWith(element)
       @topSideCollisionWith(element)
     if @bottom() >= element.top() and
        @y > @previousY and
-       element.top() - @height >= @previousY
+       element.top() - @height >= @previousY and
+       not @yAxisAdjacentWith(element)
       @bottomSideCollisionWith(element)
       
   bottomAdjacentWith: (element) ->
@@ -101,8 +103,18 @@ class RaY.Engine.Rectangle extends RaY.Engine.Module
     @bottom() - @world.gravity == element.top()
   topAdjacentWith: (element) ->
     @top() == element.bottom()
+  leftAdjacentWith: (element) ->
+    @left() == element.right() or
+    @left() + @speed == element.right() or
+    @left() - @speed == element.right()
+  rightAdjacentWith: (element) ->
+    @right() == element.left() or
+    @right() - @speed == element.left() or
+    @right() + @speed == element.left()
   xAxisAdjacentWith: (element) ->
     @bottomAdjacentWith(element) or @topAdjacentWith(element)
+  yAxisAdjacentWith: (element) ->
+    @leftAdjacentWith(element) or @rightAdjacentWith(element)
   
   leftSideCollisionWith: (element) ->
     @setPosition(element.right(), @y)
