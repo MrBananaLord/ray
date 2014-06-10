@@ -4,7 +4,7 @@ class RaY.Models.Level extends RaY.Engine.Module
   offsetY: 0
   height: 480
   width: 640
-  complited: false
+  completed: false
   elements: []
   
   constructor: (@world) ->
@@ -12,11 +12,11 @@ class RaY.Models.Level extends RaY.Engine.Module
     @buildScene()
 
   bindToEvents: ->
-    @world.bind "levelComplited", () => @levelComplited()
+    @world.bind "levelCompleted", () => @levelCompleted()
     
-  levelComplited: ->
-    unless @complited
-      @complited = true
+  levelCompleted: ->
+    unless @completed
+      @completed = true
       @elements = []
       @message = new RaY.Models.Message(@world)
       

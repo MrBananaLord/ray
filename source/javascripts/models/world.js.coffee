@@ -20,5 +20,5 @@ class RaY.Models.World extends RaY.Engine.Module
   update: -> @trigger("update")
   render: -> @trigger("render")
   
-  currentLevelComplited: ->
-    @currentLevel and @currentLevel.complited == true
+  currentLevelCompleted: ->
+    @currentLevel and @currentLevel.completed == true

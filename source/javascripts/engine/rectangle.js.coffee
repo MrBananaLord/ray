@@ -17,6 +17,7 @@ class RaY.Engine.Rectangle extends RaY.Engine.Module
   
   constructor: (@world) ->
     @bindToEvents()
+    super
     
   bindToEvents: ->
     @world.bind "update", () =>
