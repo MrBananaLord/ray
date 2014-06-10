@@ -1,15 +1,25 @@
 class RaY.Engine.InputHandler
+  keys:
+    37: "left"
+    38: "up"
+    39: "right"
+    87: "w"
+    68: "d"
+    65: "a"
+    82: "r"
   keysDown: {}
 
   constructor: (@world) ->
-    $("body").keydown (e) => @keysDown[e.keyCode] = true
-    $("body").keyup (e)   => delete @keysDown[e.keyCode]
+    $("body").keydown (e) => @keyDown(e.keyCode)
+    $("body").keyup (e)   => @keyUp(e.keyCode)
 
   update: ->
-    @world.trigger("keyDown", "left")       if 37 of @keysDown
-    @world.trigger("keyDown", "up")         if 38 of @keysDown
-    @world.trigger("keyDown", "right")      if 39 of @keysDown
-    @world.trigger("keyDown", "w")          if 87 of @keysDown
-    @world.trigger("keyDown", "d")          if 68 of @keysDown
-    @world.trigger("keyDown", "a")          if 65 of @keysDown
-    @world.trigger("keyDown", "r")          if 82 of @keysDown
+    for key in _.intersection(_.keys(@keysDown), _.keys(@keys))
+      @world.trigger("keyDown", @keys[key])
+    
+  keyDown: (code) ->
+    @keysDown[code] = true
+  
+  keyUp: (code) ->
+    @world.trigger("keyUp", @keys[code])
+    delete @keysDown[code]

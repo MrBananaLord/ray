@@ -4,6 +4,7 @@ class RaY.Models.Level extends RaY.Engine.Module
   offsetY: 0
   height: 480
   width: 640
+  resetCount: 0
   completed: false
   elements: []
   
@@ -13,6 +14,8 @@ class RaY.Models.Level extends RaY.Engine.Module
 
   bindToEvents: ->
     @bind @world, "levelCompleted", () => @levelCompleted()
+    @bind @world, "keyUp", (name) =>
+      @resetScene() if name == "r"
     
   levelCompleted: ->
     unless @completed
@@ -108,6 +111,7 @@ class RaY.Models.Level extends RaY.Engine.Module
     @elements.push new RaY.Models.Box(@world, 530, 434, "#e92")
     
   resetScene: ->
+    @resetCount++
     @redHero = @redHero.destroy()
     @yellowHero = @yellowHero.destroy()
     

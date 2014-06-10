@@ -1,12 +1,8 @@
 RaY.Engine.Modules.Callbacks =
   events: {}
-  topics: []
  
   bind: (context, topic, handler) ->
-    unless @events[topic]?
-      @events[topic] = []
-      @topics.push(topic)
-    @events[topic].push { handler, context, id: this.id() }
+    (@events[topic] ||=[]).push { handler, context, id: this.id() }
     
  
   trigger: (topic, args...) ->
@@ -14,7 +10,7 @@ RaY.Engine.Modules.Callbacks =
       event.handler.apply event.context, args for event in @events[topic]
   
   destroy: ->
-    for topic in @topics
+    for topic in _.keys(@events)
       @events[topic] = @events[topic].filter (event) =>
         event.id != this.id()
     null
