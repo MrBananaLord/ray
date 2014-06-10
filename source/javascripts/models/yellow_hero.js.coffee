@@ -3,7 +3,7 @@ class RaY.Models.YellowHero extends RaY.Models.Hero
     super(@world, "images/game/yellow_hero.png")
       
   bindToEvents: ->
-    @world.bind "keyDown", (name) =>
+    @bind @world, "keyDown", (name) =>
       switch name
         when "a" then @moveLeft()
         when "d" then @moveRight()

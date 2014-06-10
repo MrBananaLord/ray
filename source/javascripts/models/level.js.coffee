@@ -12,7 +12,7 @@ class RaY.Models.Level extends RaY.Engine.Module
     @buildScene()
 
   bindToEvents: ->
-    @world.bind "levelCompleted", () => @levelCompleted()
+    @bind @world, "levelCompleted", () => @levelCompleted()
     
   levelCompleted: ->
     unless @completed

@@ -13,7 +13,7 @@ class RaY.Models.Goal extends RaY.Engine.Rectangle
     
   bindToEvents: ->
     super
-    @world.bind "checkCollisionsWith", (element) =>
+    @bind @world, "checkCollisionsWith", (element) =>
       if this != element and this.collidesWith(element)
         @manageCollisionWith(element)
     

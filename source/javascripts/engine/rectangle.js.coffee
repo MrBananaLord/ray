@@ -20,13 +20,14 @@ class RaY.Engine.Rectangle extends RaY.Engine.Module
     super
     
   bindToEvents: ->
-    @world.bind "update", () =>
+    @bind @world, "update", () =>
       @update()
       @rememberPosition()
-    @world.bind "render", () => @render()
-    @world.bind "collision", (object, element) =>
+    @bind @world, "render", () =>
+      @render()
+    @bind @world, "collision", (object, element) =>
       @manageCollisionWith(element) if object == this
-    @world.bind "checkCollisionsWith", (element) =>
+    @bind @world, "checkCollisionsWith", (element) =>
       if this != element and @collidable
         element.checkAndTriggerCollisionsWith(this)
     
