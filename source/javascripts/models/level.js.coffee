@@ -108,14 +108,14 @@ class RaY.Models.Level extends RaY.Engine.Module
     @elements.push new RaY.Models.Box(@world, 530, 434, "#e92")
     
   resetScene: ->
-    delete @redHero.unbind()
-    delete @yellowHero.unbind()
+    @redHero = @redHero.destroy()
+    @yellowHero = @yellowHero.destroy()
     
-    for element in @elements  
-      element.unbind()
+    for element in @elements
+      element.destroy()
     @elements = []
     
-    delete @background.unbind()
+    @background = @background.destroy()
     
     @buildScene()
     

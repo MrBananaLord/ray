@@ -13,8 +13,8 @@ RaY.Engine.Modules.Callbacks =
     if @events[topic]?
       event.handler.apply event.context, args for event in @events[topic]
   
-  unbind: ->
+  destroy: ->
     for topic in @topics
       @events[topic] = @events[topic].filter (event) =>
         event.id != this.id()
-    this
+    null
