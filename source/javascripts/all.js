@@ -13,5 +13,6 @@
 //= require ./engine/input_handler
 
 //= require_tree ./models/
+//= require_tree ./data/
 
 //= require ./execute.js.coffee

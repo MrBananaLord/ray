@@ -8,7 +8,7 @@ class RaY.Models.World extends RaY.Engine.Module
   
   constructor: ->
     @context = @createCanvasAndGetContext()
-    @currentLevel = new RaY.Models.Level(this)
+    @currentLevel = new RaY.Models.Level(this, "Tutorial 1")
     
   createCanvasAndGetContext: ->
     canvas = document.createElement("canvas")
