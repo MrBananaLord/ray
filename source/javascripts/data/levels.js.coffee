@@ -7,16 +7,16 @@ RaY.Data.Levels = [
       height: 480
     }
     yellowHero: {
-      x: 5
-      y: 470
+      x: 50
+      y: 454
     }
     redHero: {
-      x: 5
-      y: 280
+      x: 560
+      y: 454
     }
     goal: {
-      x: 610
-      y: 350
+      x: 300
+      y: 445
     }
     elements: [
       {
@@ -39,11 +39,11 @@ RaY.Data.Levels = [
       height: 480
     }
     yellowHero: {
-      x: 5
+      x: 15
       y: 470
     }
     redHero: {
-      x: 5
+      x: 15
       y: 280
     }
     goal: {

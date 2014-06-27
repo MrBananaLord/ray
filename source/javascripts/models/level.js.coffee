@@ -8,7 +8,7 @@ class RaY.Models.Level extends RaY.Engine.Module
   completed: false
   elements: []
   
-  constructor: (@world, name) ->
+  constructor: (@world, @name) ->
     @data = _.find RaY.Data.Levels, (level) ->
       level.name == name
     @bindToEvents()
@@ -22,8 +22,6 @@ class RaY.Models.Level extends RaY.Engine.Module
   levelCompleted: ->
     unless @completed
       @completed = true
-      @destroyScene()
-      @message = new RaY.Models.Message(@world)
       
   createBackground: ->
     @background = new RaY.Engine.Rectangle(@world)
@@ -75,9 +73,12 @@ class RaY.Models.Level extends RaY.Engine.Module
     @resetCount++
     @buildScene()
  
+  destroy: ->
+    @destroyScene()
+    @purge()
+    
   createElement = (klass, attributes) ->
     tmpObj = Object.create(klass.prototype)
     klass.apply(tmpObj, attributes)
     tmpObj
-  
-    
+

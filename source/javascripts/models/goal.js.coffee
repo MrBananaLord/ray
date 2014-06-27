@@ -19,7 +19,7 @@ class RaY.Models.Goal extends RaY.Engine.Rectangle
     
   render: ->
     super
-    @resetGoalObjectives() unless @world.currentLevelCompleted()
+    @resetGoalObjectives() unless @world.currentLevel.completed
     
   manageCollisionWith: (element) ->
     @redHeroFinished = true if element instanceof RaY.Models.RedHero

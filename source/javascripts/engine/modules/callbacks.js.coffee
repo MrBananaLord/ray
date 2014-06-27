@@ -9,8 +9,11 @@ RaY.Engine.Modules.Callbacks =
     if @events[topic]?
       event.handler.apply event.context, args for event in @events[topic]
   
-  destroy: ->
+  purge: ->
     for topic in _.keys(@events)
       @events[topic] = @events[topic].filter (event) =>
         event.id != this.id()
     null
+    
+  destroy: ->
+    @purge()
