@@ -1,4 +1,0 @@
-RaY
-===
-
-Gra na zaliczenie.
