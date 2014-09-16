@@ -6,29 +6,37 @@ class RaY.Models.Hero extends RaY.Engine.Entity
   width: 33
   height: 21
   speed: 3
-  #frames: 4
-  #frameDelay: 4
   jumpingCounter: 0
   jumpingForce: 12
   jumping: false
   falling: true
+  frames: 2
+  frameDelay: 6
+  moving: false
 
   constructor: (@world, imagePath) ->
     super(@world, imagePath)
         
   update: ->
+    @animationName = "stay" unless @moving
+    @moving = false
     @jump() if @jumping
     super
   
   moveLeft: ->
+    @moving = true
+    @animationName = "moveLeft"
     @x -= @speed
     @setPosition(@x, @y)
   
   moveRight: ->
+    @moving = true
+    @animationName = "moveRight"
     @x += @speed
     @setPosition(@x, @y)
   
   jump: ->
+    @moving = true
     unless @falling
       @y -= @jumpingForce - @jumpingCounter
       @jumpingCounter += 1
@@ -63,4 +71,10 @@ class RaY.Models.Hero extends RaY.Engine.Entity
     @endJumping()
     @startFalling()
   
+  animationOffset: ->
+    switch @animationName
+      when "stay" then 0
+      when "moveRight" then 1
+      when "moveLeft" then 2
+      else 0
   

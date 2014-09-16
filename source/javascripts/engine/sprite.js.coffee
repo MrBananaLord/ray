@@ -7,6 +7,7 @@ class RaY.Engine.Sprite extends RaY.Engine.Rectangle
   frames: 1
   frameDelay: 1
   frameDelayCounter: 0
+  animationName: "default"
 
   constructor: (@world, imageUrl) ->
     @image = new RaY.Engine.SpriteImage(imageUrl)
@@ -17,7 +18,7 @@ class RaY.Engine.Sprite extends RaY.Engine.Rectangle
       @world.context.drawImage(
         @image.image,
         sourceX + @sourceWidth * @frame,
-        sourceY,
+        sourceY + @sourceHeight * @animationOffset(),
         @sourceWidth,
         @sourceHeight,
         destinationX,
@@ -35,4 +36,6 @@ class RaY.Engine.Sprite extends RaY.Engine.Rectangle
       @frameDelayCounter = 0
     else
       @frameDelayCounter += 1
-      
+  
+  animationOffset: ->
+    0
