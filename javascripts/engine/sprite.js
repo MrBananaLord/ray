@@ -21,6 +21,8 @@
 
     Sprite.prototype.frameDelayCounter = 0;
 
+    Sprite.prototype.animationName = "default";
+
     function Sprite(world, imageUrl) {
       this.world = world;
       this.image = new RaY.Engine.SpriteImage(imageUrl);
@@ -29,7 +31,7 @@
 
     Sprite.prototype.drawImage = function(sourceX, sourceY, destinationX, destinationY) {
       if (this.image.ready) {
-        return this.world.context.drawImage(this.image.image, sourceX + this.sourceWidth * this.frame, sourceY, this.sourceWidth, this.sourceHeight, destinationX, destinationY, this.width, this.height);
+        return this.world.context.drawImage(this.image.image, sourceX + this.sourceWidth * this.frame, sourceY + this.sourceHeight * this.animationOffset(), this.sourceWidth, this.sourceHeight, destinationX, destinationY, this.width, this.height);
       }
     };
 
@@ -45,6 +47,10 @@
       } else {
         return this.frameDelayCounter += 1;
       }
+    };
+
+    Sprite.prototype.animationOffset = function() {
+      return 0;
     };
 
     return Sprite;

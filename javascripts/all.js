@@ -390,6 +390,8 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
     Sprite.prototype.frameDelayCounter = 0;
 
+    Sprite.prototype.animationName = "default";
+
     function Sprite(world, imageUrl) {
       this.world = world;
       this.image = new RaY.Engine.SpriteImage(imageUrl);
@@ -398,7 +400,7 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
     Sprite.prototype.drawImage = function(sourceX, sourceY, destinationX, destinationY) {
       if (this.image.ready) {
-        return this.world.context.drawImage(this.image.image, sourceX + this.sourceWidth * this.frame, sourceY, this.sourceWidth, this.sourceHeight, destinationX, destinationY, this.width, this.height);
+        return this.world.context.drawImage(this.image.image, sourceX + this.sourceWidth * this.frame, sourceY + this.sourceHeight * this.animationOffset(), this.sourceWidth, this.sourceHeight, destinationX, destinationY, this.width, this.height);
       }
     };
 
@@ -414,6 +416,10 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
       } else {
         return this.frameDelayCounter += 1;
       }
+    };
+
+    Sprite.prototype.animationOffset = function() {
+      return 0;
     };
 
     return Sprite;
@@ -664,12 +670,22 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
     Hero.prototype.falling = true;
 
+    Hero.prototype.frames = 2;
+
+    Hero.prototype.frameDelay = 6;
+
+    Hero.prototype.moving = false;
+
     function Hero(world, imagePath) {
       this.world = world;
       Hero.__super__.constructor.call(this, this.world, imagePath);
     }
 
     Hero.prototype.update = function() {
+      if (!this.moving) {
+        this.animationName = "stay";
+      }
+      this.moving = false;
       if (this.jumping) {
         this.jump();
       }
@@ -677,16 +693,21 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
     };
 
     Hero.prototype.moveLeft = function() {
+      this.moving = true;
+      this.animationName = "moveLeft";
       this.x -= this.speed;
       return this.setPosition(this.x, this.y);
     };
 
     Hero.prototype.moveRight = function() {
+      this.moving = true;
+      this.animationName = "moveRight";
       this.x += this.speed;
       return this.setPosition(this.x, this.y);
     };
 
     Hero.prototype.jump = function() {
+      this.moving = true;
       if (!this.falling) {
         this.y -= this.jumpingForce - this.jumpingCounter;
         this.jumpingCounter += 1;
@@ -737,6 +758,19 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
       Hero.__super__.topSideCollisionWith.apply(this, arguments);
       this.endJumping();
       return this.startFalling();
+    };
+
+    Hero.prototype.animationOffset = function() {
+      switch (this.animationName) {
+        case "stay":
+          return 0;
+        case "moveRight":
+          return 1;
+        case "moveLeft":
+          return 2;
+        default:
+          return 0;
+      }
     };
 
     return Hero;
@@ -1067,7 +1101,7 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
     function YellowHero(world) {
       this.world = world;
-      YellowHero.__super__.constructor.call(this, this.world, "images/game/yellow_hero.png");
+      YellowHero.__super__.constructor.call(this, this.world, "images/game/test.png");
     }
 
     YellowHero.prototype.bindToEvents = function() {

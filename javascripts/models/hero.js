@@ -27,12 +27,22 @@
 
     Hero.prototype.falling = true;
 
+    Hero.prototype.frames = 2;
+
+    Hero.prototype.frameDelay = 6;
+
+    Hero.prototype.moving = false;
+
     function Hero(world, imagePath) {
       this.world = world;
       Hero.__super__.constructor.call(this, this.world, imagePath);
     }
 
     Hero.prototype.update = function() {
+      if (!this.moving) {
+        this.animationName = "stay";
+      }
+      this.moving = false;
       if (this.jumping) {
         this.jump();
       }
@@ -40,16 +50,21 @@
     };
 
     Hero.prototype.moveLeft = function() {
+      this.moving = true;
+      this.animationName = "moveLeft";
       this.x -= this.speed;
       return this.setPosition(this.x, this.y);
     };
 
     Hero.prototype.moveRight = function() {
+      this.moving = true;
+      this.animationName = "moveRight";
       this.x += this.speed;
       return this.setPosition(this.x, this.y);
     };
 
     Hero.prototype.jump = function() {
+      this.moving = true;
       if (!this.falling) {
         this.y -= this.jumpingForce - this.jumpingCounter;
         this.jumpingCounter += 1;
@@ -100,6 +115,19 @@
       Hero.__super__.topSideCollisionWith.apply(this, arguments);
       this.endJumping();
       return this.startFalling();
+    };
+
+    Hero.prototype.animationOffset = function() {
+      switch (this.animationName) {
+        case "stay":
+          return 0;
+        case "moveRight":
+          return 1;
+        case "moveLeft":
+          return 2;
+        default:
+          return 0;
+      }
     };
 
     return Hero;

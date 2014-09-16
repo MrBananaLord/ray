@@ -7,7 +7,7 @@
 
     function YellowHero(world) {
       this.world = world;
-      YellowHero.__super__.constructor.call(this, this.world, "images/game/yellow_hero.png");
+      YellowHero.__super__.constructor.call(this, this.world, "images/game/test.png");
     }
 
     YellowHero.prototype.bindToEvents = function() {
