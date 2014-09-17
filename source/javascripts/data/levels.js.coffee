@@ -48,7 +48,7 @@ RaY.Data.Levels = [
       y: 280
     }
     goal: {
-      x: 610
+      x: 600
       y: 350
     }
     elements: [

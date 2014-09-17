@@ -1,8 +1,10 @@
-class RaY.Models.Box extends RaY.Engine.Rectangle
+class RaY.Models.Box extends RaY.Engine.Entity
   collidable: true
   gravitable: true
+  sourceWidth: 100
+  sourceHeight: 100
   height: 20
   width: 20
   
-  constructor: (@world, @x, @y, @fillStyle) ->
-    super(@world)
+  constructor: (@world, @x, @y, @s) ->
+    super(@world, "images/game/box.png")

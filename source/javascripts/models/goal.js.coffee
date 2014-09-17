@@ -1,14 +1,15 @@
-class RaY.Models.Goal extends RaY.Engine.Rectangle
+class RaY.Models.Goal extends RaY.Engine.Entity
   collidable: false
   gravitable: false
-  fillStyle: "#9f5"
-  width: 20
+  sourceWidth: 100
+  sourceHeight: 100
+  width: 30
   height: 30
   redHeroFinished: false
   yellowHeroFinished: false
   
   constructor: (@world, @x, @y) ->
-    super(@world)
+    super(@world, "images/game/food.png")
     @bindToEvents()
     
   bindToEvents: ->
