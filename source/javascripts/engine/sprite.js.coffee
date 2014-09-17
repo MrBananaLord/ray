@@ -1,24 +1,19 @@
 class RaY.Engine.Sprite extends RaY.Engine.Rectangle
-  sourceX: 0
-  sourceY: 0
   sourceWidth: 0
   sourceHeight: 0
-  frame: 0
-  frames: 1
-  frameDelay: 1
-  frameDelayCounter: 0
-  animationName: "default"
-
+  activeAnimationName: "default"
+  
   constructor: (@world, imageUrl) ->
     @image = new RaY.Engine.SpriteImage(imageUrl)
+    @activateAnimation(@activeAnimationName, true)
     super
 
   drawImage: (sourceX, sourceY, destinationX, destinationY) ->
     if @image.ready
       @world.context.drawImage(
         @image.image,
-        sourceX + @sourceWidth * @frame,
-        sourceY + @sourceHeight * @animationOffset(),
+        @activeAnimation()["sourceX"] + @sourceWidth * @frame,
+        @activeAnimation()["sourceY"],
         @sourceWidth,
         @sourceHeight,
         destinationX,
@@ -31,11 +26,29 @@ class RaY.Engine.Sprite extends RaY.Engine.Rectangle
     super
     
   animate: ->
-    if @frameDelay <= @frameDelayCounter
-      @frame = (@frame + 1) % @frames
-      @frameDelayCounter = 0
+    if @activeAnimation()["delay"] <= @animationDelayCounter
+      @frame = (@frame + 1) % @activeAnimation()["frames"]
+      @animationDelayCounter = 0
     else
-      @frameDelayCounter += 1
+      @animationDelayCounter += 1
   
-  animationOffset: ->
-    0
+  activeAnimation: ->
+    @animations()[@activeAnimationName]
+    
+  activateAnimation: (name, force = false) ->
+    throw "InvalidAnimationName" unless @animations()[name]
+    if force or name != @activeAnimationName
+      @resetAnimationData()
+      @activeAnimationName = name
+    
+  resetAnimationData: ->
+    @frame = 0
+    @animationDelayCounter = 0
+  
+  animations: ->
+    default:
+      frames: 1
+      delay: 1
+      sourceX: 0
+      sourceY: 0
+    

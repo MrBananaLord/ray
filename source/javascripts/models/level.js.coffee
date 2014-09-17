@@ -34,12 +34,16 @@ class RaY.Models.Level extends RaY.Engine.Module
     @yellowHero = new RaY.Models.YellowHero(@world)
     @yellowHero.x = @data.yellowHero.x
     @yellowHero.y = @data.yellowHero.y
+    if @data.yellowHero.firstAnimation
+      @yellowHero.activateAnimation(@data.yellowHero.firstAnimation)
     return @yellowHero
   
   createRedHero: ->
     @redHero = new RaY.Models.RedHero(@world)
     @redHero.x = @data.redHero.x
     @redHero.y = @data.redHero.y
+    if @data.redHero.firstAnimation
+      @redHero.activateAnimation(@data.redHero.firstAnimation)
     return @redHero
   
   createGoal: ->

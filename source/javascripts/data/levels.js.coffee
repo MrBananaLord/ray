@@ -13,6 +13,7 @@ RaY.Data.Levels = [
     redHero: {
       x: 560
       y: 454
+      firstAnimation: "stayLeft"
     }
     goal: {
       x: 300
