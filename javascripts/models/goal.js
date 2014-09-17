@@ -9,9 +9,11 @@
 
     Goal.prototype.gravitable = false;
 
-    Goal.prototype.fillStyle = "#9f5";
+    Goal.prototype.sourceWidth = 100;
 
-    Goal.prototype.width = 20;
+    Goal.prototype.sourceHeight = 100;
+
+    Goal.prototype.width = 30;
 
     Goal.prototype.height = 30;
 
@@ -23,7 +25,7 @@
       this.world = world;
       this.x = x;
       this.y = y;
-      Goal.__super__.constructor.call(this, this.world);
+      Goal.__super__.constructor.call(this, this.world, "images/game/food.png");
       this.bindToEvents();
     }
 
@@ -64,6 +66,6 @@
 
     return Goal;
 
-  })(RaY.Engine.Rectangle);
+  })(RaY.Engine.Entity);
 
 }).call(this);

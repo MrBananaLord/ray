@@ -9,20 +9,24 @@
 
     Box.prototype.gravitable = true;
 
+    Box.prototype.sourceWidth = 100;
+
+    Box.prototype.sourceHeight = 100;
+
     Box.prototype.height = 20;
 
     Box.prototype.width = 20;
 
-    function Box(world, x, y, fillStyle) {
+    function Box(world, x, y, s) {
       this.world = world;
       this.x = x;
       this.y = y;
-      this.fillStyle = fillStyle;
-      Box.__super__.constructor.call(this, this.world);
+      this.s = s;
+      Box.__super__.constructor.call(this, this.world, "images/game/box.png");
     }
 
     return Box;
 
-  })(RaY.Engine.Rectangle);
+  })(RaY.Engine.Entity);
 
 }).call(this);

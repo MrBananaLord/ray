@@ -64,6 +64,9 @@
       this.yellowHero = new RaY.Models.YellowHero(this.world);
       this.yellowHero.x = this.data.yellowHero.x;
       this.yellowHero.y = this.data.yellowHero.y;
+      if (this.data.yellowHero.firstAnimation) {
+        this.yellowHero.activateAnimation(this.data.yellowHero.firstAnimation);
+      }
       return this.yellowHero;
     };
 
@@ -71,6 +74,9 @@
       this.redHero = new RaY.Models.RedHero(this.world);
       this.redHero.x = this.data.redHero.x;
       this.redHero.y = this.data.redHero.y;
+      if (this.data.redHero.firstAnimation) {
+        this.redHero.activateAnimation(this.data.redHero.firstAnimation);
+      }
       return this.redHero;
     };
 

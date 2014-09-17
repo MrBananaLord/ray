@@ -13,7 +13,8 @@
       },
       redHero: {
         x: 560,
-        y: 454
+        y: 454,
+        firstAnimation: "stayLeft"
       },
       goal: {
         x: 300,
@@ -41,7 +42,7 @@
         y: 280
       },
       goal: {
-        x: 610,
+        x: 600,
         y: 350
       },
       elements: [

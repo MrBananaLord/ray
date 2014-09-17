@@ -374,33 +374,22 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
   RaY.Engine.Sprite = (function(_super) {
     __extends(Sprite, _super);
 
-    Sprite.prototype.sourceX = 0;
-
-    Sprite.prototype.sourceY = 0;
-
     Sprite.prototype.sourceWidth = 0;
 
     Sprite.prototype.sourceHeight = 0;
 
-    Sprite.prototype.frame = 0;
-
-    Sprite.prototype.frames = 1;
-
-    Sprite.prototype.frameDelay = 1;
-
-    Sprite.prototype.frameDelayCounter = 0;
-
-    Sprite.prototype.animationName = "default";
+    Sprite.prototype.activeAnimationName = "default";
 
     function Sprite(world, imageUrl) {
       this.world = world;
       this.image = new RaY.Engine.SpriteImage(imageUrl);
+      this.activateAnimation(this.activeAnimationName, true);
       Sprite.__super__.constructor.apply(this, arguments);
     }
 
     Sprite.prototype.drawImage = function(sourceX, sourceY, destinationX, destinationY) {
       if (this.image.ready) {
-        return this.world.context.drawImage(this.image.image, sourceX + this.sourceWidth * this.frame, sourceY + this.sourceHeight * this.animationOffset(), this.sourceWidth, this.sourceHeight, destinationX, destinationY, this.width, this.height);
+        return this.world.context.drawImage(this.image.image, this.activeAnimation()["sourceX"] + this.sourceWidth * this.frame, this.activeAnimation()["sourceY"], this.sourceWidth, this.sourceHeight, destinationX, destinationY, this.width, this.height);
       }
     };
 
@@ -410,16 +399,45 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
     };
 
     Sprite.prototype.animate = function() {
-      if (this.frameDelay <= this.frameDelayCounter) {
-        this.frame = (this.frame + 1) % this.frames;
-        return this.frameDelayCounter = 0;
+      if (this.activeAnimation()["delay"] <= this.animationDelayCounter) {
+        this.frame = (this.frame + 1) % this.activeAnimation()["frames"];
+        return this.animationDelayCounter = 0;
       } else {
-        return this.frameDelayCounter += 1;
+        return this.animationDelayCounter += 1;
       }
     };
 
-    Sprite.prototype.animationOffset = function() {
-      return 0;
+    Sprite.prototype.activeAnimation = function() {
+      return this.animations()[this.activeAnimationName];
+    };
+
+    Sprite.prototype.activateAnimation = function(name, force) {
+      if (force == null) {
+        force = false;
+      }
+      if (!this.animations()[name]) {
+        throw "InvalidAnimationName";
+      }
+      if (force || name !== this.activeAnimationName) {
+        this.resetAnimationData();
+        return this.activeAnimationName = name;
+      }
+    };
+
+    Sprite.prototype.resetAnimationData = function() {
+      this.frame = 0;
+      return this.animationDelayCounter = 0;
+    };
+
+    Sprite.prototype.animations = function() {
+      return {
+        "default": {
+          frames: 1,
+          delay: 1,
+          sourceX: 0,
+          sourceY: 0
+        }
+      };
     };
 
     return Sprite;
@@ -512,21 +530,25 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
     Box.prototype.gravitable = true;
 
+    Box.prototype.sourceWidth = 100;
+
+    Box.prototype.sourceHeight = 100;
+
     Box.prototype.height = 20;
 
     Box.prototype.width = 20;
 
-    function Box(world, x, y, fillStyle) {
+    function Box(world, x, y, s) {
       this.world = world;
       this.x = x;
       this.y = y;
-      this.fillStyle = fillStyle;
-      Box.__super__.constructor.call(this, this.world);
+      this.s = s;
+      Box.__super__.constructor.call(this, this.world, "images/game/box.png");
     }
 
     return Box;
 
-  })(RaY.Engine.Rectangle);
+  })(RaY.Engine.Entity);
 
 }).call(this);
 (function() {
@@ -583,9 +605,11 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
     Goal.prototype.gravitable = false;
 
-    Goal.prototype.fillStyle = "#9f5";
+    Goal.prototype.sourceWidth = 100;
 
-    Goal.prototype.width = 20;
+    Goal.prototype.sourceHeight = 100;
+
+    Goal.prototype.width = 30;
 
     Goal.prototype.height = 30;
 
@@ -597,7 +621,7 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
       this.world = world;
       this.x = x;
       this.y = y;
-      Goal.__super__.constructor.call(this, this.world);
+      Goal.__super__.constructor.call(this, this.world, "images/game/food.png");
       this.bindToEvents();
     }
 
@@ -638,7 +662,7 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
     return Goal;
 
-  })(RaY.Engine.Rectangle);
+  })(RaY.Engine.Entity);
 
 }).call(this);
 (function() {
@@ -670,11 +694,9 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
     Hero.prototype.falling = true;
 
-    Hero.prototype.frames = 2;
-
-    Hero.prototype.frameDelay = 6;
-
     Hero.prototype.moving = false;
+
+    Hero.prototype.activeAnimationName = "stayRight";
 
     function Hero(world, imagePath) {
       this.world = world;
@@ -683,7 +705,7 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
     Hero.prototype.update = function() {
       if (!this.moving) {
-        this.animationName = "stay";
+        this.animateStay();
       }
       this.moving = false;
       if (this.jumping) {
@@ -694,14 +716,14 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
     Hero.prototype.moveLeft = function() {
       this.moving = true;
-      this.animationName = "moveLeft";
+      this.activateAnimation("runLeft");
       this.x -= this.speed;
       return this.setPosition(this.x, this.y);
     };
 
     Hero.prototype.moveRight = function() {
       this.moving = true;
-      this.animationName = "moveRight";
+      this.activateAnimation("runRight");
       this.x += this.speed;
       return this.setPosition(this.x, this.y);
     };
@@ -760,17 +782,37 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
       return this.startFalling();
     };
 
-    Hero.prototype.animationOffset = function() {
-      switch (this.animationName) {
-        case "stay":
-          return 0;
-        case "moveRight":
-          return 1;
-        case "moveLeft":
-          return 2;
-        default:
-          return 0;
-      }
+    Hero.prototype.animateStay = function() {
+      return this.activateAnimation(this.activeAnimationName.indexOf("Left") !== -1 ? "stayLeft" : "stayRight");
+    };
+
+    Hero.prototype.animations = function() {
+      return {
+        stayRight: {
+          frames: 1,
+          delay: 1,
+          sourceX: 0,
+          sourceY: 0
+        },
+        stayLeft: {
+          frames: 1,
+          delay: 1,
+          sourceX: this.sourceWidth,
+          sourceY: 0
+        },
+        runLeft: {
+          frames: 2,
+          delay: 6,
+          sourceX: 0,
+          sourceY: this.sourceHeight * 2
+        },
+        runRight: {
+          frames: 2,
+          delay: 6,
+          sourceX: 0,
+          sourceY: this.sourceHeight
+        }
+      };
     };
 
     return Hero;
@@ -844,6 +886,9 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
       this.yellowHero = new RaY.Models.YellowHero(this.world);
       this.yellowHero.x = this.data.yellowHero.x;
       this.yellowHero.y = this.data.yellowHero.y;
+      if (this.data.yellowHero.firstAnimation) {
+        this.yellowHero.activateAnimation(this.data.yellowHero.firstAnimation);
+      }
       return this.yellowHero;
     };
 
@@ -851,6 +896,9 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
       this.redHero = new RaY.Models.RedHero(this.world);
       this.redHero.x = this.data.redHero.x;
       this.redHero.y = this.data.redHero.y;
+      if (this.data.redHero.firstAnimation) {
+        this.redHero.activateAnimation(this.data.redHero.firstAnimation);
+      }
       return this.redHero;
     };
 
@@ -1101,7 +1149,7 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
     function YellowHero(world) {
       this.world = world;
-      YellowHero.__super__.constructor.call(this, this.world, "images/game/test.png");
+      YellowHero.__super__.constructor.call(this, this.world, "images/game/yellow_hero.png");
     }
 
     YellowHero.prototype.bindToEvents = function() {
@@ -1140,7 +1188,8 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
       },
       redHero: {
         x: 560,
-        y: 454
+        y: 454,
+        firstAnimation: "stayLeft"
       },
       goal: {
         x: 300,
@@ -1168,7 +1217,7 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
         y: 280
       },
       goal: {
-        x: 610,
+        x: 600,
         y: 350
       },
       elements: [

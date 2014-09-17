@@ -27,11 +27,9 @@
 
     Hero.prototype.falling = true;
 
-    Hero.prototype.frames = 2;
-
-    Hero.prototype.frameDelay = 6;
-
     Hero.prototype.moving = false;
+
+    Hero.prototype.activeAnimationName = "stayRight";
 
     function Hero(world, imagePath) {
       this.world = world;
@@ -40,7 +38,7 @@
 
     Hero.prototype.update = function() {
       if (!this.moving) {
-        this.animationName = "stay";
+        this.animateStay();
       }
       this.moving = false;
       if (this.jumping) {
@@ -51,14 +49,14 @@
 
     Hero.prototype.moveLeft = function() {
       this.moving = true;
-      this.animationName = "moveLeft";
+      this.activateAnimation("runLeft");
       this.x -= this.speed;
       return this.setPosition(this.x, this.y);
     };
 
     Hero.prototype.moveRight = function() {
       this.moving = true;
-      this.animationName = "moveRight";
+      this.activateAnimation("runRight");
       this.x += this.speed;
       return this.setPosition(this.x, this.y);
     };
@@ -117,17 +115,37 @@
       return this.startFalling();
     };
 
-    Hero.prototype.animationOffset = function() {
-      switch (this.animationName) {
-        case "stay":
-          return 0;
-        case "moveRight":
-          return 1;
-        case "moveLeft":
-          return 2;
-        default:
-          return 0;
-      }
+    Hero.prototype.animateStay = function() {
+      return this.activateAnimation(this.activeAnimationName.indexOf("Left") !== -1 ? "stayLeft" : "stayRight");
+    };
+
+    Hero.prototype.animations = function() {
+      return {
+        stayRight: {
+          frames: 1,
+          delay: 1,
+          sourceX: 0,
+          sourceY: 0
+        },
+        stayLeft: {
+          frames: 1,
+          delay: 1,
+          sourceX: this.sourceWidth,
+          sourceY: 0
+        },
+        runLeft: {
+          frames: 2,
+          delay: 6,
+          sourceX: 0,
+          sourceY: this.sourceHeight * 2
+        },
+        runRight: {
+          frames: 2,
+          delay: 6,
+          sourceX: 0,
+          sourceY: this.sourceHeight
+        }
+      };
     };
 
     return Hero;

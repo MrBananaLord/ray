@@ -5,33 +5,22 @@
   RaY.Engine.Sprite = (function(_super) {
     __extends(Sprite, _super);
 
-    Sprite.prototype.sourceX = 0;
-
-    Sprite.prototype.sourceY = 0;
-
     Sprite.prototype.sourceWidth = 0;
 
     Sprite.prototype.sourceHeight = 0;
 
-    Sprite.prototype.frame = 0;
-
-    Sprite.prototype.frames = 1;
-
-    Sprite.prototype.frameDelay = 1;
-
-    Sprite.prototype.frameDelayCounter = 0;
-
-    Sprite.prototype.animationName = "default";
+    Sprite.prototype.activeAnimationName = "default";
 
     function Sprite(world, imageUrl) {
       this.world = world;
       this.image = new RaY.Engine.SpriteImage(imageUrl);
+      this.activateAnimation(this.activeAnimationName, true);
       Sprite.__super__.constructor.apply(this, arguments);
     }
 
     Sprite.prototype.drawImage = function(sourceX, sourceY, destinationX, destinationY) {
       if (this.image.ready) {
-        return this.world.context.drawImage(this.image.image, sourceX + this.sourceWidth * this.frame, sourceY + this.sourceHeight * this.animationOffset(), this.sourceWidth, this.sourceHeight, destinationX, destinationY, this.width, this.height);
+        return this.world.context.drawImage(this.image.image, this.activeAnimation()["sourceX"] + this.sourceWidth * this.frame, this.activeAnimation()["sourceY"], this.sourceWidth, this.sourceHeight, destinationX, destinationY, this.width, this.height);
       }
     };
 
@@ -41,16 +30,45 @@
     };
 
     Sprite.prototype.animate = function() {
-      if (this.frameDelay <= this.frameDelayCounter) {
-        this.frame = (this.frame + 1) % this.frames;
-        return this.frameDelayCounter = 0;
+      if (this.activeAnimation()["delay"] <= this.animationDelayCounter) {
+        this.frame = (this.frame + 1) % this.activeAnimation()["frames"];
+        return this.animationDelayCounter = 0;
       } else {
-        return this.frameDelayCounter += 1;
+        return this.animationDelayCounter += 1;
       }
     };
 
-    Sprite.prototype.animationOffset = function() {
-      return 0;
+    Sprite.prototype.activeAnimation = function() {
+      return this.animations()[this.activeAnimationName];
+    };
+
+    Sprite.prototype.activateAnimation = function(name, force) {
+      if (force == null) {
+        force = false;
+      }
+      if (!this.animations()[name]) {
+        throw "InvalidAnimationName";
+      }
+      if (force || name !== this.activeAnimationName) {
+        this.resetAnimationData();
+        return this.activeAnimationName = name;
+      }
+    };
+
+    Sprite.prototype.resetAnimationData = function() {
+      this.frame = 0;
+      return this.animationDelayCounter = 0;
+    };
+
+    Sprite.prototype.animations = function() {
+      return {
+        "default": {
+          frames: 1,
+          delay: 1,
+          sourceX: 0,
+          sourceY: 0
+        }
+      };
     };
 
     return Sprite;
