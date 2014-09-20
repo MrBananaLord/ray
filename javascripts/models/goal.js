@@ -54,7 +54,7 @@
       if (element instanceof RaY.Models.YellowHero) {
         this.yellowHeroFinished = true;
       }
-      if (this.redHeroFinished && this.yellowHeroFinished) {
+      if (this.redHeroFinished && this.yellowHeroFinished && !this.world.currentLevel.completed) {
         return this.world.trigger("levelCompleted");
       }
     };
