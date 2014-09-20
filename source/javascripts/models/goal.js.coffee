@@ -25,7 +25,9 @@ class RaY.Models.Goal extends RaY.Engine.Entity
   manageCollisionWith: (element) ->
     @redHeroFinished = true if element instanceof RaY.Models.RedHero
     @yellowHeroFinished = true if element instanceof RaY.Models.YellowHero
-    @world.trigger("levelCompleted") if @redHeroFinished and @yellowHeroFinished
+    if @redHeroFinished and @yellowHeroFinished and !@world.currentLevel.completed
+     @world.trigger("levelCompleted")
+     
     
   resetGoalObjectives: ->
     @yellowHeroFinished = false
