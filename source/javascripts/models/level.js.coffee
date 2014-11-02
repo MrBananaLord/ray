@@ -16,7 +16,9 @@ class RaY.Models.Level extends RaY.Engine.Module
   bindToEvents: ->
     @bind @world, "levelCompleted", () => @levelCompleted()
     @bind @world, "keyUp", (name) =>
-      @resetScene() if name == "r"
+      if name == "r"
+        @resetScene() 
+        @world.trigger("resetGui")
     
   levelCompleted: ->
     unless @completed

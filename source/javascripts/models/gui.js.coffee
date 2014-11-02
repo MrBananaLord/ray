@@ -4,7 +4,7 @@ class RaY.Models.Gui extends RaY.Engine.Module
   offsetY: 0
   height: 480
   width: 640
-  resetCount: 0
+  resetCount: 1
   completed: false
   elements: []
   level: 1
@@ -15,11 +15,13 @@ class RaY.Models.Gui extends RaY.Engine.Module
 
   bindToEvents: ->
     @bind @world, "levelCompleted", () => @levelCompleted()
-    @bind @world, "keyUp", (name) =>
-      @resetScene() if name == "r"
+    @bind @world, "resetGui", () =>
+      @reset()
     
   levelCompleted: ->
-    @level += 1
+    unless @world.currentLevel.completed
+      @level += 1 
+      @resetScene()
       
   createBackground: ->
     @background = new RaY.Engine.Rectangle(@world, {
@@ -53,8 +55,11 @@ class RaY.Models.Gui extends RaY.Engine.Module
     
   resetScene: ->
     @destroyScene()
-    @resetCount++
     @buildScene()
+    
+  reset: ->
+    @resetCount++
+    @resetScene()
  
   destroy: ->
     @destroyScene()
