@@ -15,7 +15,9 @@ class RaY.Engine.Rectangle extends RaY.Engine.Module
   fallingCounter: 0
   falling: false
   
-  constructor: (@world) ->
+  constructor: (@world, options = {}) ->
+    for option in ['x', 'y', 'width', 'height', 'fillStyle']
+      this[option] = options[option] || this[option]
     @bindToEvents()
     super
     

@@ -4,7 +4,6 @@ class RaY.Models.Level extends RaY.Engine.Module
   offsetY: 0
   height: 480
   width: 640
-  resetCount: 0
   completed: false
   elements: []
   
@@ -74,7 +73,6 @@ class RaY.Models.Level extends RaY.Engine.Module
     
   resetScene: ->
     @destroyScene()
-    @resetCount++
     @buildScene()
  
   destroy: ->

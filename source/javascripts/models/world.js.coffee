@@ -14,18 +14,15 @@ class RaY.Models.World extends RaY.Engine.Module
     @context = @createCanvasAndGetContext()
     @imageRepository = new RaY.Engine.ImageRepository
     @soundRepository = new RaY.Engine.SoundRepository
-    
     @currentLevel = new RaY.Models.Level(this, "Tutorial 1")
+    @gui = new RaY.Models.Gui(this)
     @bind this, "levelCompleted", () => @proceedToNextLevel()
     
   proceedToNextLevel: ->
     if nextLevelName = @levels[@levels.indexOf(@currentLevel.name) + 1]
-      console.debug nextLevelName
       @currentLevel.destroy()
       @currentLevel = new RaY.Models.Level(this, nextLevelName)
-    
-    if @currentLevel.completed
-      @message = new RaY.Models.Message(this)
+      @gui.resetScene()
       
   createCanvasAndGetContext: ->
     canvas = document.createElement("canvas")
