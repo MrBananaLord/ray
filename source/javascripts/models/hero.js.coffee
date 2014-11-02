@@ -15,6 +15,7 @@ class RaY.Models.Hero extends RaY.Engine.Entity
 
   constructor: (@world, imagePath) ->
     super(@world, imagePath)
+    @jumpSound = new RaY.Engine.SoundPool("sounds/jump.wav")
         
   update: ->
     @animateStay() unless @moving
@@ -43,7 +44,9 @@ class RaY.Models.Hero extends RaY.Engine.Entity
         @endJumping()
         @startFalling()
     
-  startJumping: -> @jumping = true
+  startJumping: ->
+    @jumpSound.play() unless @jumping or @falling
+    @jumping = true
   endJumping: ->
     @jumping = false
     @jumpingCounter = 0
