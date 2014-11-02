@@ -12,6 +12,8 @@
 //= require ./engine/entity
 //= require ./engine/input_handler
 //= require ./engine/sound_pool
+//= require ./engine/image_repository
+//= require ./engine/sound_repository
 
 //= require_tree ./models/
 //= require_tree ./data/

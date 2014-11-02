@@ -12,9 +12,11 @@ class RaY.Models.World extends RaY.Engine.Module
   
   constructor: ->
     @context = @createCanvasAndGetContext()
-    @currentLevel = new RaY.Models.Level(this, "Tutorial 1")
+    @imageRepository = new RaY.Engine.ImageRepository
+    @soundRepository = new RaY.Engine.SoundRepository
     
-    @bind this, "levelCompleted", () => @proceedToNextLevel()
+    @currentLevel = new RaY.Models.Level(this, "Tutorial 1")
+    #@bind this, "levelCompleted", () => @proceedToNextLevel()
     
   proceedToNextLevel: ->
     if nextLevelName = @levels[@levels.indexOf(@currentLevel.name) + 1]
@@ -32,5 +34,9 @@ class RaY.Models.World extends RaY.Engine.Module
     $("body").append(canvas)
     canvas.getContext("2d")
     
-  update: -> @trigger("update")
-  render: -> @trigger("render")  
+  update: ->
+    @trigger("update") if @isReady()
+  render: ->
+    @trigger("render") if @isReady()
+  
+  isReady: -> @imageRepository.isReady() and @soundRepository.isReady()

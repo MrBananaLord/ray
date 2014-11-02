@@ -7,4 +7,4 @@ class RaY.Models.Box extends RaY.Engine.Entity
   width: 20
   
   constructor: (@world, @x, @y, @s) ->
-    super(@world, "images/game/box.png")
+    super(@world, "box")

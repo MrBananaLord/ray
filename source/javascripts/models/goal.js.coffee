@@ -9,7 +9,7 @@ class RaY.Models.Goal extends RaY.Engine.Entity
   yellowHeroFinished: false
   
   constructor: (@world, @x, @y) ->
-    super(@world, "images/game/food.png")
+    super(@world, "food")
     @bindToEvents()
     
   bindToEvents: ->

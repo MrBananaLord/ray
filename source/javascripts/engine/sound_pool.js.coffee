@@ -17,8 +17,8 @@ class RaY.Engine.SoundPool extends RaY.Engine.Module
       @currentSound().play()
     @counter = (@counter + 1) % @size
   
-  ready: =>
+  isReady: =>
     return @ready if @ready
     @ready = true
-    for audio in @pool
-      @ready = @ready && audio.readyState
+    @ready = @ready && audio.readyState for audio in @pool
+    return @ready

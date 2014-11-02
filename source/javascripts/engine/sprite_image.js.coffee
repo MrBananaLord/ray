@@ -6,3 +6,7 @@ class RaY.Engine.SpriteImage
     image.src = @url
     image.onload = => @ready = true
     @image = image
+    @name = _.first(_.last(@url.split("/")).split("."))
+    
+  isReady: -> @ready
+  

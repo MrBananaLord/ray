@@ -4,12 +4,12 @@ class RaY.Engine.Sprite extends RaY.Engine.Rectangle
   activeAnimationName: "default"
   
   constructor: (@world, imageUrl) ->
-    @image = new RaY.Engine.SpriteImage(imageUrl)
+    @image = @world.imageRepository.find(imageUrl)
     @activateAnimation(@activeAnimationName, true)
     super
 
   drawImage: (sourceX, sourceY, destinationX, destinationY) ->
-    if @image.ready
+    if @image.isReady()
       @world.context.drawImage(
         @image.image,
         @activeAnimation()["sourceX"] + @sourceWidth * @frame,

@@ -1,6 +1,6 @@
 class RaY.Models.YellowHero extends RaY.Models.Hero
   constructor: (@world) ->
-    super(@world, "images/game/yellow_hero.png")
+    super(@world, "yellow_hero")
       
   bindToEvents: ->
     @bind @world, "keyDown", (name) =>
