@@ -16,7 +16,7 @@ class RaY.Models.World extends RaY.Engine.Module
     @soundRepository = new RaY.Engine.SoundRepository
     
     @currentLevel = new RaY.Models.Level(this, "Tutorial 1")
-    #@bind this, "levelCompleted", () => @proceedToNextLevel()
+    @bind this, "levelCompleted", () => @proceedToNextLevel()
     
   proceedToNextLevel: ->
     if nextLevelName = @levels[@levels.indexOf(@currentLevel.name) + 1]
@@ -40,3 +40,5 @@ class RaY.Models.World extends RaY.Engine.Module
     @trigger("render") if @isReady()
   
   isReady: -> @imageRepository.isReady() and @soundRepository.isReady()
+  sounds: (name) -> @soundRepository.find(name)
+  images: (name) -> @imageRepository.find(name)

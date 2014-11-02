@@ -15,7 +15,7 @@ class RaY.Models.Hero extends RaY.Engine.Entity
 
   constructor: (@world, imagePath) ->
     super(@world, imagePath)
-    @jumpSound = new RaY.Engine.SoundPool("sounds/jump.wav")
+    @jumpSound = @world.sounds("jump")
         
   update: ->
     @animateStay() unless @moving

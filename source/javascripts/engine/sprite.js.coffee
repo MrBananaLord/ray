@@ -3,8 +3,8 @@ class RaY.Engine.Sprite extends RaY.Engine.Rectangle
   sourceHeight: 0
   activeAnimationName: "default"
   
-  constructor: (@world, imageUrl) ->
-    @image = @world.imageRepository.find(imageUrl)
+  constructor: (@world, imageName) ->
+    @image = @world.images(imageName)
     @activateAnimation(@activeAnimationName, true)
     super
 

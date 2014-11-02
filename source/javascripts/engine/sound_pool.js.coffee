@@ -9,6 +9,7 @@ class RaY.Engine.SoundPool extends RaY.Engine.Module
       #audio.volume = .12;
       audio.load()
       @pool[i] = audio
+    @name = _.first(_.last(filePath.split("/")).split("."))
   
   currentSound: => @pool[@counter]
   

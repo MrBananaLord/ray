@@ -11,3 +11,6 @@ class RaY.Engine.SoundRepository extends RaY.Engine.Module
     @ready = true
     @ready = @ready && sound.isReady() for sound in @sounds
     return @ready
+    
+  find: (name) =>
+    _.findWhere(@sounds, { name: name }) || _.first(@sounds)
