@@ -160,11 +160,21 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
     Rectangle.prototype.falling = false;
 
-    function Rectangle(world) {
+    function Rectangle(world, options) {
+      var option, _i, _len, _ref;
+
       this.world = world;
+      if (options == null) {
+        options = {};
+      }
       this.collidesWith = __bind(this.collidesWith, this);
       this.setPosition = __bind(this.setPosition, this);
       this.applyPhysics = __bind(this.applyPhysics, this);
+      _ref = ['x', 'y', 'width', 'height', 'fillStyle'];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        option = _ref[_i];
+        this[option] = options[option] || this[option];
+      }
       this.bindToEvents();
       Rectangle.__super__.constructor.apply(this, arguments);
     }
@@ -360,7 +370,12 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
         return _this.ready = true;
       };
       this.image = image;
+      this.name = _.first(_.last(this.url.split("/")).split("."));
     }
+
+    SpriteImage.prototype.isReady = function() {
+      return this.ready;
+    };
 
     return SpriteImage;
 
@@ -380,15 +395,15 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
     Sprite.prototype.activeAnimationName = "default";
 
-    function Sprite(world, imageUrl) {
+    function Sprite(world, imageName) {
       this.world = world;
-      this.image = new RaY.Engine.SpriteImage(imageUrl);
+      this.image = this.world.images(imageName);
       this.activateAnimation(this.activeAnimationName, true);
       Sprite.__super__.constructor.apply(this, arguments);
     }
 
     Sprite.prototype.drawImage = function(sourceX, sourceY, destinationX, destinationY) {
-      if (this.image.ready) {
+      if (this.image.isReady()) {
         return this.world.context.drawImage(this.image.image, this.activeAnimation()["sourceX"] + this.sourceWidth * this.frame, this.activeAnimation()["sourceY"], this.sourceWidth, this.sourceHeight, destinationX, destinationY, this.width, this.height);
       }
     };
@@ -520,6 +535,168 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
 }).call(this);
 (function() {
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  RaY.Engine.SoundPool = (function(_super) {
+    __extends(SoundPool, _super);
+
+    SoundPool.prototype.counter = 0;
+
+    SoundPool.prototype.pool = {};
+
+    SoundPool.prototype.ready = false;
+
+    function SoundPool(filePath, size) {
+      var _this = this;
+
+      this.size = size != null ? size : 5;
+      this.isReady = __bind(this.isReady, this);
+      this.play = __bind(this.play, this);
+      this.currentSound = __bind(this.currentSound, this);
+      _(this.size).times(function(i) {
+        var audio;
+
+        audio = new Audio(filePath);
+        audio.load();
+        return _this.pool[i] = audio;
+      });
+      this.name = _.first(_.last(filePath.split("/")).split("."));
+    }
+
+    SoundPool.prototype.currentSound = function() {
+      return this.pool[this.counter];
+    };
+
+    SoundPool.prototype.play = function() {
+      if (this.currentSound().currentTime === 0 || this.currentSound().ended) {
+        this.currentSound().play();
+      }
+      return this.counter = (this.counter + 1) % this.size;
+    };
+
+    SoundPool.prototype.isReady = function() {
+      var audio, _i, _len, _ref;
+
+      if (this.ready) {
+        return this.ready;
+      }
+      this.ready = true;
+      _ref = this.pool;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        audio = _ref[_i];
+        this.ready = this.ready && audio.readyState;
+      }
+      return this.ready;
+    };
+
+    return SoundPool;
+
+  })(RaY.Engine.Module);
+
+}).call(this);
+(function() {
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  RaY.Engine.ImageRepository = (function(_super) {
+    __extends(ImageRepository, _super);
+
+    ImageRepository.prototype.images = [];
+
+    ImageRepository.prototype.ready = false;
+
+    function ImageRepository() {
+      this.find = __bind(this.find, this);
+      this.isReady = __bind(this.isReady, this);
+      var file, _i, _len, _ref;
+
+      _ref = RaY.Data.Images;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        file = _ref[_i];
+        this.images.push(new RaY.Engine.SpriteImage(file));
+      }
+    }
+
+    ImageRepository.prototype.isReady = function() {
+      var image, _i, _len, _ref;
+
+      if (this.ready) {
+        return this.ready;
+      }
+      this.ready = true;
+      _ref = this.images;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        image = _ref[_i];
+        this.ready = this.ready && image.isReady();
+      }
+      return this.ready;
+    };
+
+    ImageRepository.prototype.find = function(name) {
+      return _.findWhere(this.images, {
+        name: name
+      }) || _.first(this.images);
+    };
+
+    return ImageRepository;
+
+  })(RaY.Engine.Module);
+
+}).call(this);
+(function() {
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  RaY.Engine.SoundRepository = (function(_super) {
+    __extends(SoundRepository, _super);
+
+    SoundRepository.prototype.sounds = [];
+
+    SoundRepository.prototype.ready = false;
+
+    function SoundRepository() {
+      this.find = __bind(this.find, this);
+      this.isReady = __bind(this.isReady, this);
+      var file, _i, _len, _ref;
+
+      _ref = RaY.Data.Sounds;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        file = _ref[_i];
+        this.sounds.push(new RaY.Engine.SoundPool(file.name, file.poolSize));
+      }
+    }
+
+    SoundRepository.prototype.isReady = function() {
+      var sound, _i, _len, _ref;
+
+      if (this.ready) {
+        return this.ready;
+      }
+      this.ready = true;
+      _ref = this.sounds;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        sound = _ref[_i];
+        this.ready = this.ready && sound.isReady();
+      }
+      return this.ready;
+    };
+
+    SoundRepository.prototype.find = function(name) {
+      return _.findWhere(this.sounds, {
+        name: name
+      }) || _.first(this.sounds);
+    };
+
+    return SoundRepository;
+
+  })(RaY.Engine.Module);
+
+}).call(this);
+(function() {
   var __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -543,7 +720,7 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
       this.x = x;
       this.y = y;
       this.s = s;
-      Box.__super__.constructor.call(this, this.world, "images/game/box.png");
+      Box.__super__.constructor.call(this, this.world, "box");
     }
 
     return Box;
@@ -621,7 +798,7 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
       this.world = world;
       this.x = x;
       this.y = y;
-      Goal.__super__.constructor.call(this, this.world, "images/game/food.png");
+      Goal.__super__.constructor.call(this, this.world, "food");
       this.bindToEvents();
     }
 
@@ -669,6 +846,118 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
   var __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
+  RaY.Models.Gui = (function(_super) {
+    __extends(Gui, _super);
+
+    Gui.include(RaY.Engine.Modules.Callbacks);
+
+    Gui.prototype.offsetX = 0;
+
+    Gui.prototype.offsetY = 0;
+
+    Gui.prototype.height = 480;
+
+    Gui.prototype.width = 640;
+
+    Gui.prototype.resetCount = 1;
+
+    Gui.prototype.completed = false;
+
+    Gui.prototype.elements = [];
+
+    Gui.prototype.level = 1;
+
+    function Gui(world) {
+      this.world = world;
+      this.bindToEvents();
+      this.buildScene();
+    }
+
+    Gui.prototype.bindToEvents = function() {
+      var _this = this;
+
+      this.bind(this.world, "levelCompleted", function() {
+        return _this.levelCompleted();
+      });
+      return this.bind(this.world, "resetGui", function() {
+        return _this.reset();
+      });
+    };
+
+    Gui.prototype.levelCompleted = function() {
+      if (!this.world.currentLevel.completed) {
+        this.level += 1;
+        return this.resetScene();
+      }
+    };
+
+    Gui.prototype.createBackground = function() {
+      this.background = new RaY.Engine.Rectangle(this.world, {
+        fillStyle: "#23cccc",
+        width: 146 + this.resetCountLength(),
+        height: 38,
+        x: 2,
+        y: 2
+      });
+      return this.background;
+    };
+
+    Gui.prototype.resetCountLength = function() {
+      return (this.resetCount.toString().length - 1) * 7;
+    };
+
+    Gui.prototype.resetCounterMessage = function() {
+      return "Lvl: " + this.level + ".  Attempts: " + this.resetCount;
+    };
+
+    Gui.prototype.createResetCounter = function() {
+      this.resetCounter = new RaY.Models.Message(this.world, this.resetCounterMessage(), {
+        x: 5,
+        y: 5,
+        height: 32,
+        width: 140 + this.resetCountLength(),
+        fillStyle: "#cc35cc",
+        contentX: 11,
+        contentY: 27,
+        textFillStyle: "#fff"
+      });
+      return this.resetCounter;
+    };
+
+    Gui.prototype.buildScene = function() {
+      this.createBackground();
+      return this.createResetCounter();
+    };
+
+    Gui.prototype.destroyScene = function() {
+      this.resetCounter = this.resetCounter.destroy();
+      return this.background = this.background.destroy();
+    };
+
+    Gui.prototype.resetScene = function() {
+      this.destroyScene();
+      return this.buildScene();
+    };
+
+    Gui.prototype.reset = function() {
+      this.resetCount++;
+      return this.resetScene();
+    };
+
+    Gui.prototype.destroy = function() {
+      this.destroyScene();
+      return this.purge();
+    };
+
+    return Gui;
+
+  })(RaY.Engine.Module);
+
+}).call(this);
+(function() {
+  var __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
   RaY.Models.Hero = (function(_super) {
     __extends(Hero, _super);
 
@@ -701,6 +990,7 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
     function Hero(world, imagePath) {
       this.world = world;
       Hero.__super__.constructor.call(this, this.world, imagePath);
+      this.jumpSound = this.world.sounds("jump");
     }
 
     Hero.prototype.update = function() {
@@ -741,6 +1031,9 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
     };
 
     Hero.prototype.startJumping = function() {
+      if (!(this.jumping || this.falling)) {
+        this.jumpSound.play();
+      }
       return this.jumping = true;
     };
 
@@ -839,8 +1132,6 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
     Level.prototype.width = 640;
 
-    Level.prototype.resetCount = 0;
-
     Level.prototype.completed = false;
 
     Level.prototype.elements = [];
@@ -863,7 +1154,8 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
       });
       return this.bind(this.world, "keyUp", function(name) {
         if (name === "r") {
-          return _this.resetScene();
+          _this.resetScene();
+          return _this.world.trigger("resetGui");
         }
       });
     };
@@ -954,7 +1246,6 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
     Level.prototype.resetScene = function() {
       this.destroyScene();
-      this.resetCount++;
       return this.buildScene();
     };
 
@@ -987,26 +1278,45 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
     Message.prototype.gravitable = false;
 
-    Message.prototype.fillStyle = "#111";
+    Message.prototype.fillStyle = "#fff";
+
+    Message.prototype.textFillStyle = "#000";
+
+    Message.prototype.font = "12pt Calibri";
 
     Message.prototype.width = 640;
 
     Message.prototype.height = 480;
 
-    Message.prototype.x = 0;
+    Message.prototype.x = 10;
 
-    Message.prototype.y = 0;
+    Message.prototype.y = 10;
 
-    function Message(world) {
+    Message.prototype.contentX = 10;
+
+    Message.prototype.contentY = 10;
+
+    function Message(world, content, options) {
+      var option, _i, _len, _ref;
+
       this.world = world;
+      this.content = content;
+      if (options == null) {
+        options = {};
+      }
+      _ref = ['x', 'y', 'width', 'height', 'fillStyle', 'font', 'fillText', 'contentX', 'contentY', 'textFillStyle'];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        option = _ref[_i];
+        this[option] = options[option] || this[option];
+      }
       Message.__super__.constructor.call(this, this.world);
     }
 
     Message.prototype.render = function() {
       Message.__super__.render.apply(this, arguments);
-      this.world.context.font = "40pt Calibri";
-      this.world.context.fillStyle = "#fff";
-      return this.world.context.fillText("The End", 230, 250);
+      this.world.context.font = this.font;
+      this.world.context.fillStyle = this.textFillStyle;
+      return this.world.context.fillText(this.content, this.contentX, this.contentY);
     };
 
     return Message;
@@ -1049,7 +1359,7 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
     function RedHero(world) {
       this.world = world;
-      RedHero.__super__.constructor.call(this, this.world, "images/game/red_hero.png");
+      RedHero.__super__.constructor.call(this, this.world, "red_hero");
     }
 
     RedHero.prototype.bindToEvents = function() {
@@ -1098,7 +1408,10 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
       var _this = this;
 
       this.context = this.createCanvasAndGetContext();
+      this.imageRepository = new RaY.Engine.ImageRepository;
+      this.soundRepository = new RaY.Engine.SoundRepository;
       this.currentLevel = new RaY.Models.Level(this, "Tutorial 1");
+      this.gui = new RaY.Models.Gui(this);
       this.bind(this, "levelCompleted", function() {
         return _this.proceedToNextLevel();
       });
@@ -1108,12 +1421,9 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
       var nextLevelName;
 
       if (nextLevelName = this.levels[this.levels.indexOf(this.currentLevel.name) + 1]) {
-        console.debug(nextLevelName);
         this.currentLevel.destroy();
         this.currentLevel = new RaY.Models.Level(this, nextLevelName);
-      }
-      if (this.currentLevel.completed) {
-        return this.message = new RaY.Models.Message(this);
+        return this.gui.resetScene();
       }
     };
 
@@ -1128,11 +1438,27 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
     };
 
     World.prototype.update = function() {
-      return this.trigger("update");
+      if (this.isReady()) {
+        return this.trigger("update");
+      }
     };
 
     World.prototype.render = function() {
-      return this.trigger("render");
+      if (this.isReady()) {
+        return this.trigger("render");
+      }
+    };
+
+    World.prototype.isReady = function() {
+      return this.imageRepository.isReady() && this.soundRepository.isReady();
+    };
+
+    World.prototype.sounds = function(name) {
+      return this.soundRepository.find(name);
+    };
+
+    World.prototype.images = function(name) {
+      return this.imageRepository.find(name);
     };
 
     return World;
@@ -1149,7 +1475,7 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
     function YellowHero(world) {
       this.world = world;
-      YellowHero.__super__.constructor.call(this, this.world, "images/game/yellow_hero.png");
+      YellowHero.__super__.constructor.call(this, this.world, "yellow_hero");
     }
 
     YellowHero.prototype.bindToEvents = function() {
@@ -1171,6 +1497,10 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
     return YellowHero;
 
   })(RaY.Models.Hero);
+
+}).call(this);
+(function() {
+  RaY.Data.Images = ["images/game/red_hero.png", "images/game/yellow_hero.png", "images/game/box.png", "images/game/food.png"];
 
 }).call(this);
 (function() {
@@ -1234,12 +1564,24 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
 }).call(this);
 (function() {
+  RaY.Data.Sounds = [
+    {
+      name: "sounds/jump.wav",
+      poolSize: 5
+    }
+  ];
+
+}).call(this);
+(function() {
   $(function() {
     window.game = new RaY.Models.Game;
     return game.run();
   });
 
 }).call(this);
+
+
+
 
 
 

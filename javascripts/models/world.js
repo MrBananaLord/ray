@@ -23,7 +23,10 @@
       var _this = this;
 
       this.context = this.createCanvasAndGetContext();
+      this.imageRepository = new RaY.Engine.ImageRepository;
+      this.soundRepository = new RaY.Engine.SoundRepository;
       this.currentLevel = new RaY.Models.Level(this, "Tutorial 1");
+      this.gui = new RaY.Models.Gui(this);
       this.bind(this, "levelCompleted", function() {
         return _this.proceedToNextLevel();
       });
@@ -33,12 +36,9 @@
       var nextLevelName;
 
       if (nextLevelName = this.levels[this.levels.indexOf(this.currentLevel.name) + 1]) {
-        console.debug(nextLevelName);
         this.currentLevel.destroy();
         this.currentLevel = new RaY.Models.Level(this, nextLevelName);
-      }
-      if (this.currentLevel.completed) {
-        return this.message = new RaY.Models.Message(this);
+        return this.gui.resetScene();
       }
     };
 
@@ -53,11 +53,27 @@
     };
 
     World.prototype.update = function() {
-      return this.trigger("update");
+      if (this.isReady()) {
+        return this.trigger("update");
+      }
     };
 
     World.prototype.render = function() {
-      return this.trigger("render");
+      if (this.isReady()) {
+        return this.trigger("render");
+      }
+    };
+
+    World.prototype.isReady = function() {
+      return this.imageRepository.isReady() && this.soundRepository.isReady();
+    };
+
+    World.prototype.sounds = function(name) {
+      return this.soundRepository.find(name);
+    };
+
+    World.prototype.images = function(name) {
+      return this.imageRepository.find(name);
     };
 
     return World;

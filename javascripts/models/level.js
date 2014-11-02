@@ -17,8 +17,6 @@
 
     Level.prototype.width = 640;
 
-    Level.prototype.resetCount = 0;
-
     Level.prototype.completed = false;
 
     Level.prototype.elements = [];
@@ -41,7 +39,8 @@
       });
       return this.bind(this.world, "keyUp", function(name) {
         if (name === "r") {
-          return _this.resetScene();
+          _this.resetScene();
+          return _this.world.trigger("resetGui");
         }
       });
     };
@@ -132,7 +131,6 @@
 
     Level.prototype.resetScene = function() {
       this.destroyScene();
-      this.resetCount++;
       return this.buildScene();
     };
 

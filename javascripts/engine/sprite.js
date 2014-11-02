@@ -11,15 +11,15 @@
 
     Sprite.prototype.activeAnimationName = "default";
 
-    function Sprite(world, imageUrl) {
+    function Sprite(world, imageName) {
       this.world = world;
-      this.image = new RaY.Engine.SpriteImage(imageUrl);
+      this.image = this.world.images(imageName);
       this.activateAnimation(this.activeAnimationName, true);
       Sprite.__super__.constructor.apply(this, arguments);
     }
 
     Sprite.prototype.drawImage = function(sourceX, sourceY, destinationX, destinationY) {
-      if (this.image.ready) {
+      if (this.image.isReady()) {
         return this.world.context.drawImage(this.image.image, this.activeAnimation()["sourceX"] + this.sourceWidth * this.frame, this.activeAnimation()["sourceY"], this.sourceWidth, this.sourceHeight, destinationX, destinationY, this.width, this.height);
       }
     };

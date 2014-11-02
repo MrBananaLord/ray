@@ -34,11 +34,21 @@
 
     Rectangle.prototype.falling = false;
 
-    function Rectangle(world) {
+    function Rectangle(world, options) {
+      var option, _i, _len, _ref;
+
       this.world = world;
+      if (options == null) {
+        options = {};
+      }
       this.collidesWith = __bind(this.collidesWith, this);
       this.setPosition = __bind(this.setPosition, this);
       this.applyPhysics = __bind(this.applyPhysics, this);
+      _ref = ['x', 'y', 'width', 'height', 'fillStyle'];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        option = _ref[_i];
+        this[option] = options[option] || this[option];
+      }
       this.bindToEvents();
       Rectangle.__super__.constructor.apply(this, arguments);
     }

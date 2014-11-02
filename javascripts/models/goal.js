@@ -25,7 +25,7 @@
       this.world = world;
       this.x = x;
       this.y = y;
-      Goal.__super__.constructor.call(this, this.world, "images/game/food.png");
+      Goal.__super__.constructor.call(this, this.world, "food");
       this.bindToEvents();
     }
 

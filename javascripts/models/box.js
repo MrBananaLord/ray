@@ -22,7 +22,7 @@
       this.x = x;
       this.y = y;
       this.s = s;
-      Box.__super__.constructor.call(this, this.world, "images/game/box.png");
+      Box.__super__.constructor.call(this, this.world, "box");
     }
 
     return Box;

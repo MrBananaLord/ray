@@ -13,7 +13,12 @@
         return _this.ready = true;
       };
       this.image = image;
+      this.name = _.first(_.last(this.url.split("/")).split("."));
     }
+
+    SpriteImage.prototype.isReady = function() {
+      return this.ready;
+    };
 
     return SpriteImage;
 

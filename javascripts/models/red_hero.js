@@ -7,7 +7,7 @@
 
     function RedHero(world) {
       this.world = world;
-      RedHero.__super__.constructor.call(this, this.world, "images/game/red_hero.png");
+      RedHero.__super__.constructor.call(this, this.world, "red_hero");
     }
 
     RedHero.prototype.bindToEvents = function() {

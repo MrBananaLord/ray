@@ -34,6 +34,7 @@
     function Hero(world, imagePath) {
       this.world = world;
       Hero.__super__.constructor.call(this, this.world, imagePath);
+      this.jumpSound = this.world.sounds("jump");
     }
 
     Hero.prototype.update = function() {
@@ -74,6 +75,9 @@
     };
 
     Hero.prototype.startJumping = function() {
+      if (!(this.jumping || this.falling)) {
+        this.jumpSound.play();
+      }
       return this.jumping = true;
     };
 
