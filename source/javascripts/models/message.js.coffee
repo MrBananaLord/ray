@@ -8,8 +8,8 @@ class RaY.Models.Message extends RaY.Engine.Rectangle
   height: 480
   x: 10
   y: 10
-  contentX: 10
-  contentY: 10
+  contentX: 0
+  contentY: 0
   
   constructor: (@world, @content, options = {}) ->
     for option in ['x', 'y', 'width', 'height', 'fillStyle', 'font', 'fillText'
@@ -21,4 +21,4 @@ class RaY.Models.Message extends RaY.Engine.Rectangle
     super
     @world.context.font = @font
     @world.context.fillStyle = @textFillStyle
-    @world.context.fillText(@content, @contentX, @contentY)
+    @world.context.fillText(@content, @x + @contentX, @y + @contentY)

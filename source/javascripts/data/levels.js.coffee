@@ -30,6 +30,110 @@ RaY.Data.Levels = [
           [0, 475, 640, 5, "#fff"]
         ]
       }
+      {
+        klass: RaY.Models.Message
+        elements: [
+          [
+            'Oh no! Someone stole your rainbow!',
+            {
+              x: 185
+              y: 125
+              width: 255
+              height: 32
+              contentX: 10
+              contentY: 22
+            }
+          ],
+          [
+            'a',
+            { 
+              x: 50
+              y: 350
+              width: 20
+              height: 20
+              contentX: 7
+              contentY: 15
+            }
+          ],
+          [
+            's',
+            { 
+              x: 75
+              y: 350
+              width: 20
+              height: 20
+              contentX: 7
+              contentY: 15
+            }
+          ],
+          [
+            'd',
+            { 
+              x: 100
+              y: 350
+              width: 20
+              height: 20
+              contentX: 6
+              contentY: 15
+            }
+          ],
+          [
+            'w',
+            { 
+              x: 75
+              y: 325
+              width: 20
+              height: 20
+              contentX: 4
+              contentY: 15
+            }
+          ],
+          [
+            '←',
+            { 
+              x: 500
+              y: 350
+              width: 20
+              height: 20
+              contentX: 2
+              contentY: 15
+            }
+          ],
+          [
+            '↓',
+            { 
+              x: 525
+              y: 350
+              width: 20
+              height: 20
+              contentX: 6
+              contentY: 15
+            }
+          ],
+          [
+            '→',
+            { 
+              x: 550
+              y: 350
+              width: 20
+              height: 20
+              contentX: 3
+              contentY: 15
+            }
+          ],
+          [
+            '↑',
+            { 
+              x: 525
+              y: 325
+              width: 20
+              height: 20
+              contentX: 6
+              contentY: 15
+            }
+          ]
+        ]
+      }
     ]
   }
   {
@@ -107,6 +211,35 @@ RaY.Data.Levels = [
           [530, 455, "#e92"]
           [510, 434, "#e92"]
           [530, 434, "#e92"]
+        ]
+      }
+    ]
+  }
+  {
+    name: "The End"
+    background: {
+      fillStyle: "#f34"
+      width: 640
+      height: 480
+    }
+    yellowHero: {
+      x: 50
+      y: 454
+    }
+    redHero: {
+      x: 560
+      y: 454
+      firstAnimation: "stayLeft"
+    }
+    elements: [
+      {
+        klass: RaY.Models.Platform
+        elements: [
+          # sides
+          [0, 0, 5, 480, "#fff"]
+          [0, 0, 640, 5, "#fff"]
+          [635, 0, 5, 480, "#fff"]
+          [0, 475, 640, 5, "#fff"]
         ]
       }
     ]

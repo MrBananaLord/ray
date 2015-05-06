@@ -7,7 +7,8 @@ class RaY.Models.World extends RaY.Engine.Module
   gravity: 1
   levels: [
     "Tutorial 1"
-    "Xtreme"
+    "Xtreme",
+    "The End"
   ]
   
   constructor: ->

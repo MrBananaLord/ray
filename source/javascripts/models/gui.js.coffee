@@ -41,7 +41,7 @@ class RaY.Models.Gui extends RaY.Engine.Module
   createResetCounter: ->
     @resetCounter = new RaY.Models.Message(@world, @resetCounterMessage(), {
       x: 5, y: 5, height: 32, width: 140 + @resetCountLength(),
-      fillStyle: "#cc35cc", contentX: 11, contentY: 27, textFillStyle: "#fff"
+      fillStyle: "#cc35cc", contentX: 7, contentY: 22, textFillStyle: "#fff"
     })
     return @resetCounter
   

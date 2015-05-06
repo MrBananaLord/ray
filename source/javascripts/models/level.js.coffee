@@ -48,11 +48,12 @@ class RaY.Models.Level extends RaY.Engine.Module
     return @redHero
   
   createGoal: ->
-    goal = new RaY.Models.Goal(@world)
-    goal.x = @data.goal.x
-    goal.y = @data.goal.y
-    @elements.push(goal)
-    return goal
+    if @data.goal
+      goal = new RaY.Models.Goal(@world)
+      goal.x = @data.goal.x
+      goal.y = @data.goal.y
+      @elements.push(goal)
+      return goal
     
   buildScene: ->
     @createBackground()
