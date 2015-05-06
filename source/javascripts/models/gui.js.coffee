@@ -8,6 +8,7 @@ class RaY.Models.Gui extends RaY.Engine.Module
   completed: false
   elements: []
   level: 1
+  hidden: false
   
   constructor: (@world) ->
     @bindToEvents()
@@ -15,8 +16,9 @@ class RaY.Models.Gui extends RaY.Engine.Module
 
   bindToEvents: ->
     @bind @world, "levelCompleted", () => @levelCompleted()
-    @bind @world, "resetGui", () =>
-      @reset()
+    @bind @world, "resetGui", () => @reset()
+    @bind @world, "hideGui", () => @hide()
+    @bind @world, "showGui", () => @show()
     
   levelCompleted: ->
     unless @world.currentLevel.completed
@@ -46,15 +48,17 @@ class RaY.Models.Gui extends RaY.Engine.Module
     return @resetCounter
   
   buildScene: ->
-    @createBackground()
-    @createResetCounter()
+    unless @hidden
+      @createBackground()
+      @createResetCounter()
   
   destroyScene: ->
-    @resetCounter = @resetCounter.destroy()
-    @background = @background.destroy()
+    unless @hidden
+      @resetCounter = @resetCounter.destroy()
+      @background = @background.destroy()
     
   resetScene: ->
-    @destroyScene()
+    @destroyScene() 
     @buildScene()
     
   reset: ->
@@ -64,3 +68,12 @@ class RaY.Models.Gui extends RaY.Engine.Module
   destroy: ->
     @destroyScene()
     @purge()
+    
+  hide: ->
+    @destroyScene()
+    @hidden = true
+    
+  show: ->
+    @hidden = false
+    @buildScene() 
+

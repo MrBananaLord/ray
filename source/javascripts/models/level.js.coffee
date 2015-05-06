@@ -11,6 +11,7 @@ class RaY.Models.Level extends RaY.Engine.Module
     @data = _.find RaY.Data.Levels, (level) ->
       level.name == name
     @bindToEvents()
+    @world.trigger("hideGui") if @data.gui == "hidden"
     @buildScene()
 
   bindToEvents: ->

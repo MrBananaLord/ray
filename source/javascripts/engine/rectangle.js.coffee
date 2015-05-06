@@ -14,9 +14,10 @@ class RaY.Engine.Rectangle extends RaY.Engine.Module
   maximumSpeed: 8
   fallingCounter: 0
   falling: false
+  hidden: false
   
   constructor: (@world, options = {}) ->
-    for option in ['x', 'y', 'width', 'height', 'fillStyle']
+    for option in ['x', 'y', 'width', 'height', 'fillStyle', 'hidden']
       this[option] = options[option] || this[option]
     @bindToEvents()
     super
@@ -38,8 +39,9 @@ class RaY.Engine.Rectangle extends RaY.Engine.Module
     @previousY = @y
     
   render: ->
-    @world.context.fillStyle = @fillStyle
-    @world.context.fillRect(@x, @y, @width, @height)
+    unless @hidden
+      @world.context.fillStyle = @fillStyle
+      @world.context.fillRect(@x, @y, @width, @height)
   
   update: ->
     @applyPhysics()
@@ -136,4 +138,7 @@ class RaY.Engine.Rectangle extends RaY.Engine.Module
   endFalling: ->
     @falling = false
     @fallingCounter = 0
+    
+  hide: -> @hidden = true
+  show: -> @hidden = false
 

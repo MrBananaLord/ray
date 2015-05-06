@@ -217,6 +217,7 @@ RaY.Data.Levels = [
   }
   {
     name: "The End"
+    gui: "hidden"
     background: {
       fillStyle: "#f34"
       width: 640

@@ -9,7 +9,7 @@ class RaY.Engine.Sprite extends RaY.Engine.Rectangle
     super
 
   drawImage: (sourceX, sourceY, destinationX, destinationY) ->
-    if @image.isReady()
+    if @image.isReady() and !@hidden
       @world.context.drawImage(
         @image.image,
         @activeAnimation()["sourceX"] + @sourceWidth * @frame,
