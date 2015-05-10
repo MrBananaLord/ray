@@ -34,6 +34,8 @@
 
     Rectangle.prototype.falling = false;
 
+    Rectangle.prototype.hidden = false;
+
     function Rectangle(world, options) {
       var option, _i, _len, _ref;
 
@@ -44,7 +46,7 @@
       this.collidesWith = __bind(this.collidesWith, this);
       this.setPosition = __bind(this.setPosition, this);
       this.applyPhysics = __bind(this.applyPhysics, this);
-      _ref = ['x', 'y', 'width', 'height', 'fillStyle'];
+      _ref = ['x', 'y', 'width', 'height', 'fillStyle', 'hidden'];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         option = _ref[_i];
         this[option] = options[option] || this[option];
@@ -81,8 +83,10 @@
     };
 
     Rectangle.prototype.render = function() {
-      this.world.context.fillStyle = this.fillStyle;
-      return this.world.context.fillRect(this.x, this.y, this.width, this.height);
+      if (!this.hidden) {
+        this.world.context.fillStyle = this.fillStyle;
+        return this.world.context.fillRect(this.x, this.y, this.width, this.height);
+      }
     };
 
     Rectangle.prototype.update = function() {
@@ -222,6 +226,14 @@
     Rectangle.prototype.endFalling = function() {
       this.falling = false;
       return this.fallingCounter = 0;
+    };
+
+    Rectangle.prototype.hide = function() {
+      return this.hidden = true;
+    };
+
+    Rectangle.prototype.show = function() {
+      return this.hidden = false;
     };
 
     return Rectangle;

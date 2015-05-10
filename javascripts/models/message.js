@@ -23,9 +23,9 @@
 
     Message.prototype.y = 10;
 
-    Message.prototype.contentX = 10;
+    Message.prototype.contentX = 0;
 
-    Message.prototype.contentY = 10;
+    Message.prototype.contentY = 0;
 
     function Message(world, content, options) {
       var option, _i, _len, _ref;
@@ -47,7 +47,7 @@
       Message.__super__.render.apply(this, arguments);
       this.world.context.font = this.font;
       this.world.context.fillStyle = this.textFillStyle;
-      return this.world.context.fillText(this.content, this.contentX, this.contentY);
+      return this.world.context.fillText(this.content, this.x + this.contentX, this.y + this.contentY);
     };
 
     return Message;

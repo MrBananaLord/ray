@@ -17,7 +17,7 @@
 
     World.prototype.gravity = 1;
 
-    World.prototype.levels = ["Tutorial 1", "Xtreme"];
+    World.prototype.levels = ["Tutorial 1", "Xtreme", "The End"];
 
     function World() {
       var _this = this;

@@ -21,6 +21,8 @@
 
     Goal.prototype.yellowHeroFinished = false;
 
+    Goal.prototype.completed = false;
+
     function Goal(world, x, y) {
       this.world = world;
       this.x = x;
@@ -54,7 +56,8 @@
       if (element instanceof RaY.Models.YellowHero) {
         this.yellowHeroFinished = true;
       }
-      if (this.redHeroFinished && this.yellowHeroFinished && !this.world.currentLevel.completed) {
+      if (this.redHeroFinished && this.yellowHeroFinished && !this.completed) {
+        this.completed = true;
         return this.world.trigger("levelCompleted");
       }
     };

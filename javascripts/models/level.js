@@ -28,6 +28,9 @@
         return level.name === name;
       });
       this.bindToEvents();
+      if (this.data.gui === "hidden") {
+        this.world.trigger("hideGui");
+      }
       this.buildScene();
     }
 
@@ -82,11 +85,13 @@
     Level.prototype.createGoal = function() {
       var goal;
 
-      goal = new RaY.Models.Goal(this.world);
-      goal.x = this.data.goal.x;
-      goal.y = this.data.goal.y;
-      this.elements.push(goal);
-      return goal;
+      if (this.data.goal) {
+        goal = new RaY.Models.Goal(this.world);
+        goal.x = this.data.goal.x;
+        goal.y = this.data.goal.y;
+        this.elements.push(goal);
+        return goal;
+      }
     };
 
     Level.prototype.buildScene = function() {
@@ -118,15 +123,15 @@
     Level.prototype.destroyScene = function() {
       var element, _i, _len, _ref;
 
-      this.redHero = this.redHero.destroy();
-      this.yellowHero = this.yellowHero.destroy();
+      this.redHero.destroy();
+      this.yellowHero.destroy();
       _ref = this.elements;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         element = _ref[_i];
         element.destroy();
       }
       this.elements = [];
-      return this.background = this.background.destroy();
+      return this.background.destroy();
     };
 
     Level.prototype.resetScene = function() {

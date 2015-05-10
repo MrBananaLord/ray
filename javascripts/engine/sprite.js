@@ -19,7 +19,7 @@
     }
 
     Sprite.prototype.drawImage = function(sourceX, sourceY, destinationX, destinationY) {
-      if (this.image.isReady()) {
+      if (this.image.isReady() && !this.hidden) {
         return this.world.context.drawImage(this.image.image, this.activeAnimation()["sourceX"] + this.sourceWidth * this.frame, this.activeAnimation()["sourceY"], this.sourceWidth, this.sourceHeight, destinationX, destinationY, this.width, this.height);
       }
     };

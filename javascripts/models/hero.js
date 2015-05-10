@@ -33,6 +33,7 @@
 
     function Hero(world, imagePath) {
       this.world = world;
+      this.rainbow = new RaY.Models.Rainbow(this.world);
       Hero.__super__.constructor.call(this, this.world, imagePath);
       this.jumpSound = this.world.sounds("jump");
     }
@@ -45,6 +46,7 @@
       if (this.jumping) {
         this.jump();
       }
+      this.spawnRainbow();
       return Hero.__super__.update.apply(this, arguments);
     };
 
@@ -123,6 +125,14 @@
       return this.activateAnimation(this.activeAnimationName.indexOf("Left") !== -1 ? "stayLeft" : "stayRight");
     };
 
+    Hero.prototype.spawnRainbow = function() {
+      if (this.activeAnimationName.indexOf("Left") !== -1) {
+        return this.rainbow.setPosition(this.x + 23, this.y + 1);
+      } else {
+        return this.rainbow.setPosition(this.x + 7, this.y + 1);
+      }
+    };
+
     Hero.prototype.animations = function() {
       return {
         stayRight: {
@@ -150,6 +160,11 @@
           sourceY: this.sourceHeight
         }
       };
+    };
+
+    Hero.prototype.destroy = function() {
+      this.rainbow.destroy();
+      return Hero.__super__.destroy.apply(this, arguments);
     };
 
     return Hero;

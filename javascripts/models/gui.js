@@ -23,6 +23,8 @@
 
     Gui.prototype.level = 1;
 
+    Gui.prototype.hidden = false;
+
     function Gui(world) {
       this.world = world;
       this.bindToEvents();
@@ -35,8 +37,14 @@
       this.bind(this.world, "levelCompleted", function() {
         return _this.levelCompleted();
       });
-      return this.bind(this.world, "resetGui", function() {
+      this.bind(this.world, "resetGui", function() {
         return _this.reset();
+      });
+      this.bind(this.world, "hideGui", function() {
+        return _this.hide();
+      });
+      return this.bind(this.world, "showGui", function() {
+        return _this.show();
       });
     };
 
@@ -73,21 +81,25 @@
         height: 32,
         width: 140 + this.resetCountLength(),
         fillStyle: "#cc35cc",
-        contentX: 11,
-        contentY: 27,
+        contentX: 7,
+        contentY: 22,
         textFillStyle: "#fff"
       });
       return this.resetCounter;
     };
 
     Gui.prototype.buildScene = function() {
-      this.createBackground();
-      return this.createResetCounter();
+      if (!this.hidden) {
+        this.createBackground();
+        return this.createResetCounter();
+      }
     };
 
     Gui.prototype.destroyScene = function() {
-      this.resetCounter = this.resetCounter.destroy();
-      return this.background = this.background.destroy();
+      if (!this.hidden) {
+        this.resetCounter = this.resetCounter.destroy();
+        return this.background = this.background.destroy();
+      }
     };
 
     Gui.prototype.resetScene = function() {
@@ -103,6 +115,16 @@
     Gui.prototype.destroy = function() {
       this.destroyScene();
       return this.purge();
+    };
+
+    Gui.prototype.hide = function() {
+      this.destroyScene();
+      return this.hidden = true;
+    };
+
+    Gui.prototype.show = function() {
+      this.hidden = false;
+      return this.buildScene();
     };
 
     return Gui;

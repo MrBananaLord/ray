@@ -160,6 +160,8 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
     Rectangle.prototype.falling = false;
 
+    Rectangle.prototype.hidden = false;
+
     function Rectangle(world, options) {
       var option, _i, _len, _ref;
 
@@ -170,7 +172,7 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
       this.collidesWith = __bind(this.collidesWith, this);
       this.setPosition = __bind(this.setPosition, this);
       this.applyPhysics = __bind(this.applyPhysics, this);
-      _ref = ['x', 'y', 'width', 'height', 'fillStyle'];
+      _ref = ['x', 'y', 'width', 'height', 'fillStyle', 'hidden'];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         option = _ref[_i];
         this[option] = options[option] || this[option];
@@ -207,8 +209,10 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
     };
 
     Rectangle.prototype.render = function() {
-      this.world.context.fillStyle = this.fillStyle;
-      return this.world.context.fillRect(this.x, this.y, this.width, this.height);
+      if (!this.hidden) {
+        this.world.context.fillStyle = this.fillStyle;
+        return this.world.context.fillRect(this.x, this.y, this.width, this.height);
+      }
     };
 
     Rectangle.prototype.update = function() {
@@ -350,6 +354,14 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
       return this.fallingCounter = 0;
     };
 
+    Rectangle.prototype.hide = function() {
+      return this.hidden = true;
+    };
+
+    Rectangle.prototype.show = function() {
+      return this.hidden = false;
+    };
+
     return Rectangle;
 
   })(RaY.Engine.Module);
@@ -403,7 +415,7 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
     }
 
     Sprite.prototype.drawImage = function(sourceX, sourceY, destinationX, destinationY) {
-      if (this.image.isReady()) {
+      if (this.image.isReady() && !this.hidden) {
         return this.world.context.drawImage(this.image.image, this.activeAnimation()["sourceX"] + this.sourceWidth * this.frame, this.activeAnimation()["sourceY"], this.sourceWidth, this.sourceHeight, destinationX, destinationY, this.width, this.height);
       }
     };
@@ -794,6 +806,8 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
     Goal.prototype.yellowHeroFinished = false;
 
+    Goal.prototype.completed = false;
+
     function Goal(world, x, y) {
       this.world = world;
       this.x = x;
@@ -827,7 +841,8 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
       if (element instanceof RaY.Models.YellowHero) {
         this.yellowHeroFinished = true;
       }
-      if (this.redHeroFinished && this.yellowHeroFinished && !this.world.currentLevel.completed) {
+      if (this.redHeroFinished && this.yellowHeroFinished && !this.completed) {
+        this.completed = true;
         return this.world.trigger("levelCompleted");
       }
     };
@@ -867,6 +882,8 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
     Gui.prototype.level = 1;
 
+    Gui.prototype.hidden = false;
+
     function Gui(world) {
       this.world = world;
       this.bindToEvents();
@@ -879,8 +896,14 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
       this.bind(this.world, "levelCompleted", function() {
         return _this.levelCompleted();
       });
-      return this.bind(this.world, "resetGui", function() {
+      this.bind(this.world, "resetGui", function() {
         return _this.reset();
+      });
+      this.bind(this.world, "hideGui", function() {
+        return _this.hide();
+      });
+      return this.bind(this.world, "showGui", function() {
+        return _this.show();
       });
     };
 
@@ -917,21 +940,25 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
         height: 32,
         width: 140 + this.resetCountLength(),
         fillStyle: "#cc35cc",
-        contentX: 11,
-        contentY: 27,
+        contentX: 7,
+        contentY: 22,
         textFillStyle: "#fff"
       });
       return this.resetCounter;
     };
 
     Gui.prototype.buildScene = function() {
-      this.createBackground();
-      return this.createResetCounter();
+      if (!this.hidden) {
+        this.createBackground();
+        return this.createResetCounter();
+      }
     };
 
     Gui.prototype.destroyScene = function() {
-      this.resetCounter = this.resetCounter.destroy();
-      return this.background = this.background.destroy();
+      if (!this.hidden) {
+        this.resetCounter = this.resetCounter.destroy();
+        return this.background = this.background.destroy();
+      }
     };
 
     Gui.prototype.resetScene = function() {
@@ -947,6 +974,16 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
     Gui.prototype.destroy = function() {
       this.destroyScene();
       return this.purge();
+    };
+
+    Gui.prototype.hide = function() {
+      this.destroyScene();
+      return this.hidden = true;
+    };
+
+    Gui.prototype.show = function() {
+      this.hidden = false;
+      return this.buildScene();
     };
 
     return Gui;
@@ -989,6 +1026,7 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
     function Hero(world, imagePath) {
       this.world = world;
+      this.rainbow = new RaY.Models.Rainbow(this.world);
       Hero.__super__.constructor.call(this, this.world, imagePath);
       this.jumpSound = this.world.sounds("jump");
     }
@@ -1001,6 +1039,7 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
       if (this.jumping) {
         this.jump();
       }
+      this.spawnRainbow();
       return Hero.__super__.update.apply(this, arguments);
     };
 
@@ -1079,6 +1118,14 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
       return this.activateAnimation(this.activeAnimationName.indexOf("Left") !== -1 ? "stayLeft" : "stayRight");
     };
 
+    Hero.prototype.spawnRainbow = function() {
+      if (this.activeAnimationName.indexOf("Left") !== -1) {
+        return this.rainbow.setPosition(this.x + 23, this.y + 1);
+      } else {
+        return this.rainbow.setPosition(this.x + 7, this.y + 1);
+      }
+    };
+
     Hero.prototype.animations = function() {
       return {
         stayRight: {
@@ -1106,6 +1153,11 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
           sourceY: this.sourceHeight
         }
       };
+    };
+
+    Hero.prototype.destroy = function() {
+      this.rainbow.destroy();
+      return Hero.__super__.destroy.apply(this, arguments);
     };
 
     return Hero;
@@ -1143,6 +1195,9 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
         return level.name === name;
       });
       this.bindToEvents();
+      if (this.data.gui === "hidden") {
+        this.world.trigger("hideGui");
+      }
       this.buildScene();
     }
 
@@ -1197,11 +1252,13 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
     Level.prototype.createGoal = function() {
       var goal;
 
-      goal = new RaY.Models.Goal(this.world);
-      goal.x = this.data.goal.x;
-      goal.y = this.data.goal.y;
-      this.elements.push(goal);
-      return goal;
+      if (this.data.goal) {
+        goal = new RaY.Models.Goal(this.world);
+        goal.x = this.data.goal.x;
+        goal.y = this.data.goal.y;
+        this.elements.push(goal);
+        return goal;
+      }
     };
 
     Level.prototype.buildScene = function() {
@@ -1233,15 +1290,15 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
     Level.prototype.destroyScene = function() {
       var element, _i, _len, _ref;
 
-      this.redHero = this.redHero.destroy();
-      this.yellowHero = this.yellowHero.destroy();
+      this.redHero.destroy();
+      this.yellowHero.destroy();
       _ref = this.elements;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         element = _ref[_i];
         element.destroy();
       }
       this.elements = [];
-      return this.background = this.background.destroy();
+      return this.background.destroy();
     };
 
     Level.prototype.resetScene = function() {
@@ -1292,9 +1349,9 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
     Message.prototype.y = 10;
 
-    Message.prototype.contentX = 10;
+    Message.prototype.contentX = 0;
 
-    Message.prototype.contentY = 10;
+    Message.prototype.contentY = 0;
 
     function Message(world, content, options) {
       var option, _i, _len, _ref;
@@ -1316,10 +1373,38 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
       Message.__super__.render.apply(this, arguments);
       this.world.context.font = this.font;
       this.world.context.fillStyle = this.textFillStyle;
-      return this.world.context.fillText(this.content, this.contentX, this.contentY);
+      return this.world.context.fillText(this.content, this.x + this.contentX, this.y + this.contentY);
     };
 
     return Message;
+
+  })(RaY.Engine.Rectangle);
+
+}).call(this);
+(function() {
+  var __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  RaY.Models.Particle = (function(_super) {
+    __extends(Particle, _super);
+
+    function Particle(world) {
+      this.world = world;
+      Particle.__super__.constructor.call(this, this.world, {
+        x: 10,
+        y: 10,
+        width: 5,
+        height: 5,
+        fillStyle: "#fff"
+      });
+    }
+
+    Particle.prototype.destroy = function() {
+      console.debug('sad');
+      return this.purge();
+    };
+
+    return Particle;
 
   })(RaY.Engine.Rectangle);
 
@@ -1348,6 +1433,80 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
     return Platform;
 
   })(RaY.Engine.Rectangle);
+
+}).call(this);
+(function() {
+  var __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  RaY.Models.Rainbow = (function(_super) {
+    __extends(Rainbow, _super);
+
+    Rainbow.include(RaY.Engine.Modules.Callbacks);
+
+    function Rainbow(world) {
+      var _this = this;
+
+      this.world = world;
+      this.particles = _(6).times(function(rowIndex) {
+        var fillStyle;
+
+        fillStyle = ["#f00", "#f80", "#ff0", "#0f0", "#00f", "#80f"][rowIndex];
+        return _(10).times(function(particleIndex) {
+          return new RaY.Engine.Rectangle(_this.world, {
+            x: 10,
+            y: 10,
+            width: 4 - particleIndex / 3,
+            height: 4 - particleIndex / 3,
+            fillStyle: fillStyle
+          });
+        });
+      });
+    }
+
+    Rainbow.prototype.destroy = function() {
+      var particle, row, _i, _j, _len, _len1, _ref;
+
+      _ref = this.particles;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        row = _ref[_i];
+        for (_j = 0, _len1 = row.length; _j < _len1; _j++) {
+          particle = row[_j];
+          particle.destroy();
+        }
+      }
+      this.particles = [];
+      return this.purge();
+    };
+
+    Rainbow.prototype.setPosition = function(x, y) {
+      var originalX, originalY, particle, particleIndex, row, rowIndex, tmpX, tmpY, _i, _len, _ref, _ref1, _ref2, _results;
+
+      _ref = [x, y], originalX = _ref[0], originalY = _ref[1];
+      _ref1 = this.particles;
+      _results = [];
+      for (rowIndex = _i = 0, _len = _ref1.length; _i < _len; rowIndex = ++_i) {
+        row = _ref1[rowIndex];
+        _ref2 = [originalX, originalY + rowIndex * 3], x = _ref2[0], y = _ref2[1];
+        _results.push((function() {
+          var _j, _len1, _ref3, _ref4, _results1;
+
+          _results1 = [];
+          for (particleIndex = _j = 0, _len1 = row.length; _j < _len1; particleIndex = ++_j) {
+            particle = row[particleIndex];
+            _ref3 = [particle.x, particle.y - particleIndex / 8], tmpX = _ref3[0], tmpY = _ref3[1];
+            particle.setPosition(x, y + particleIndex / 8);
+            _results1.push((_ref4 = [tmpX, tmpY], x = _ref4[0], y = _ref4[1], _ref4));
+          }
+          return _results1;
+        })());
+      }
+      return _results;
+    };
+
+    return Rainbow;
+
+  })(RaY.Engine.Module);
 
 }).call(this);
 (function() {
@@ -1402,7 +1561,7 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
     World.prototype.gravity = 1;
 
-    World.prototype.levels = ["Tutorial 1", "Xtreme"];
+    World.prototype.levels = ["Tutorial 1", "Xtreme", "The End"];
 
     function World() {
       var _this = this;
@@ -1529,6 +1688,92 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
         {
           klass: RaY.Models.Platform,
           elements: [[0, 0, 5, 480, "#fff"], [0, 0, 640, 5, "#fff"], [635, 0, 5, 480, "#fff"], [0, 475, 640, 5, "#fff"]]
+        }, {
+          klass: RaY.Models.Message,
+          elements: [
+            [
+              'Oh no! Someone stole your rainbow!', {
+                x: 185,
+                y: 125,
+                width: 255,
+                height: 32,
+                contentX: 10,
+                contentY: 22
+              }
+            ], [
+              'a', {
+                x: 50,
+                y: 350,
+                width: 20,
+                height: 20,
+                contentX: 7,
+                contentY: 15
+              }
+            ], [
+              's', {
+                x: 75,
+                y: 350,
+                width: 20,
+                height: 20,
+                contentX: 7,
+                contentY: 15
+              }
+            ], [
+              'd', {
+                x: 100,
+                y: 350,
+                width: 20,
+                height: 20,
+                contentX: 6,
+                contentY: 15
+              }
+            ], [
+              'w', {
+                x: 75,
+                y: 325,
+                width: 20,
+                height: 20,
+                contentX: 4,
+                contentY: 15
+              }
+            ], [
+              '←', {
+                x: 500,
+                y: 350,
+                width: 20,
+                height: 20,
+                contentX: 2,
+                contentY: 15
+              }
+            ], [
+              '↓', {
+                x: 525,
+                y: 350,
+                width: 20,
+                height: 20,
+                contentX: 6,
+                contentY: 15
+              }
+            ], [
+              '→', {
+                x: 550,
+                y: 350,
+                width: 20,
+                height: 20,
+                contentX: 3,
+                contentY: 15
+              }
+            ], [
+              '↑', {
+                x: 525,
+                y: 325,
+                width: 20,
+                height: 20,
+                contentX: 6,
+                contentY: 15
+              }
+            ]
+          ]
         }
       ]
     }, {
@@ -1557,6 +1802,29 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
         }, {
           klass: RaY.Models.Box,
           elements: [[70, 200, "#e92"], [70, 50, "#e92"], [70, 120, "#e92"], [170, 160, "#e92"], [550, 160, "#e92"], [280, 50, "#e92"], [470, 50, "#e92"], [510, 455, "#e92"], [530, 455, "#e92"], [510, 434, "#e92"], [530, 434, "#e92"]]
+        }
+      ]
+    }, {
+      name: "The End",
+      gui: "hidden",
+      background: {
+        fillStyle: "#f34",
+        width: 640,
+        height: 480
+      },
+      yellowHero: {
+        x: 50,
+        y: 454
+      },
+      redHero: {
+        x: 560,
+        y: 454,
+        firstAnimation: "stayLeft"
+      },
+      elements: [
+        {
+          klass: RaY.Models.Platform,
+          elements: [[0, 0, 5, 480, "#fff"], [0, 0, 640, 5, "#fff"], [635, 0, 5, 480, "#fff"], [0, 475, 640, 5, "#fff"]]
         }
       ]
     }
