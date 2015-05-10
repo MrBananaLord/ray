@@ -7,6 +7,7 @@ class RaY.Models.Goal extends RaY.Engine.Entity
   height: 30
   redHeroFinished: false
   yellowHeroFinished: false
+  completed: false
   
   constructor: (@world, @x, @y) ->
     super(@world, "food")
@@ -25,10 +26,10 @@ class RaY.Models.Goal extends RaY.Engine.Entity
   manageCollisionWith: (element) ->
     @redHeroFinished = true if element instanceof RaY.Models.RedHero
     @yellowHeroFinished = true if element instanceof RaY.Models.YellowHero
-    if @redHeroFinished and @yellowHeroFinished and !@world.currentLevel.completed
-     @world.trigger("levelCompleted")
+    if @redHeroFinished and @yellowHeroFinished and !@completed
+      @completed = true
+      @world.trigger("levelCompleted")
      
-    
   resetGoalObjectives: ->
     @yellowHeroFinished = false
     @redHeroFinished = false

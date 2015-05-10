@@ -6,7 +6,7 @@ class RaY.Models.World extends RaY.Engine.Module
   height: 480
   gravity: 1
   levels: [
-    "Tutorial 1"
+    "Tutorial 1",
     "Xtreme",
     "The End"
   ]
