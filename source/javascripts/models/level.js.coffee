@@ -66,14 +66,14 @@ class RaY.Models.Level extends RaY.Engine.Module
         @elements.push(createElement(element.klass, [@world].concat(subelement)))
   
   destroyScene: ->
-    @redHero = @redHero.destroy()
-    @yellowHero = @yellowHero.destroy()
+    @redHero.destroy()
+    @yellowHero.destroy()
     
     for element in @elements
       element.destroy()
     @elements = []
     
-    @background = @background.destroy()
+    @background.destroy()
     
   resetScene: ->
     @destroyScene()
