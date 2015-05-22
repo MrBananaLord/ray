@@ -17,26 +17,26 @@ class RaY.Models.Hero extends RaY.Engine.Entity
     @rainbow = new RaY.Models.Rainbow(@world)
     super(@world, imagePath)
     @jumpSound = @world.sounds("jump")
-        
+
   update: ->
     @animateStay() unless @moving
     @moving = false
     @jump() if @jumping
     @spawnRainbow()
     super
-    
+
   moveLeft: ->
     @moving = true
     @activateAnimation("runLeft")
     @x -= @speed
     @setPosition(@x, @y)
-  
+
   moveRight: ->
     @moving = true
     @activateAnimation("runRight")
     @x += @speed
     @setPosition(@x, @y)
-  
+
   jump: ->
     @moving = true
     unless @falling
@@ -45,17 +45,17 @@ class RaY.Models.Hero extends RaY.Engine.Entity
       if @jumpingCounter >= @maximumSpeed
         @endJumping()
         @startFalling()
-    
+
   startJumping: ->
     @jumpSound.play() unless @jumping or @falling
     @jumping = true
   endJumping: ->
     @jumping = false
     @jumpingCounter = 0
-    
+
   manageCollisionWith: (element) ->
     super unless element instanceof RaY.Models.Hero
-    
+
   leftSideCollisionWith: (element) ->
     super
     element.applyForce(-@speed, 0)
@@ -74,7 +74,7 @@ class RaY.Models.Hero extends RaY.Engine.Entity
     super
     @endJumping()
     @startFalling()
-    
+
   animateStay: ->
     @activateAnimation(
       if @activeAnimationName.indexOf("Left") != -1
@@ -83,7 +83,7 @@ class RaY.Models.Hero extends RaY.Engine.Entity
         "stayRight"
     )
 
-  spawnRainbow: ->  
+  spawnRainbow: ->
     if @activeAnimationName.indexOf("Left") != -1
       @rainbow.setPosition(@x + 23, @y + 1)
     else
@@ -110,7 +110,7 @@ class RaY.Models.Hero extends RaY.Engine.Entity
       delay: 6
       sourceX: 0
       sourceY: @sourceHeight
-      
+
   destroy: ->
     @rainbow.destroy()
     super
