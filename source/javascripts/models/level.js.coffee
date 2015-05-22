@@ -6,10 +6,9 @@ class RaY.Models.Level extends RaY.Engine.Module
   width: 640
   completed: false
   elements: []
-  
+
   constructor: (@world, @name) ->
-    @data = _.find RaY.Data.Levels, (level) ->
-      level.name == name
+    @data = _.find RaY.Data.Levels, (level) => level.name == @name
     @bindToEvents()
     @world.trigger("hideGui") if @data.gui == "hidden"
     @buildScene()
@@ -18,20 +17,20 @@ class RaY.Models.Level extends RaY.Engine.Module
     @bind @world, "levelCompleted", () => @levelCompleted()
     @bind @world, "keyUp", (name) =>
       if name == "r"
-        @resetScene() 
+        @resetScene()
         @world.trigger("resetGui")
-    
+
   levelCompleted: ->
     unless @completed
       @completed = true
-      
+
   createBackground: ->
     @background = new RaY.Engine.Rectangle(@world)
     @background.fillStyle = @data.background.fillStyle
     @background.width = @data.background.width
     @background.height = @data.background.height
     return @background
-  
+
   createYellowHero: ->
     @yellowHero = new RaY.Models.YellowHero(@world)
     @yellowHero.x = @data.yellowHero.x
@@ -39,7 +38,7 @@ class RaY.Models.Level extends RaY.Engine.Module
     if @data.yellowHero.firstAnimation
       @yellowHero.activateAnimation(@data.yellowHero.firstAnimation)
     return @yellowHero
-  
+
   createRedHero: ->
     @redHero = new RaY.Models.RedHero(@world)
     @redHero.x = @data.redHero.x
@@ -47,7 +46,7 @@ class RaY.Models.Level extends RaY.Engine.Module
     if @data.redHero.firstAnimation
       @redHero.activateAnimation(@data.redHero.firstAnimation)
     return @redHero
-  
+
   createGoal: ->
     if @data.goal
       goal = new RaY.Models.Goal(@world)
@@ -55,7 +54,7 @@ class RaY.Models.Level extends RaY.Engine.Module
       goal.y = @data.goal.y
       @elements.push(goal)
       return goal
-    
+
   buildScene: ->
     @createBackground()
     @createGoal()
@@ -64,27 +63,26 @@ class RaY.Models.Level extends RaY.Engine.Module
     for element in @data.elements
       for subelement in element.elements
         @elements.push(createElement(element.klass, [@world].concat(subelement)))
-  
+
   destroyScene: ->
     @redHero.destroy()
     @yellowHero.destroy()
-    
+
     for element in @elements
       element.destroy()
     @elements = []
-    
+
     @background.destroy()
-    
+
   resetScene: ->
     @destroyScene()
     @buildScene()
- 
+
   destroy: ->
     @destroyScene()
     @purge()
-    
+
   createElement = (klass, attributes) ->
     tmpObj = Object.create(klass.prototype)
     klass.apply(tmpObj, attributes)
     tmpObj
-
