@@ -6,7 +6,10 @@ class RaY.Models.Rainbow extends RaY.Engine.Module
 
   constructor: (@world) ->
     @particles = _(6).times (rowIndex) =>
-      fillStyle = ["#f00", "#f80", "#ff0", "#0f0", "#00f", "#80f"][rowIndex]
+      fillStyle = if 5 - rowIndex < @world.currentLevelId
+        ["#f00", "#f80", "#ff0", "#0f0", "#00f", "#80f"][rowIndex]
+      else
+        ["#fff", "#ddd", "#bbb", "#999", "#777", "#555"][rowIndex]
 
       _(@rainbowLength).times (particleIndex) =>
         new RaY.Engine.Rectangle(@world, {

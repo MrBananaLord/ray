@@ -5,6 +5,7 @@ class RaY.Models.World extends RaY.Engine.Module
   width: 640
   height: 480
   gravity: 1
+  currentLevelId: 0
   levels: [
     "Tutorial 1",
     "Xtreme",
@@ -15,14 +16,15 @@ class RaY.Models.World extends RaY.Engine.Module
     @context = @createCanvasAndGetContext()
     @imageRepository = new RaY.Engine.ImageRepository
     @soundRepository = new RaY.Engine.SoundRepository
-    @currentLevel = new RaY.Models.Level(this, "Tutorial 1")
+    @currentLevel = new RaY.Models.Level(this, @levels[@currentLevelId])
     @gui = new RaY.Models.Gui(this)
     @bind this, "levelCompleted", () => @proceedToNextLevel()
     
   proceedToNextLevel: ->
-    if nextLevelName = @levels[@levels.indexOf(@currentLevel.name) + 1]
+    if @currentLevelId + 1 < @levels.length
+      @currentLevelId += 1
       @currentLevel.destroy()
-      @currentLevel = new RaY.Models.Level(this, nextLevelName)
+      @currentLevel = new RaY.Models.Level(this, @levels[@currentLevelId])
       @gui.resetScene()
       
   createCanvasAndGetContext: ->
