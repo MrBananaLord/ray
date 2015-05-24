@@ -85,7 +85,7 @@ class RaY.Models.Hero extends RaY.Engine.Entity
 
   spawnRainbow: ->
     if @activeAnimationName.indexOf("Left") != -1
-      @rainbow.setPosition(@x + 23, @y + 1)
+      @rainbow.setPosition(@x + 22, @y + 1)
     else
       @rainbow.setPosition(@x + 7, @y + 1)
 
