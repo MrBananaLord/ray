@@ -2,7 +2,7 @@ RaY.Data.Levels = [
   {
     name: "Tutorial 1"
     background: {
-      fillStyle: "#234"
+      fillStyle: "#80f"
       width: 640
       height: 480
     }
@@ -34,11 +34,22 @@ RaY.Data.Levels = [
         klass: RaY.Models.Message
         elements: [
           [
-            'Oh no! Someone stole your rainbow!',
+            'Oh no! Someone stole your rainbow colors!',
             {
-              x: 185
+              x: 175
               y: 125
-              width: 255
+              width: 340
+              height: 32
+              contentX: 10
+              contentY: 22
+            }
+          ],
+          [
+            'Get to the food bowl to regain colors of rainbow.',
+            {
+              x: 175
+              y: 155
+              width: 340
               height: 32
               contentX: 10
               contentY: 22
@@ -46,7 +57,7 @@ RaY.Data.Levels = [
           ],
           [
             'a',
-            { 
+            {
               x: 50
               y: 350
               width: 20
@@ -57,7 +68,7 @@ RaY.Data.Levels = [
           ],
           [
             's',
-            { 
+            {
               x: 75
               y: 350
               width: 20
@@ -68,7 +79,7 @@ RaY.Data.Levels = [
           ],
           [
             'd',
-            { 
+            {
               x: 100
               y: 350
               width: 20
@@ -79,7 +90,7 @@ RaY.Data.Levels = [
           ],
           [
             'w',
-            { 
+            {
               x: 75
               y: 325
               width: 20
@@ -90,7 +101,7 @@ RaY.Data.Levels = [
           ],
           [
             '←',
-            { 
+            {
               x: 500
               y: 350
               width: 20
@@ -101,7 +112,7 @@ RaY.Data.Levels = [
           ],
           [
             '↓',
-            { 
+            {
               x: 525
               y: 350
               width: 20
@@ -112,7 +123,7 @@ RaY.Data.Levels = [
           ],
           [
             '→',
-            { 
+            {
               x: 550
               y: 350
               width: 20
@@ -123,7 +134,7 @@ RaY.Data.Levels = [
           ],
           [
             '↑',
-            { 
+            {
               x: 525
               y: 325
               width: 20
@@ -132,6 +143,100 @@ RaY.Data.Levels = [
               contentY: 15
             }
           ]
+        ]
+      }
+    ]
+  }
+  {
+    name: "Tutorial 2"
+    background: {
+      fillStyle: "#00f"
+      width: 640
+      height: 480
+    }
+    yellowHero: {
+      x: 50
+      y: 395
+    }
+    redHero: {
+      x: 460
+      y: 395
+      firstAnimation: "stayLeft"
+    }
+    goal: {
+      x: 560
+      y: 385
+    }
+    elements: [
+      {
+        klass: RaY.Models.Platform
+        elements: [
+          # sides
+          [0, 0, 5, 480, "#fff"]
+          [0, 0, 640, 5, "#fff"]
+          [635, 0, 5, 480, "#fff"]
+          [0, 475, 640, 5, "#fff"]
+          # platforms
+          [0, 415, 240, 5, "#fff"]
+          [400, 415, 240, 5, "#fff"]
+          [400, 415, 5, 70, "#fff"]
+          [240, 415, 5, 70, "#fff"]
+        ]
+      }
+      {
+        klass: RaY.Models.Box
+        elements: [
+          [400, 395, "#e92"]
+        ]
+      }
+    ]
+  }
+  {
+    name: "First challenge"
+    background: {
+      fillStyle: "#0f0"
+      width: 640
+      height: 480
+    }
+    yellowHero: {
+      x: 50
+      y: 395
+    }
+    redHero: {
+      x: 480
+      y: 375
+      firstAnimation: "stayLeft"
+    }
+    goal: {
+      x: 560
+      y: 370
+    }
+    elements: [
+      {
+        klass: RaY.Models.Platform
+        elements: [
+          # sides
+          [0, 0, 5, 480, "#fff"]
+          [0, 0, 640, 5, "#fff"]
+          [635, 0, 5, 480, "#fff"]
+          [0, 475, 640, 5, "#fff"]
+          # platforms
+          [0, 415, 240, 5, "#fff"]
+          [400, 400, 240, 5, "#fff"]
+          [400, 400, 5, 80, "#fff"]
+          [240, 415, 5, 70, "#fff"]
+
+          [240, 380, 25, 5, "#fff"]
+          [270, 360, 25, 5, "#fff"]
+          [300, 340, 50, 5, "#fff"]
+          [350, 0, 5, 320, "#fff"]
+        ]
+      }
+      {
+        klass: RaY.Models.Box
+        elements: [
+          [400, 375, "#e92"]
+          [325, 300, "#e92"]
         ]
       }
     ]
@@ -206,7 +311,7 @@ RaY.Data.Levels = [
           [550, 160, "#e92"]
           [280, 50, "#e92"]
           [470, 50, "#e92"]
-          
+
           [510, 455, "#e92"]
           [530, 455, "#e92"]
           [510, 434, "#e92"]
