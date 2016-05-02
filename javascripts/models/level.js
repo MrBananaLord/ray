@@ -1,11 +1,11 @@
 (function() {
-  var __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
 
-  RaY.Models.Level = (function(_super) {
+  RaY.Models.Level = (function(superClass) {
     var createElement;
 
-    __extends(Level, _super);
+    extend(Level, superClass);
 
     Level.include(RaY.Engine.Modules.Callbacks);
 
@@ -21,12 +21,14 @@
 
     Level.prototype.elements = [];
 
-    function Level(world, name) {
+    function Level(world, name1) {
       this.world = world;
-      this.name = name;
-      this.data = _.find(RaY.Data.Levels, function(level) {
-        return level.name === name;
-      });
+      this.name = name1;
+      this.data = _.find(RaY.Data.Levels, (function(_this) {
+        return function(level) {
+          return level.name === _this.name;
+        };
+      })(this));
       this.bindToEvents();
       if (this.data.gui === "hidden") {
         this.world.trigger("hideGui");
@@ -35,17 +37,19 @@
     }
 
     Level.prototype.bindToEvents = function() {
-      var _this = this;
-
-      this.bind(this.world, "levelCompleted", function() {
-        return _this.levelCompleted();
-      });
-      return this.bind(this.world, "keyUp", function(name) {
-        if (name === "r") {
-          _this.resetScene();
-          return _this.world.trigger("resetGui");
-        }
-      });
+      this.bind(this.world, "levelCompleted", (function(_this) {
+        return function() {
+          return _this.levelCompleted();
+        };
+      })(this));
+      return this.bind(this.world, "keyUp", (function(_this) {
+        return function(name) {
+          if (name === "r") {
+            _this.resetScene();
+            return _this.world.trigger("resetGui");
+          }
+        };
+      })(this));
     };
 
     Level.prototype.levelCompleted = function() {
@@ -84,7 +88,6 @@
 
     Level.prototype.createGoal = function() {
       var goal;
-
       if (this.data.goal) {
         goal = new RaY.Models.Goal(this.world);
         goal.x = this.data.goal.x;
@@ -95,39 +98,36 @@
     };
 
     Level.prototype.buildScene = function() {
-      var element, subelement, _i, _len, _ref, _results;
-
+      var element, i, len, ref, results, subelement;
       this.createBackground();
       this.createGoal();
       this.createYellowHero();
       this.createRedHero();
-      _ref = this.data.elements;
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        element = _ref[_i];
-        _results.push((function() {
-          var _j, _len1, _ref1, _results1;
-
-          _ref1 = element.elements;
-          _results1 = [];
-          for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-            subelement = _ref1[_j];
-            _results1.push(this.elements.push(createElement(element.klass, [this.world].concat(subelement))));
+      ref = this.data.elements;
+      results = [];
+      for (i = 0, len = ref.length; i < len; i++) {
+        element = ref[i];
+        results.push((function() {
+          var j, len1, ref1, results1;
+          ref1 = element.elements;
+          results1 = [];
+          for (j = 0, len1 = ref1.length; j < len1; j++) {
+            subelement = ref1[j];
+            results1.push(this.elements.push(createElement(element.klass, [this.world].concat(subelement))));
           }
-          return _results1;
+          return results1;
         }).call(this));
       }
-      return _results;
+      return results;
     };
 
     Level.prototype.destroyScene = function() {
-      var element, _i, _len, _ref;
-
+      var element, i, len, ref;
       this.redHero.destroy();
       this.yellowHero.destroy();
-      _ref = this.elements;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        element = _ref[_i];
+      ref = this.elements;
+      for (i = 0, len = ref.length; i < len; i++) {
+        element = ref[i];
         element.destroy();
       }
       this.elements = [];
@@ -146,7 +146,6 @@
 
     createElement = function(klass, attributes) {
       var tmpObj;
-
       tmpObj = Object.create(klass.prototype);
       klass.apply(tmpObj, attributes);
       return tmpObj;

@@ -1,14 +1,12 @@
 (function() {
-  var _ref,
-    __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
 
-  RaY.Engine.Entity = (function(_super) {
-    __extends(Entity, _super);
+  RaY.Engine.Entity = (function(superClass) {
+    extend(Entity, superClass);
 
     function Entity() {
-      _ref = Entity.__super__.constructor.apply(this, arguments);
-      return _ref;
+      return Entity.__super__.constructor.apply(this, arguments);
     }
 
     Entity.prototype.render = function() {

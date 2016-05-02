@@ -1,9 +1,9 @@
 (function() {
-  var __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
 
-  RaY.Models.World = (function(_super) {
-    __extends(World, _super);
+  RaY.Models.World = (function(superClass) {
+    extend(World, superClass);
 
     World.include(RaY.Engine.Modules.Callbacks);
 
@@ -17,34 +17,34 @@
 
     World.prototype.gravity = 1;
 
-    World.prototype.levels = ["Tutorial 1", "Xtreme", "The End"];
+    World.prototype.currentLevelId = 0;
+
+    World.prototype.levels = ["Tutorial 1", "Tutorial 2", "First challenge", "Not that easy", "Almost deadly", "Xtreme", "The End"];
 
     function World() {
-      var _this = this;
-
       this.context = this.createCanvasAndGetContext();
       this.imageRepository = new RaY.Engine.ImageRepository;
       this.soundRepository = new RaY.Engine.SoundRepository;
-      this.currentLevel = new RaY.Models.Level(this, "Tutorial 1");
+      this.currentLevel = new RaY.Models.Level(this, this.levels[this.currentLevelId]);
       this.gui = new RaY.Models.Gui(this);
-      this.bind(this, "levelCompleted", function() {
-        return _this.proceedToNextLevel();
-      });
+      this.bind(this, "levelCompleted", (function(_this) {
+        return function() {
+          return _this.proceedToNextLevel();
+        };
+      })(this));
     }
 
     World.prototype.proceedToNextLevel = function() {
-      var nextLevelName;
-
-      if (nextLevelName = this.levels[this.levels.indexOf(this.currentLevel.name) + 1]) {
+      if (this.currentLevelId + 1 < this.levels.length) {
+        this.currentLevelId += 1;
         this.currentLevel.destroy();
-        this.currentLevel = new RaY.Models.Level(this, nextLevelName);
+        this.currentLevel = new RaY.Models.Level(this, this.levels[this.currentLevelId]);
         return this.gui.resetScene();
       }
     };
 
     World.prototype.createCanvasAndGetContext = function() {
       var canvas;
-
       canvas = document.createElement("canvas");
       canvas.width = this.viewWidth;
       canvas.height = this.viewHeight;

@@ -23,43 +23,41 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
 }).call(this);
 (function() {
-  var __slice = [].slice;
+  var slice = [].slice;
 
   RaY.Engine.Modules.Callbacks = {
     events: {},
     bind: function(context, topic, handler) {
-      var _base;
-
-      return ((_base = this.events)[topic] || (_base[topic] = [])).push({
+      var base;
+      return ((base = this.events)[topic] || (base[topic] = [])).push({
         handler: handler,
         context: context,
         id: this.id()
       });
     },
     trigger: function() {
-      var args, event, topic, _i, _len, _ref, _results;
-
-      topic = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+      var args, event, i, len, ref, results, topic;
+      topic = arguments[0], args = 2 <= arguments.length ? slice.call(arguments, 1) : [];
       if (this.events[topic] != null) {
-        _ref = this.events[topic];
-        _results = [];
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          event = _ref[_i];
-          _results.push(event.handler.apply(event.context, args));
+        ref = this.events[topic];
+        results = [];
+        for (i = 0, len = ref.length; i < len; i++) {
+          event = ref[i];
+          results.push(event.handler.apply(event.context, args));
         }
-        return _results;
+        return results;
       }
     },
     purge: function() {
-      var topic, _i, _len, _ref,
-        _this = this;
-
-      _ref = _.keys(this.events);
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        topic = _ref[_i];
-        this.events[topic] = this.events[topic].filter(function(event) {
-          return event.id !== _this.id();
-        });
+      var i, len, ref, topic;
+      ref = _.keys(this.events);
+      for (i = 0, len = ref.length; i < len; i++) {
+        topic = ref[i];
+        this.events[topic] = this.events[topic].filter((function(_this) {
+          return function(event) {
+            return event.id !== _this.id();
+          };
+        })(this));
       }
       return null;
     },
@@ -70,10 +68,10 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
 }).call(this);
 (function() {
-  var __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+  var indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   RaY.Engine.Module = (function() {
-    var keywords, __id;
+    var __id, keywords;
 
     keywords = ['extended', 'included'];
 
@@ -82,31 +80,29 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
     function Module() {}
 
     Module.extend = function(obj) {
-      var key, value, _ref;
-
+      var key, ref, value;
       for (key in obj) {
         value = obj[key];
-        if (__indexOf.call(keywords, key) < 0) {
+        if (indexOf.call(keywords, key) < 0) {
           this[key] = value;
         }
       }
-      if ((_ref = obj.extended) != null) {
-        _ref.apply(this);
+      if ((ref = obj.extended) != null) {
+        ref.apply(this);
       }
       return this;
     };
 
     Module.include = function(obj) {
-      var key, value, _ref;
-
+      var key, ref, value;
       for (key in obj) {
         value = obj[key];
-        if (__indexOf.call(keywords, key) < 0) {
+        if (indexOf.call(keywords, key) < 0) {
           this.prototype[key] = value;
         }
       }
-      if ((_ref = obj.included) != null) {
-        _ref.apply(this);
+      if ((ref = obj.included) != null) {
+        ref.apply(this);
       }
       return this;
     };
@@ -125,12 +121,12 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
 }).call(this);
 (function() {
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
 
-  RaY.Engine.Rectangle = (function(_super) {
-    __extends(Rectangle, _super);
+  RaY.Engine.Rectangle = (function(superClass) {
+    extend(Rectangle, superClass);
 
     Rectangle.include(RaY.Engine.Modules.Callbacks);
 
@@ -163,18 +159,17 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
     Rectangle.prototype.hidden = false;
 
     function Rectangle(world, options) {
-      var option, _i, _len, _ref;
-
+      var i, len, option, ref;
       this.world = world;
       if (options == null) {
         options = {};
       }
-      this.collidesWith = __bind(this.collidesWith, this);
-      this.setPosition = __bind(this.setPosition, this);
-      this.applyPhysics = __bind(this.applyPhysics, this);
-      _ref = ['x', 'y', 'width', 'height', 'fillStyle', 'hidden'];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        option = _ref[_i];
+      this.collidesWith = bind(this.collidesWith, this);
+      this.setPosition = bind(this.setPosition, this);
+      this.applyPhysics = bind(this.applyPhysics, this);
+      ref = ['x', 'y', 'width', 'height', 'fillStyle', 'hidden'];
+      for (i = 0, len = ref.length; i < len; i++) {
+        option = ref[i];
         this[option] = options[option] || this[option];
       }
       this.bindToEvents();
@@ -182,25 +177,31 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
     }
 
     Rectangle.prototype.bindToEvents = function() {
-      var _this = this;
-
-      this.bind(this.world, "update", function() {
-        _this.update();
-        return _this.rememberPosition();
-      });
-      this.bind(this.world, "render", function() {
-        return _this.render();
-      });
-      this.bind(this.world, "collision", function(object, element) {
-        if (object === _this) {
-          return _this.manageCollisionWith(element);
-        }
-      });
-      return this.bind(this.world, "checkCollisionsWith", function(element) {
-        if (_this !== element && _this.collidable) {
-          return element.checkAndTriggerCollisionsWith(_this);
-        }
-      });
+      this.bind(this.world, "update", (function(_this) {
+        return function() {
+          _this.update();
+          return _this.rememberPosition();
+        };
+      })(this));
+      this.bind(this.world, "render", (function(_this) {
+        return function() {
+          return _this.render();
+        };
+      })(this));
+      this.bind(this.world, "collision", (function(_this) {
+        return function(object, element) {
+          if (object === _this) {
+            return _this.manageCollisionWith(element);
+          }
+        };
+      })(this));
+      return this.bind(this.world, "checkCollisionsWith", (function(_this) {
+        return function(element) {
+          if (_this !== element && _this.collidable) {
+            return element.checkAndTriggerCollisionsWith(_this);
+          }
+        };
+      })(this));
     };
 
     Rectangle.prototype.rememberPosition = function() {
@@ -372,15 +373,15 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
     SpriteImage.prototype.ready = false;
 
     function SpriteImage(url) {
-      var image,
-        _this = this;
-
+      var image;
       this.url = url;
       image = new Image;
       image.src = this.url;
-      image.onload = function() {
-        return _this.ready = true;
-      };
+      image.onload = (function(_this) {
+        return function() {
+          return _this.ready = true;
+        };
+      })(this);
       this.image = image;
       this.name = _.first(_.last(this.url.split("/")).split("."));
     }
@@ -395,11 +396,11 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
 }).call(this);
 (function() {
-  var __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
 
-  RaY.Engine.Sprite = (function(_super) {
-    __extends(Sprite, _super);
+  RaY.Engine.Sprite = (function(superClass) {
+    extend(Sprite, superClass);
 
     Sprite.prototype.sourceWidth = 0;
 
@@ -473,16 +474,14 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
 }).call(this);
 (function() {
-  var _ref,
-    __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
 
-  RaY.Engine.Entity = (function(_super) {
-    __extends(Entity, _super);
+  RaY.Engine.Entity = (function(superClass) {
+    extend(Entity, superClass);
 
     function Entity() {
-      _ref = Entity.__super__.constructor.apply(this, arguments);
-      return _ref;
+      return Entity.__super__.constructor.apply(this, arguments);
     }
 
     Entity.prototype.render = function() {
@@ -509,27 +508,28 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
     InputHandler.prototype.keysDown = {};
 
     function InputHandler(world) {
-      var _this = this;
-
       this.world = world;
-      $("body").keydown(function(e) {
-        return _this.keyDown(e.keyCode);
-      });
-      $("body").keyup(function(e) {
-        return _this.keyUp(e.keyCode);
-      });
+      $("body").keydown((function(_this) {
+        return function(e) {
+          return _this.keyDown(e.keyCode);
+        };
+      })(this));
+      $("body").keyup((function(_this) {
+        return function(e) {
+          return _this.keyUp(e.keyCode);
+        };
+      })(this));
     }
 
     InputHandler.prototype.update = function() {
-      var key, _i, _len, _ref, _results;
-
-      _ref = _.intersection(_.keys(this.keysDown), _.keys(this.keys));
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        key = _ref[_i];
-        _results.push(this.world.trigger("keyDown", this.keys[key]));
+      var i, key, len, ref, results;
+      ref = _.intersection(_.keys(this.keysDown), _.keys(this.keys));
+      results = [];
+      for (i = 0, len = ref.length; i < len; i++) {
+        key = ref[i];
+        results.push(this.world.trigger("keyDown", this.keys[key]));
       }
-      return _results;
+      return results;
     };
 
     InputHandler.prototype.keyDown = function(code) {
@@ -547,12 +547,12 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
 }).call(this);
 (function() {
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
 
-  RaY.Engine.SoundPool = (function(_super) {
-    __extends(SoundPool, _super);
+  RaY.Engine.SoundPool = (function(superClass) {
+    extend(SoundPool, superClass);
 
     SoundPool.prototype.counter = 0;
 
@@ -561,19 +561,18 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
     SoundPool.prototype.ready = false;
 
     function SoundPool(filePath, size) {
-      var _this = this;
-
       this.size = size != null ? size : 5;
-      this.isReady = __bind(this.isReady, this);
-      this.play = __bind(this.play, this);
-      this.currentSound = __bind(this.currentSound, this);
-      _(this.size).times(function(i) {
-        var audio;
-
-        audio = new Audio(filePath);
-        audio.load();
-        return _this.pool[i] = audio;
-      });
+      this.isReady = bind(this.isReady, this);
+      this.play = bind(this.play, this);
+      this.currentSound = bind(this.currentSound, this);
+      _(this.size).times((function(_this) {
+        return function(i) {
+          var audio;
+          audio = new Audio(filePath);
+          audio.load();
+          return _this.pool[i] = audio;
+        };
+      })(this));
       this.name = _.first(_.last(filePath.split("/")).split("."));
     }
 
@@ -589,15 +588,14 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
     };
 
     SoundPool.prototype.isReady = function() {
-      var audio, _i, _len, _ref;
-
+      var audio, j, len, ref;
       if (this.ready) {
         return this.ready;
       }
       this.ready = true;
-      _ref = this.pool;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        audio = _ref[_i];
+      ref = this.pool;
+      for (j = 0, len = ref.length; j < len; j++) {
+        audio = ref[j];
         this.ready = this.ready && audio.readyState;
       }
       return this.ready;
@@ -609,39 +607,37 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
 }).call(this);
 (function() {
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
 
-  RaY.Engine.ImageRepository = (function(_super) {
-    __extends(ImageRepository, _super);
+  RaY.Engine.ImageRepository = (function(superClass) {
+    extend(ImageRepository, superClass);
 
     ImageRepository.prototype.images = [];
 
     ImageRepository.prototype.ready = false;
 
     function ImageRepository() {
-      this.find = __bind(this.find, this);
-      this.isReady = __bind(this.isReady, this);
-      var file, _i, _len, _ref;
-
-      _ref = RaY.Data.Images;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        file = _ref[_i];
+      this.find = bind(this.find, this);
+      this.isReady = bind(this.isReady, this);
+      var file, i, len, ref;
+      ref = RaY.Data.Images;
+      for (i = 0, len = ref.length; i < len; i++) {
+        file = ref[i];
         this.images.push(new RaY.Engine.SpriteImage(file));
       }
     }
 
     ImageRepository.prototype.isReady = function() {
-      var image, _i, _len, _ref;
-
+      var i, image, len, ref;
       if (this.ready) {
         return this.ready;
       }
       this.ready = true;
-      _ref = this.images;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        image = _ref[_i];
+      ref = this.images;
+      for (i = 0, len = ref.length; i < len; i++) {
+        image = ref[i];
         this.ready = this.ready && image.isReady();
       }
       return this.ready;
@@ -659,39 +655,37 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
 }).call(this);
 (function() {
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
 
-  RaY.Engine.SoundRepository = (function(_super) {
-    __extends(SoundRepository, _super);
+  RaY.Engine.SoundRepository = (function(superClass) {
+    extend(SoundRepository, superClass);
 
     SoundRepository.prototype.sounds = [];
 
     SoundRepository.prototype.ready = false;
 
     function SoundRepository() {
-      this.find = __bind(this.find, this);
-      this.isReady = __bind(this.isReady, this);
-      var file, _i, _len, _ref;
-
-      _ref = RaY.Data.Sounds;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        file = _ref[_i];
+      this.find = bind(this.find, this);
+      this.isReady = bind(this.isReady, this);
+      var file, i, len, ref;
+      ref = RaY.Data.Sounds;
+      for (i = 0, len = ref.length; i < len; i++) {
+        file = ref[i];
         this.sounds.push(new RaY.Engine.SoundPool(file.name, file.poolSize));
       }
     }
 
     SoundRepository.prototype.isReady = function() {
-      var sound, _i, _len, _ref;
-
+      var i, len, ref, sound;
       if (this.ready) {
         return this.ready;
       }
       this.ready = true;
-      _ref = this.sounds;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        sound = _ref[_i];
+      ref = this.sounds;
+      for (i = 0, len = ref.length; i < len; i++) {
+        sound = ref[i];
         this.ready = this.ready && sound.isReady();
       }
       return this.ready;
@@ -709,11 +703,11 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
 }).call(this);
 (function() {
-  var __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
 
-  RaY.Models.Box = (function(_super) {
-    __extends(Box, _super);
+  RaY.Models.Box = (function(superClass) {
+    extend(Box, superClass);
 
     Box.prototype.collidable = true;
 
@@ -741,12 +735,12 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
 }).call(this);
 (function() {
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+  var bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   RaY.Models.Game = (function() {
     function Game() {
-      this.main = __bind(this.main, this);
-      this.animate = __bind(this.animate, this);
+      this.main = bind(this.main, this);
+      this.animate = bind(this.animate, this);
     }
 
     Game.prototype.run = function() {
@@ -784,11 +778,11 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
 }).call(this);
 (function() {
-  var __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
 
-  RaY.Models.Goal = (function(_super) {
-    __extends(Goal, _super);
+  RaY.Models.Goal = (function(superClass) {
+    extend(Goal, superClass);
 
     Goal.prototype.collidable = false;
 
@@ -817,14 +811,14 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
     }
 
     Goal.prototype.bindToEvents = function() {
-      var _this = this;
-
       Goal.__super__.bindToEvents.apply(this, arguments);
-      return this.bind(this.world, "checkCollisionsWith", function(element) {
-        if (_this !== element && _this.collidesWith(element)) {
-          return _this.manageCollisionWith(element);
-        }
-      });
+      return this.bind(this.world, "checkCollisionsWith", (function(_this) {
+        return function(element) {
+          if (_this !== element && _this.collidesWith(element)) {
+            return _this.manageCollisionWith(element);
+          }
+        };
+      })(this));
     };
 
     Goal.prototype.render = function() {
@@ -858,11 +852,11 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
 }).call(this);
 (function() {
-  var __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
 
-  RaY.Models.Gui = (function(_super) {
-    __extends(Gui, _super);
+  RaY.Models.Gui = (function(superClass) {
+    extend(Gui, superClass);
 
     Gui.include(RaY.Engine.Modules.Callbacks);
 
@@ -891,20 +885,26 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
     }
 
     Gui.prototype.bindToEvents = function() {
-      var _this = this;
-
-      this.bind(this.world, "levelCompleted", function() {
-        return _this.levelCompleted();
-      });
-      this.bind(this.world, "resetGui", function() {
-        return _this.reset();
-      });
-      this.bind(this.world, "hideGui", function() {
-        return _this.hide();
-      });
-      return this.bind(this.world, "showGui", function() {
-        return _this.show();
-      });
+      this.bind(this.world, "levelCompleted", (function(_this) {
+        return function() {
+          return _this.levelCompleted();
+        };
+      })(this));
+      this.bind(this.world, "resetGui", (function(_this) {
+        return function() {
+          return _this.reset();
+        };
+      })(this));
+      this.bind(this.world, "hideGui", (function(_this) {
+        return function() {
+          return _this.hide();
+        };
+      })(this));
+      return this.bind(this.world, "showGui", (function(_this) {
+        return function() {
+          return _this.show();
+        };
+      })(this));
     };
 
     Gui.prototype.levelCompleted = function() {
@@ -992,11 +992,11 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
 }).call(this);
 (function() {
-  var __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
 
-  RaY.Models.Hero = (function(_super) {
-    __extends(Hero, _super);
+  RaY.Models.Hero = (function(superClass) {
+    extend(Hero, superClass);
 
     Hero.prototype.collidable = true;
 
@@ -1120,7 +1120,7 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
     Hero.prototype.spawnRainbow = function() {
       if (this.activeAnimationName.indexOf("Left") !== -1) {
-        return this.rainbow.setPosition(this.x + 23, this.y + 1);
+        return this.rainbow.setPosition(this.x + 22, this.y + 1);
       } else {
         return this.rainbow.setPosition(this.x + 7, this.y + 1);
       }
@@ -1166,13 +1166,13 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
 }).call(this);
 (function() {
-  var __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
 
-  RaY.Models.Level = (function(_super) {
+  RaY.Models.Level = (function(superClass) {
     var createElement;
 
-    __extends(Level, _super);
+    extend(Level, superClass);
 
     Level.include(RaY.Engine.Modules.Callbacks);
 
@@ -1188,12 +1188,14 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
     Level.prototype.elements = [];
 
-    function Level(world, name) {
+    function Level(world, name1) {
       this.world = world;
-      this.name = name;
-      this.data = _.find(RaY.Data.Levels, function(level) {
-        return level.name === name;
-      });
+      this.name = name1;
+      this.data = _.find(RaY.Data.Levels, (function(_this) {
+        return function(level) {
+          return level.name === _this.name;
+        };
+      })(this));
       this.bindToEvents();
       if (this.data.gui === "hidden") {
         this.world.trigger("hideGui");
@@ -1202,17 +1204,19 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
     }
 
     Level.prototype.bindToEvents = function() {
-      var _this = this;
-
-      this.bind(this.world, "levelCompleted", function() {
-        return _this.levelCompleted();
-      });
-      return this.bind(this.world, "keyUp", function(name) {
-        if (name === "r") {
-          _this.resetScene();
-          return _this.world.trigger("resetGui");
-        }
-      });
+      this.bind(this.world, "levelCompleted", (function(_this) {
+        return function() {
+          return _this.levelCompleted();
+        };
+      })(this));
+      return this.bind(this.world, "keyUp", (function(_this) {
+        return function(name) {
+          if (name === "r") {
+            _this.resetScene();
+            return _this.world.trigger("resetGui");
+          }
+        };
+      })(this));
     };
 
     Level.prototype.levelCompleted = function() {
@@ -1251,7 +1255,6 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
     Level.prototype.createGoal = function() {
       var goal;
-
       if (this.data.goal) {
         goal = new RaY.Models.Goal(this.world);
         goal.x = this.data.goal.x;
@@ -1262,39 +1265,36 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
     };
 
     Level.prototype.buildScene = function() {
-      var element, subelement, _i, _len, _ref, _results;
-
+      var element, i, len, ref, results, subelement;
       this.createBackground();
       this.createGoal();
       this.createYellowHero();
       this.createRedHero();
-      _ref = this.data.elements;
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        element = _ref[_i];
-        _results.push((function() {
-          var _j, _len1, _ref1, _results1;
-
-          _ref1 = element.elements;
-          _results1 = [];
-          for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-            subelement = _ref1[_j];
-            _results1.push(this.elements.push(createElement(element.klass, [this.world].concat(subelement))));
+      ref = this.data.elements;
+      results = [];
+      for (i = 0, len = ref.length; i < len; i++) {
+        element = ref[i];
+        results.push((function() {
+          var j, len1, ref1, results1;
+          ref1 = element.elements;
+          results1 = [];
+          for (j = 0, len1 = ref1.length; j < len1; j++) {
+            subelement = ref1[j];
+            results1.push(this.elements.push(createElement(element.klass, [this.world].concat(subelement))));
           }
-          return _results1;
+          return results1;
         }).call(this));
       }
-      return _results;
+      return results;
     };
 
     Level.prototype.destroyScene = function() {
-      var element, _i, _len, _ref;
-
+      var element, i, len, ref;
       this.redHero.destroy();
       this.yellowHero.destroy();
-      _ref = this.elements;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        element = _ref[_i];
+      ref = this.elements;
+      for (i = 0, len = ref.length; i < len; i++) {
+        element = ref[i];
         element.destroy();
       }
       this.elements = [];
@@ -1313,7 +1313,6 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
     createElement = function(klass, attributes) {
       var tmpObj;
-
       tmpObj = Object.create(klass.prototype);
       klass.apply(tmpObj, attributes);
       return tmpObj;
@@ -1325,11 +1324,11 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
 }).call(this);
 (function() {
-  var __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
 
-  RaY.Models.Message = (function(_super) {
-    __extends(Message, _super);
+  RaY.Models.Message = (function(superClass) {
+    extend(Message, superClass);
 
     Message.prototype.collidable = false;
 
@@ -1354,16 +1353,15 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
     Message.prototype.contentY = 0;
 
     function Message(world, content, options) {
-      var option, _i, _len, _ref;
-
+      var i, len, option, ref;
       this.world = world;
       this.content = content;
       if (options == null) {
         options = {};
       }
-      _ref = ['x', 'y', 'width', 'height', 'fillStyle', 'font', 'fillText', 'contentX', 'contentY', 'textFillStyle'];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        option = _ref[_i];
+      ref = ['x', 'y', 'width', 'height', 'fillStyle', 'font', 'fillText', 'contentX', 'contentY', 'textFillStyle'];
+      for (i = 0, len = ref.length; i < len; i++) {
+        option = ref[i];
         this[option] = options[option] || this[option];
       }
       Message.__super__.constructor.call(this, this.world);
@@ -1382,11 +1380,11 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
 }).call(this);
 (function() {
-  var __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
 
-  RaY.Models.Particle = (function(_super) {
-    __extends(Particle, _super);
+  RaY.Models.Particle = (function(superClass) {
+    extend(Particle, superClass);
 
     function Particle(world) {
       this.world = world;
@@ -1410,11 +1408,11 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
 }).call(this);
 (function() {
-  var __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
 
-  RaY.Models.Platform = (function(_super) {
-    __extends(Platform, _super);
+  RaY.Models.Platform = (function(superClass) {
+    extend(Platform, superClass);
 
     Platform.prototype.collidable = true;
 
@@ -1436,42 +1434,44 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
 }).call(this);
 (function() {
-  var __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
 
-  RaY.Models.Rainbow = (function(_super) {
-    __extends(Rainbow, _super);
+  RaY.Models.Rainbow = (function(superClass) {
+    extend(Rainbow, superClass);
 
     Rainbow.include(RaY.Engine.Modules.Callbacks);
 
+    Rainbow.prototype.rainbowLength = 10;
+
+    Rainbow.prototype.currentColumn = 0;
+
     function Rainbow(world) {
-      var _this = this;
-
       this.world = world;
-      this.particles = _(6).times(function(rowIndex) {
-        var fillStyle;
-
-        fillStyle = ["#f00", "#f80", "#ff0", "#0f0", "#00f", "#80f"][rowIndex];
-        return _(10).times(function(particleIndex) {
-          return new RaY.Engine.Rectangle(_this.world, {
-            x: 10,
-            y: 10,
-            width: 4 - particleIndex / 3,
-            height: 4 - particleIndex / 3,
-            fillStyle: fillStyle
+      this.particles = _(6).times((function(_this) {
+        return function(rowIndex) {
+          var fillStyle;
+          fillStyle = 5 - rowIndex < _this.world.currentLevelId ? ["#f00", "#f80", "#ff0", "#0f0", "#00f", "#80f"][rowIndex] : ["#fff", "#ddd", "#bbb", "#999", "#777", "#555"][rowIndex];
+          return _(_this.rainbowLength).times(function(particleIndex) {
+            return new RaY.Engine.Rectangle(_this.world, {
+              x: 10,
+              y: 10,
+              width: 4,
+              height: 4,
+              fillStyle: fillStyle
+            });
           });
-        });
-      });
+        };
+      })(this));
     }
 
     Rainbow.prototype.destroy = function() {
-      var particle, row, _i, _j, _len, _len1, _ref;
-
-      _ref = this.particles;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        row = _ref[_i];
-        for (_j = 0, _len1 = row.length; _j < _len1; _j++) {
-          particle = row[_j];
+      var i, j, len, len1, particle, ref, row;
+      ref = this.particles;
+      for (i = 0, len = ref.length; i < len; i++) {
+        row = ref[i];
+        for (j = 0, len1 = row.length; j < len1; j++) {
+          particle = row[j];
           particle.destroy();
         }
       }
@@ -1480,28 +1480,19 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
     };
 
     Rainbow.prototype.setPosition = function(x, y) {
-      var originalX, originalY, particle, particleIndex, row, rowIndex, tmpX, tmpY, _i, _len, _ref, _ref1, _ref2, _results;
-
-      _ref = [x, y], originalX = _ref[0], originalY = _ref[1];
-      _ref1 = this.particles;
-      _results = [];
-      for (rowIndex = _i = 0, _len = _ref1.length; _i < _len; rowIndex = ++_i) {
-        row = _ref1[rowIndex];
-        _ref2 = [originalX, originalY + rowIndex * 3], x = _ref2[0], y = _ref2[1];
-        _results.push((function() {
-          var _j, _len1, _ref3, _ref4, _results1;
-
-          _results1 = [];
-          for (particleIndex = _j = 0, _len1 = row.length; _j < _len1; particleIndex = ++_j) {
-            particle = row[particleIndex];
-            _ref3 = [particle.x, particle.y - particleIndex / 8], tmpX = _ref3[0], tmpY = _ref3[1];
-            particle.setPosition(x, y + particleIndex / 8);
-            _results1.push((_ref4 = [tmpX, tmpY], x = _ref4[0], y = _ref4[1], _ref4));
-          }
-          return _results1;
-        })());
+      var i, len, ref, results, row, rowIndex;
+      this.iterateColumn();
+      ref = this.particles;
+      results = [];
+      for (rowIndex = i = 0, len = ref.length; i < len; rowIndex = ++i) {
+        row = ref[rowIndex];
+        results.push(row[this.currentColumn].setPosition(x, y + rowIndex * 3));
       }
-      return _results;
+      return results;
+    };
+
+    Rainbow.prototype.iterateColumn = function() {
+      return this.currentColumn = (this.currentColumn + 1) % this.rainbowLength;
     };
 
     return Rainbow;
@@ -1510,11 +1501,11 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
 }).call(this);
 (function() {
-  var __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
 
-  RaY.Models.RedHero = (function(_super) {
-    __extends(RedHero, _super);
+  RaY.Models.RedHero = (function(superClass) {
+    extend(RedHero, superClass);
 
     function RedHero(world) {
       this.world = world;
@@ -1522,18 +1513,18 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
     }
 
     RedHero.prototype.bindToEvents = function() {
-      var _this = this;
-
-      this.bind(this.world, "keyDown", function(name) {
-        switch (name) {
-          case "left":
-            return _this.moveLeft();
-          case "right":
-            return _this.moveRight();
-          case "up":
-            return _this.startJumping();
-        }
-      });
+      this.bind(this.world, "keyDown", (function(_this) {
+        return function(name) {
+          switch (name) {
+            case "left":
+              return _this.moveLeft();
+            case "right":
+              return _this.moveRight();
+            case "up":
+              return _this.startJumping();
+          }
+        };
+      })(this));
       return RedHero.__super__.bindToEvents.apply(this, arguments);
     };
 
@@ -1543,11 +1534,11 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
 }).call(this);
 (function() {
-  var __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
 
-  RaY.Models.World = (function(_super) {
-    __extends(World, _super);
+  RaY.Models.World = (function(superClass) {
+    extend(World, superClass);
 
     World.include(RaY.Engine.Modules.Callbacks);
 
@@ -1561,34 +1552,34 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
     World.prototype.gravity = 1;
 
-    World.prototype.levels = ["Tutorial 1", "Xtreme", "The End"];
+    World.prototype.currentLevelId = 0;
+
+    World.prototype.levels = ["Tutorial 1", "Tutorial 2", "First challenge", "Not that easy", "Almost deadly", "Xtreme", "The End"];
 
     function World() {
-      var _this = this;
-
       this.context = this.createCanvasAndGetContext();
       this.imageRepository = new RaY.Engine.ImageRepository;
       this.soundRepository = new RaY.Engine.SoundRepository;
-      this.currentLevel = new RaY.Models.Level(this, "Tutorial 1");
+      this.currentLevel = new RaY.Models.Level(this, this.levels[this.currentLevelId]);
       this.gui = new RaY.Models.Gui(this);
-      this.bind(this, "levelCompleted", function() {
-        return _this.proceedToNextLevel();
-      });
+      this.bind(this, "levelCompleted", (function(_this) {
+        return function() {
+          return _this.proceedToNextLevel();
+        };
+      })(this));
     }
 
     World.prototype.proceedToNextLevel = function() {
-      var nextLevelName;
-
-      if (nextLevelName = this.levels[this.levels.indexOf(this.currentLevel.name) + 1]) {
+      if (this.currentLevelId + 1 < this.levels.length) {
+        this.currentLevelId += 1;
         this.currentLevel.destroy();
-        this.currentLevel = new RaY.Models.Level(this, nextLevelName);
+        this.currentLevel = new RaY.Models.Level(this, this.levels[this.currentLevelId]);
         return this.gui.resetScene();
       }
     };
 
     World.prototype.createCanvasAndGetContext = function() {
       var canvas;
-
       canvas = document.createElement("canvas");
       canvas.width = this.viewWidth;
       canvas.height = this.viewHeight;
@@ -1626,11 +1617,11 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
 
 }).call(this);
 (function() {
-  var __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
 
-  RaY.Models.YellowHero = (function(_super) {
-    __extends(YellowHero, _super);
+  RaY.Models.YellowHero = (function(superClass) {
+    extend(YellowHero, superClass);
 
     function YellowHero(world) {
       this.world = world;
@@ -1638,18 +1629,18 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
     }
 
     YellowHero.prototype.bindToEvents = function() {
-      var _this = this;
-
-      this.bind(this.world, "keyDown", function(name) {
-        switch (name) {
-          case "a":
-            return _this.moveLeft();
-          case "d":
-            return _this.moveRight();
-          case "w":
-            return _this.startJumping();
-        }
-      });
+      this.bind(this.world, "keyDown", (function(_this) {
+        return function(name) {
+          switch (name) {
+            case "a":
+              return _this.moveLeft();
+            case "d":
+              return _this.moveRight();
+            case "w":
+              return _this.startJumping();
+          }
+        };
+      })(this));
       return YellowHero.__super__.bindToEvents.apply(this, arguments);
     };
 
@@ -1667,7 +1658,7 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
     {
       name: "Tutorial 1",
       background: {
-        fillStyle: "#234",
+        fillStyle: "#80f",
         width: 640,
         height: 480
       },
@@ -1692,10 +1683,19 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
           klass: RaY.Models.Message,
           elements: [
             [
-              'Oh no! Someone stole your rainbow!', {
-                x: 185,
+              'Oh no! Someone stole your rainbow colors!', {
+                x: 175,
                 y: 125,
-                width: 255,
+                width: 340,
+                height: 32,
+                contentX: 10,
+                contentY: 22
+              }
+            ], [
+              'Get to the food bowl to regain colors of rainbow.', {
+                x: 175,
+                y: 155,
+                width: 340,
                 height: 32,
                 contentX: 10,
                 contentY: 22
@@ -1774,6 +1774,122 @@ try{Ut=i.href}catch(an){Ut=o.createElement("a"),Ut.href="",Ut=Ut.href}Xt=tn.exec
               }
             ]
           ]
+        }
+      ]
+    }, {
+      name: "Tutorial 2",
+      background: {
+        fillStyle: "#00f",
+        width: 640,
+        height: 480
+      },
+      yellowHero: {
+        x: 50,
+        y: 395
+      },
+      redHero: {
+        x: 460,
+        y: 395,
+        firstAnimation: "stayLeft"
+      },
+      goal: {
+        x: 560,
+        y: 385
+      },
+      elements: [
+        {
+          klass: RaY.Models.Platform,
+          elements: [[0, 0, 5, 480, "#fff"], [0, 0, 640, 5, "#fff"], [635, 0, 5, 480, "#fff"], [0, 475, 640, 5, "#fff"], [0, 415, 240, 5, "#fff"], [400, 415, 240, 5, "#fff"], [400, 415, 5, 70, "#fff"], [240, 415, 5, 70, "#fff"]]
+        }, {
+          klass: RaY.Models.Box,
+          elements: [[400, 395, "#e92"]]
+        }
+      ]
+    }, {
+      name: "First challenge",
+      background: {
+        fillStyle: "#0f0",
+        width: 640,
+        height: 480
+      },
+      yellowHero: {
+        x: 50,
+        y: 395
+      },
+      redHero: {
+        x: 480,
+        y: 375,
+        firstAnimation: "stayLeft"
+      },
+      goal: {
+        x: 560,
+        y: 370
+      },
+      elements: [
+        {
+          klass: RaY.Models.Platform,
+          elements: [[0, 0, 5, 480, "#fff"], [0, 0, 640, 5, "#fff"], [635, 0, 5, 480, "#fff"], [0, 475, 640, 5, "#fff"], [0, 415, 240, 5, "#fff"], [400, 400, 240, 5, "#fff"], [400, 400, 5, 80, "#fff"], [240, 415, 5, 70, "#fff"], [240, 380, 25, 5, "#fff"], [270, 360, 25, 5, "#fff"], [300, 340, 50, 5, "#fff"], [350, 0, 5, 320, "#fff"]]
+        }, {
+          klass: RaY.Models.Box,
+          elements: [[400, 375, "#e92"], [325, 300, "#e92"]]
+        }
+      ]
+    }, {
+      name: "Almost deadly",
+      background: {
+        fillStyle: "#f80",
+        width: 640,
+        height: 480
+      },
+      yellowHero: {
+        x: 20,
+        y: 180
+      },
+      redHero: {
+        x: 480,
+        y: 375,
+        firstAnimation: "stayLeft"
+      },
+      goal: {
+        x: 15,
+        y: 350
+      },
+      elements: [
+        {
+          klass: RaY.Models.Platform,
+          elements: [[0, 0, 5, 480, "#fff"], [0, 0, 640, 5, "#fff"], [635, 0, 5, 480, "#fff"], [0, 475, 640, 5, "#fff"], [0, 260, 280, 5, "#fff"], [0, 200, 80, 5, "#fff"], [160, 200, 185, 5, "#fff"], [235, 140, 75, 5, "#fff"], [235, 140, 5, 30, "#fff"], [305, 140, 5, 30, "#fff"], [80, 140, 80, 5, "#fff"], [80, 140, 5, 30, "#fff"], [155, 140, 5, 30, "#fff"], [280, 260, 5, 80, "#fff"], [320, 260, 5, 80, "#fff"], [220, 370, 120, 5, "#fff"], [380, 260, 5, 190, "#fff"], [5, 380, 100, 5, "#fff"]]
+        }, {
+          klass: RaY.Models.Box,
+          elements: [[60, 175, "#e92"], [260, 115, "#e92"], [520, 435, "#e92"], [120, 405, "#e92"], [120, 385, "#e92"]]
+        }
+      ]
+    }, {
+      name: "Not that easy",
+      background: {
+        fillStyle: "#f00",
+        width: 640,
+        height: 480
+      },
+      yellowHero: {
+        x: 50,
+        y: 395
+      },
+      redHero: {
+        x: 480,
+        y: 375,
+        firstAnimation: "stayLeft"
+      },
+      goal: {
+        x: 560,
+        y: 370
+      },
+      elements: [
+        {
+          klass: RaY.Models.Platform,
+          elements: [[0, 0, 5, 480, "#fff"], [0, 0, 640, 5, "#fff"], [635, 0, 5, 480, "#fff"], [0, 475, 640, 5, "#fff"], [0, 415, 240, 5, "#fff"], [400, 400, 240, 5, "#fff"], [400, 400, 5, 80, "#fff"], [240, 415, 5, 70, "#fff"], [240, 380, 25, 5, "#fff"], [270, 360, 25, 5, "#fff"], [300, 340, 50, 5, "#fff"], [350, 0, 5, 320, "#fff"]]
+        }, {
+          klass: RaY.Models.Box,
+          elements: [[400, 375, "#e92"], [325, 300, "#e92"]]
         }
       ]
     }, {

@@ -1,10 +1,10 @@
 (function() {
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
 
-  RaY.Engine.Rectangle = (function(_super) {
-    __extends(Rectangle, _super);
+  RaY.Engine.Rectangle = (function(superClass) {
+    extend(Rectangle, superClass);
 
     Rectangle.include(RaY.Engine.Modules.Callbacks);
 
@@ -37,18 +37,17 @@
     Rectangle.prototype.hidden = false;
 
     function Rectangle(world, options) {
-      var option, _i, _len, _ref;
-
+      var i, len, option, ref;
       this.world = world;
       if (options == null) {
         options = {};
       }
-      this.collidesWith = __bind(this.collidesWith, this);
-      this.setPosition = __bind(this.setPosition, this);
-      this.applyPhysics = __bind(this.applyPhysics, this);
-      _ref = ['x', 'y', 'width', 'height', 'fillStyle', 'hidden'];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        option = _ref[_i];
+      this.collidesWith = bind(this.collidesWith, this);
+      this.setPosition = bind(this.setPosition, this);
+      this.applyPhysics = bind(this.applyPhysics, this);
+      ref = ['x', 'y', 'width', 'height', 'fillStyle', 'hidden'];
+      for (i = 0, len = ref.length; i < len; i++) {
+        option = ref[i];
         this[option] = options[option] || this[option];
       }
       this.bindToEvents();
@@ -56,25 +55,31 @@
     }
 
     Rectangle.prototype.bindToEvents = function() {
-      var _this = this;
-
-      this.bind(this.world, "update", function() {
-        _this.update();
-        return _this.rememberPosition();
-      });
-      this.bind(this.world, "render", function() {
-        return _this.render();
-      });
-      this.bind(this.world, "collision", function(object, element) {
-        if (object === _this) {
-          return _this.manageCollisionWith(element);
-        }
-      });
-      return this.bind(this.world, "checkCollisionsWith", function(element) {
-        if (_this !== element && _this.collidable) {
-          return element.checkAndTriggerCollisionsWith(_this);
-        }
-      });
+      this.bind(this.world, "update", (function(_this) {
+        return function() {
+          _this.update();
+          return _this.rememberPosition();
+        };
+      })(this));
+      this.bind(this.world, "render", (function(_this) {
+        return function() {
+          return _this.render();
+        };
+      })(this));
+      this.bind(this.world, "collision", (function(_this) {
+        return function(object, element) {
+          if (object === _this) {
+            return _this.manageCollisionWith(element);
+          }
+        };
+      })(this));
+      return this.bind(this.world, "checkCollisionsWith", (function(_this) {
+        return function(element) {
+          if (_this !== element && _this.collidable) {
+            return element.checkAndTriggerCollisionsWith(_this);
+          }
+        };
+      })(this));
     };
 
     Rectangle.prototype.rememberPosition = function() {

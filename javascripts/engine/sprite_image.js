@@ -3,15 +3,15 @@
     SpriteImage.prototype.ready = false;
 
     function SpriteImage(url) {
-      var image,
-        _this = this;
-
+      var image;
       this.url = url;
       image = new Image;
       image.src = this.url;
-      image.onload = function() {
-        return _this.ready = true;
-      };
+      image.onload = (function(_this) {
+        return function() {
+          return _this.ready = true;
+        };
+      })(this);
       this.image = image;
       this.name = _.first(_.last(this.url.split("/")).split("."));
     }

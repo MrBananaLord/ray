@@ -1,9 +1,9 @@
 (function() {
-  var __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
 
-  RaY.Models.Gui = (function(_super) {
-    __extends(Gui, _super);
+  RaY.Models.Gui = (function(superClass) {
+    extend(Gui, superClass);
 
     Gui.include(RaY.Engine.Modules.Callbacks);
 
@@ -32,20 +32,26 @@
     }
 
     Gui.prototype.bindToEvents = function() {
-      var _this = this;
-
-      this.bind(this.world, "levelCompleted", function() {
-        return _this.levelCompleted();
-      });
-      this.bind(this.world, "resetGui", function() {
-        return _this.reset();
-      });
-      this.bind(this.world, "hideGui", function() {
-        return _this.hide();
-      });
-      return this.bind(this.world, "showGui", function() {
-        return _this.show();
-      });
+      this.bind(this.world, "levelCompleted", (function(_this) {
+        return function() {
+          return _this.levelCompleted();
+        };
+      })(this));
+      this.bind(this.world, "resetGui", (function(_this) {
+        return function() {
+          return _this.reset();
+        };
+      })(this));
+      this.bind(this.world, "hideGui", (function(_this) {
+        return function() {
+          return _this.hide();
+        };
+      })(this));
+      return this.bind(this.world, "showGui", (function(_this) {
+        return function() {
+          return _this.show();
+        };
+      })(this));
     };
 
     Gui.prototype.levelCompleted = function() {

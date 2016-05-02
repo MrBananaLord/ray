@@ -1,9 +1,9 @@
 (function() {
-  var __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
 
-  RaY.Models.Hero = (function(_super) {
-    __extends(Hero, _super);
+  RaY.Models.Hero = (function(superClass) {
+    extend(Hero, superClass);
 
     Hero.prototype.collidable = true;
 
@@ -127,7 +127,7 @@
 
     Hero.prototype.spawnRainbow = function() {
       if (this.activeAnimationName.indexOf("Left") !== -1) {
-        return this.rainbow.setPosition(this.x + 23, this.y + 1);
+        return this.rainbow.setPosition(this.x + 22, this.y + 1);
       } else {
         return this.rainbow.setPosition(this.x + 7, this.y + 1);
       }

@@ -1,10 +1,10 @@
 (function() {
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+  var bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   RaY.Models.Game = (function() {
     function Game() {
-      this.main = __bind(this.main, this);
-      this.animate = __bind(this.animate, this);
+      this.main = bind(this.main, this);
+      this.animate = bind(this.animate, this);
     }
 
     Game.prototype.run = function() {

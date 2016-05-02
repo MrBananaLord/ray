@@ -1,9 +1,9 @@
 (function() {
-  var __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
 
-  RaY.Models.Goal = (function(_super) {
-    __extends(Goal, _super);
+  RaY.Models.Goal = (function(superClass) {
+    extend(Goal, superClass);
 
     Goal.prototype.collidable = false;
 
@@ -32,14 +32,14 @@
     }
 
     Goal.prototype.bindToEvents = function() {
-      var _this = this;
-
       Goal.__super__.bindToEvents.apply(this, arguments);
-      return this.bind(this.world, "checkCollisionsWith", function(element) {
-        if (_this !== element && _this.collidesWith(element)) {
-          return _this.manageCollisionWith(element);
-        }
-      });
+      return this.bind(this.world, "checkCollisionsWith", (function(_this) {
+        return function(element) {
+          if (_this !== element && _this.collidesWith(element)) {
+            return _this.manageCollisionWith(element);
+          }
+        };
+      })(this));
     };
 
     Goal.prototype.render = function() {

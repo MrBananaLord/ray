@@ -13,27 +13,28 @@
     InputHandler.prototype.keysDown = {};
 
     function InputHandler(world) {
-      var _this = this;
-
       this.world = world;
-      $("body").keydown(function(e) {
-        return _this.keyDown(e.keyCode);
-      });
-      $("body").keyup(function(e) {
-        return _this.keyUp(e.keyCode);
-      });
+      $("body").keydown((function(_this) {
+        return function(e) {
+          return _this.keyDown(e.keyCode);
+        };
+      })(this));
+      $("body").keyup((function(_this) {
+        return function(e) {
+          return _this.keyUp(e.keyCode);
+        };
+      })(this));
     }
 
     InputHandler.prototype.update = function() {
-      var key, _i, _len, _ref, _results;
-
-      _ref = _.intersection(_.keys(this.keysDown), _.keys(this.keys));
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        key = _ref[_i];
-        _results.push(this.world.trigger("keyDown", this.keys[key]));
+      var i, key, len, ref, results;
+      ref = _.intersection(_.keys(this.keysDown), _.keys(this.keys));
+      results = [];
+      for (i = 0, len = ref.length; i < len; i++) {
+        key = ref[i];
+        results.push(this.world.trigger("keyDown", this.keys[key]));
       }
-      return _results;
+      return results;
     };
 
     InputHandler.prototype.keyDown = function(code) {

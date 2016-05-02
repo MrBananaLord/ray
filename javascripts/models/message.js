@@ -1,9 +1,9 @@
 (function() {
-  var __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
 
-  RaY.Models.Message = (function(_super) {
-    __extends(Message, _super);
+  RaY.Models.Message = (function(superClass) {
+    extend(Message, superClass);
 
     Message.prototype.collidable = false;
 
@@ -28,16 +28,15 @@
     Message.prototype.contentY = 0;
 
     function Message(world, content, options) {
-      var option, _i, _len, _ref;
-
+      var i, len, option, ref;
       this.world = world;
       this.content = content;
       if (options == null) {
         options = {};
       }
-      _ref = ['x', 'y', 'width', 'height', 'fillStyle', 'font', 'fillText', 'contentX', 'contentY', 'textFillStyle'];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        option = _ref[_i];
+      ref = ['x', 'y', 'width', 'height', 'fillStyle', 'font', 'fillText', 'contentX', 'contentY', 'textFillStyle'];
+      for (i = 0, len = ref.length; i < len; i++) {
+        option = ref[i];
         this[option] = options[option] || this[option];
       }
       Message.__super__.constructor.call(this, this.world);
