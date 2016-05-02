@@ -7,9 +7,11 @@ class RaY.Models.World extends RaY.Engine.Module
   gravity: 1
   currentLevelId: 0
   levels: [
-    # "Tutorial 1",
-    # "Tutorial 2",
+    "Tutorial 1",
+    "Tutorial 2",
     "First challenge",
+    "Not that easy",
+    "Almost deadly",
     "Xtreme",
     "The End"
   ]

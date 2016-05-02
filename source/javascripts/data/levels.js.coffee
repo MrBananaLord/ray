@@ -242,6 +242,119 @@ RaY.Data.Levels = [
     ]
   }
   {
+    name: "Almost deadly"
+    background: {
+      fillStyle: "#f80"
+      width: 640
+      height: 480
+    }
+    yellowHero: {
+      x: 20
+      y: 180
+    }
+    redHero: {
+      x: 480
+      y: 375
+      firstAnimation: "stayLeft"
+    }
+    goal: {
+      x: 15
+      y: 350
+    }
+    elements: [
+      {
+        klass: RaY.Models.Platform
+        elements: [
+          # sides
+          [0, 0, 5, 480, "#fff"]
+          [0, 0, 640, 5, "#fff"]
+          [635, 0, 5, 480, "#fff"]
+          [0, 475, 640, 5, "#fff"]
+          # platforms
+          [0, 260, 280, 5, "#fff"]
+          [0, 200, 80, 5, "#fff"]
+          [160, 200, 185, 5, "#fff"]
+
+          [235, 140, 75, 5, "#fff"]
+          [235, 140, 5, 30, "#fff"]
+          [305, 140, 5, 30, "#fff"]
+
+          [80, 140, 80, 5, "#fff"]
+          [80, 140, 5, 30, "#fff"]
+          [155, 140, 5, 30, "#fff"]
+
+          # long drop
+          [280, 260, 5, 80, "#fff"]
+          [320, 260, 5, 80, "#fff"]
+          [220, 370, 120, 5, "#fff"]
+
+          [380, 260, 5, 190, "#fff"]
+          [5, 380, 100, 5, "#fff"]
+        ]
+      }
+      {
+        klass: RaY.Models.Box
+        elements: [
+          [60, 175, "#e92"]
+          [260, 115, "#e92"]
+          [520, 435, "#e92"]
+          [120, 405, "#e92"]
+          [120, 385, "#e92"]
+        ]
+      }
+    ]
+  }
+  {
+    name: "Not that easy"
+    background: {
+      fillStyle: "#f00"
+      width: 640
+      height: 480
+    }
+    yellowHero: {
+      x: 50
+      y: 395
+    }
+    redHero: {
+      x: 480
+      y: 375
+      firstAnimation: "stayLeft"
+    }
+    goal: {
+      x: 560
+      y: 370
+    }
+    elements: [
+      {
+        klass: RaY.Models.Platform
+        elements: [
+          # sides
+          [0, 0, 5, 480, "#fff"]
+          [0, 0, 640, 5, "#fff"]
+          [635, 0, 5, 480, "#fff"]
+          [0, 475, 640, 5, "#fff"]
+          # platforms
+          [0, 415, 240, 5, "#fff"]
+          [400, 400, 240, 5, "#fff"]
+          [400, 400, 5, 80, "#fff"]
+          [240, 415, 5, 70, "#fff"]
+
+          [240, 380, 25, 5, "#fff"]
+          [270, 360, 25, 5, "#fff"]
+          [300, 340, 50, 5, "#fff"]
+          [350, 0, 5, 320, "#fff"]
+        ]
+      }
+      {
+        klass: RaY.Models.Box
+        elements: [
+          [400, 375, "#e92"]
+          [325, 300, "#e92"]
+        ]
+      }
+    ]
+  }
+  {
     name: "Xtreme"
     background: {
       fillStyle: "#234"
