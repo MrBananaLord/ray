@@ -435,7 +435,6 @@ RaY.Data.Levels = [
   }
   {
     name: "The End"
-    gui: "hidden"
     background: {
       fillStyle: "#f34"
       width: 640
@@ -459,6 +458,22 @@ RaY.Data.Levels = [
           [0, 0, 640, 5, "#fff"]
           [635, 0, 5, 480, "#fff"]
           [0, 475, 640, 5, "#fff"]
+        ]
+      }
+      {
+        klass: RaY.Models.Message
+        elements: [
+          [
+            'Hurray! You collected all the colours!',
+            {
+              x: 175
+              y: 125
+              width: 260
+              height: 32
+              contentX: 10
+              contentY: 22
+            }
+          ]
         ]
       }
     ]

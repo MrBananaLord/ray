@@ -9,7 +9,7 @@ class RaY.Models.Gui extends RaY.Engine.Module
   elements: []
   level: 1
   hidden: false
-  
+
   constructor: (@world) ->
     @bindToEvents()
     @buildScene()
@@ -19,12 +19,12 @@ class RaY.Models.Gui extends RaY.Engine.Module
     @bind @world, "resetGui", () => @reset()
     @bind @world, "hideGui", () => @hide()
     @bind @world, "showGui", () => @show()
-    
+
   levelCompleted: ->
     unless @world.currentLevel.completed
-      @level += 1 
+      @level += 1
       @resetScene()
-      
+
   createBackground: ->
     @background = new RaY.Engine.Rectangle(@world, {
       fillStyle: "#23cccc",
@@ -33,47 +33,46 @@ class RaY.Models.Gui extends RaY.Engine.Module
       x: 2, y: 2
     })
     return @background
-  
-  resetCountLength: -> 
-   ((@resetCount).toString().length - 1) * 7
-   
+
+  resetCountLength: ->
+    ((@resetCount).toString().length - 1) * 7
+
   resetCounterMessage: ->
     "Lvl: " + @level + ".  Attempts: " + @resetCount
-  
+
   createResetCounter: ->
     @resetCounter = new RaY.Models.Message(@world, @resetCounterMessage(), {
       x: 5, y: 5, height: 32, width: 140 + @resetCountLength(),
       fillStyle: "#cc35cc", contentX: 7, contentY: 22, textFillStyle: "#fff"
     })
     return @resetCounter
-  
+
   buildScene: ->
     unless @hidden
       @createBackground()
       @createResetCounter()
-  
+
   destroyScene: ->
     unless @hidden
       @resetCounter = @resetCounter.destroy()
       @background = @background.destroy()
-    
+
   resetScene: ->
-    @destroyScene() 
+    @destroyScene()
     @buildScene()
-    
+
   reset: ->
     @resetCount++
     @resetScene()
- 
+
   destroy: ->
     @destroyScene()
     @purge()
-    
+
   hide: ->
     @destroyScene()
     @hidden = true
-    
+
   show: ->
     @hidden = false
-    @buildScene() 
-
+    @buildScene()
